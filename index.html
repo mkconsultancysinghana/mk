@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MK Consultancy — Job Placement</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .popup-content {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      max-width: 350px;
+      width: 90%;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- HEADER -->
+  <header class="bg-white shadow fixed w-full z-10">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-blue-700 tracking-wide">MK Consultancy</h1>
+        <p class="text-xs text-gray-500 -mt-1">We Believe in Better Serve</p>
+      </div>
+      <nav class="hidden md:flex space-x-6 text-sm font-medium">
+        <a href="#about" class="hover:text-blue-600">About</a>
+        <a href="#services" class="hover:text-blue-600">Services</a>
+        <a href="#contact" class="hover:text-blue-600">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="pt-32 pb-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center">
+    <div class="max-w-3xl mx-auto px-6">
+      <h2 class="text-5xl font-extrabold mb-2 tracking-wide">MK Consultancy</h2>
+      <p class="text-lg mb-6 text-blue-100">We Believe in Better Serve</p>
+      <p class="text-md mb-6 text-blue-100">Connecting the right people to the right opportunities.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="#contact" class="inline-block bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-blue-50">Get in Touch</a>
+        <button onclick="toggleForm(true)" class="inline-block bg-blue-900 text-white font-semibold px-6 py-3 rounded-full shadow hover:bg-blue-950">Apply for Job</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">About Us</h3>
+        <p class="text-gray-600 mb-3">
+          MK Consultancy is a trusted Job Placement agency based in Singhana. We are dedicated to bridging the gap between employers and candidates by providing reliable and result-driven recruitment solutions.
+        </p>
+        <p class="text-gray-600">
+          Our mission is to empower individuals by connecting them to their dream jobs and help companies find the perfect talent for growth and success.
+        </p>
+      </div>
+      <img src="https://via.placeholder.com/500x350?text=MK+Consultancy" alt="MK Consultancy Office" class="rounded-lg shadow-md">
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h3 class="text-2xl font-bold mb-10">Our Services</h3>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+          <h4 class="font-semibold text-lg mb-2 text-blue-700">Job Placement</h4>
+          <p class="text-gray-600 text-sm">Helping candidates find suitable job roles across industries with trusted employers.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+          <h4 class="font-semibold text-lg mb-2 text-blue-700">Resume & Interview Support</h4>
+          <p class="text-gray-600 text-sm">Professional resume preparation and interview guidance to boost your success rate.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+          <h4 class="font-semibold text-lg mb-2 text-blue-700">Career Counselling</h4>
+          <p class="text-gray-600 text-sm">Personalized career advice to help you choose the right path for your goals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-6">
+      <h3 class="text-2xl font-bold text-center mb-8">Contact Us</h3>
+      <div class="grid md:grid-cols-2 gap-10">
+        
+        <!-- Contact Form -->
+        <form id="contactForm" action="YOUR_FORMSPREE_LINK_HERE" method="POST" class="space-y-4 bg-gray-50 p-6 rounded-lg shadow">
+          <div>
+            <label class="block text-sm font-medium mb-1">Full Name</label>
+            <input type="text" name="name" required class="w-full border px-3 py-2 rounded" placeholder="Your name">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Email / Phone</label>
+            <input type="text" name="contact" required class="w-full border px-3 py-2 rounded" placeholder="example@mail.com / +91">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Message</label>
+            <textarea name="message" rows="4" class="w-full border px-3 py-2 rounded" placeholder="Type your message here..."></textarea>
+          </div>
+          <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700">Send Message</button>
+        </form>
+
+        <!-- Contact Details -->
+        <div class="bg-blue-50 p-6 rounded-lg shadow">
+          <h4 class="font-semibold text-lg text-blue-700 mb-3">MK Consultancy</h4>
+          <p class="text-gray-700 text-sm mb-2">2nd Floor, Above Raj. Gramin Bank, Chirawa Road,<br> Singhana, Rajasthan — 333516</p>
+          <p class="text-gray-700 text-sm mb-2">📞 +91 9664225417, 9799753065</p>
+          <p class="text-gray-700 text-sm mb-4">✉️ mkconsultancysinghana@gmail.com</p>
+          <p class="text-gray-600 text-sm">We’re here to help you achieve your career goals. Feel free to reach out anytime!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLY JOB POPUP -->
+  <div id="applyForm" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white w-full max-w-md mx-4 rounded-lg shadow-lg p-6 relative">
+      <button onclick="toggleForm(false)" class="absolute top-3 right-3 text-gray-600 hover:text-gray-800">✕</button>
+      <h3 class="text-xl font-bold mb-4 text-blue-700 text-center">Job Application Form</h3>
+      <form id="jobForm" action="YOUR_FORMSPREE_LINK_HERE" method="POST" enctype="multipart/form-data" class="space-y-3">
+        <div>
+          <label class="block text-sm mb-1">Full Name</label>
+          <input type="text" name="name" class="w-full border px-3 py-2 rounded" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Email</label>
+          <input type="email" name="email" class="w-full border px-3 py-2 rounded" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Phone</label>
+          <input type="text" name="phone" class="w-full border px-3 py-2 rounded" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Position Applied For</label>
+          <input type="text" name="position" class="w-full border px-3 py-2 rounded" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Upload Resume</label>
+          <input type="file" name="resume" class="w-full border px-3 py-2 rounded">
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-semibold hover:bg-blue-700">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- THANK YOU POPUP -->
+  <div id="thankPopup" class="popup hidden">
+    <div class="popup-content">
+      <h3 class="text-green-600 text-2xl mb-2">✅</h3>
+      <p class="font-semibold text-gray-800 mb-2">Thank you for applying at MK Consultancy!</p>
+      <p class="text-gray-600 text-sm mb-4">Our team will contact you shortly.</p>
+      <button onclick="closePopup()" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">Close</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-blue-700 text-white py-6 text-center">
+    <p class="text-sm">© <span id="year"></span> MK Consultancy — All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function toggleForm(show) {
+      const form = document.getElementById("applyForm");
+      if(show){
+        form.classList.remove("hidden");
+        form.classList.add("flex");
+      } else {
+        form.classList.add("hidden");
+        form.classList.remove("flex");
+      }
+    }
+
+    function showPopup() {
+      document.getElementById("thankPopup").classList.remove("hidden");
+    }
+
+    function closePopup() {
+      document.getElementById("thankPopup").classList.add("hidden");
+      toggleForm(false);
+    }
+
+    const forms = [document.getElementById("contactForm"), document.getElementById("jobForm")];
+    forms.forEach(form => {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        showPopup();
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>
