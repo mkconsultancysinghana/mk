@@ -1,310 +1,206 @@
-<!doctype html>
-<html lang="hi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MK Consultancy — Job Placement</title>
-  <meta name="description" content="MK Consultancy - Job placement, resume creation & career counselling in Singhana" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MK Consultancy — Placement & Resume Services</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Small custom styles */
-    html { scroll-behavior: smooth; }
-    .glass { background: rgba(255,255,255,0.55); backdrop-filter: blur(6px); }
-    .fade-up { transform: translateY(8px); opacity: 0; transition: all 520ms cubic-bezier(.2,.9,.2,1); }
-    .fade-up.show { transform: translateY(0); opacity: 1; }
-    /* popup */
-    .popup { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(2,6,23,0.6); z-index: 60; }
-    .popup-content { background: white; border-radius: 1rem; padding: 1.75rem; text-align: center; max-width: 420px; width: 92%; box-shadow: 0 10px 30px rgba(2,6,23,0.25);} 
-    /* floating whatsapp */
-    .whatsapp-btn{position:fixed;right:18px;bottom:18px;z-index:70;border-radius:9999px;padding:12px 14px;background:linear-gradient(135deg,#06b6d4,#0ea5a4);box-shadow:0 8px 24px rgba(14,165,164,0.18);display:flex;align-items:center;gap:10px;color:#fff;font-weight:600}
-    @media (min-width:768px){.hero-grid{grid-template-columns:1fr 420px}}
-  </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
-
-  <!-- HEADER -->
-  <header class="fixed w-full z-40 bg-transparent/30 pointer-events-auto">
-    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-teal-400 to-sky-600 flex items-center justify-center text-white font-bold shadow">MK</div>
-        <div>
-          <h1 class="text-lg md:text-2xl font-extrabold text-sky-800">MK Consultancy</h1>
-          <p class="text-xs text-gray-600 -mt-1">We Believe in Better Serve</p>
-        </div>
-      </a>
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
-        <a href="#about" class="hover:text-sky-600">About</a>
-        <a href="#services" class="hover:text-sky-600">Services</a>
-        <a href="#contact" class="hover:text-sky-600">Contact</a>
-        <a href="#apply" class="ml-2 inline-block bg-sky-600 text-white px-4 py-2 rounded-full text-sm shadow hover:bg-sky-700">Apply</a>
-      </nav>
-      <button id="menuBtn" class="md:hidden p-2 rounded bg-white/80 shadow">☰</button>
-    </div>
+<body class="bg-gradient-to-br from-teal-600 to-blue-800 text-white min-h-screen">
+  <!-- Header -->
+  <header class="flex justify-between items-center p-5 bg-white/10 backdrop-blur-md shadow-lg">
+    <h1 class="text-2xl font-bold tracking-wide">MK Consultancy</h1>
+    <nav class="space-x-4 text-sm md:text-base">
+      <a href="#about" class="hover:text-yellow-300">About</a>
+      <a href="#services" class="hover:text-yellow-300">Services</a>
+      <a href="#jobs" class="hover:text-yellow-300">Jobs</a>
+      <a href="#contact" class="hover:text-yellow-300">Contact</a>
+    </nav>
   </header>
 
-  <!-- MOBILE NAV (hidden by default) -->
-  <div id="mobileNav" class="fixed inset-0 z-30 hidden bg-black/40">
-    <div class="absolute right-4 top-4 bg-white rounded-lg p-4 w-64 shadow-lg">
-      <button id="closeMobile" class="text-sm mb-3">✕ Close</button>
-      <nav class="flex flex-col gap-2">
-        <a href="#about" class="py-2">About</a>
-        <a href="#services" class="py-2">Services</a>
-        <a href="#contact" class="py-2">Contact</a>
-        <a href="#apply" class="py-2 text-white bg-sky-600 text-center rounded">Apply Now</a>
-      </nav>
+  <!-- Hero Section -->
+  <section class="text-center py-16 px-4">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">Build Your Career With MK Consultancy</h2>
+    <p class="max-w-2xl mx-auto text-lg text-gray-100">Professional recruitment, resume building & career guidance — all in one place.</p>
+    <div class="mt-8 space-x-3">
+      <button onclick="openResumePopup()" class="bg-yellow-400 text-black px-6 py-3 rounded-xl font-semibold hover:bg-yellow-300 transition">Make Your Resume</button>
+      <button onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" class="bg-white/20 px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition">Search Jobs</button>
+      <button onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" class="bg-white/20 px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition">Ongoing Jobs</button>
+    </div>
+  </section>
+
+  <!-- Resume Popup -->
+  <div id="resumePopup" class="fixed inset-0 hidden bg-black/70 flex justify-center items-center z-50">
+    <div class="bg-white text-black rounded-2xl p-6 w-11/12 md:w-1/2 relative">
+      <button onclick="closeResumePopup()" class="absolute top-3 right-3 text-gray-500 hover:text-red-600">✕</button>
+      <h3 class="text-2xl font-bold mb-4">Resume Maker</h3>
+      <form id="resumeForm" class="space-y-3" onsubmit="handleResumeSubmit(event)">
+        <input type="text" name="name" placeholder="Full Name" class="w-full border p-2 rounded" required />
+        <input type="email" name="email" placeholder="Email" class="w-full border p-2 rounded" required />
+        <input type="text" name="phone" placeholder="Mobile Number" class="w-full border p-2 rounded" required />
+        <input type="file" name="existingResume" class="w-full border p-2 rounded bg-gray-50" />
+        <textarea name="summary" placeholder="Your Qualifications / Skills / Experience (brief)" class="w-full border p-2 rounded h-24"></textarea>
+        <div class="flex gap-2">
+          <button type="submit" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition">Submit & Create Resume</button>
+          <button type="button" onclick="closeResumePopup()" class="bg-gray-200 text-black px-4 py-2 rounded-lg">Cancel</button>
+        </div>
+        <p class="text-sm text-gray-600 mt-2">Note: By submitting, our team will prepare a professional resume and share it on your email. (Demo client-side behaviour)</p>
+      </form>
     </div>
   </div>
 
-  <!-- HERO -->
-  <main id="home">
-    <section class="pt-28 pb-14 bg-gradient-to-br from-teal-400 via-sky-600 to-indigo-700 text-white">
-      <div class="max-w-6xl mx-auto px-5 grid gap-8 md:grid-cols-2 items-center hero-grid">
+  <!-- About Section -->
+  <section id="about" class="py-16 bg-white/10 px-6 text-center">
+    <img src="/mnt/data/WhatsApp Image 2025-10-01 at 4.26.00 PM.jpeg" alt="CEO" class="mx-auto rounded-full w-40 h-40 object-cover border-4 border-yellow-400 shadow-xl" />
+    <h3 class="text-3xl font-bold mt-4">Manish Kumar</h3>
+    <p class="text-yellow-300 font-semibold">CEO, MK Consultancy</p>
+    <p class="mt-2 text-gray-200">Email: <a href="mailto:kumarmanish3065@gmail.com" class="underline text-yellow-300">kumarmanish3065@gmail.com</a></p>
+    <p class="mt-2 text-gray-100">Working Profession: <strong>7+ years</strong> as a Computer Trainer & Placement Officer</p>
+  </section>
 
-        <div class="px-2">
-          <h2 class="text-3xl md:text-5xl font-extrabold leading-tight mb-3 drop-shadow">MK Consultancy</h2>
-          <p class="text-sky-50/90 mb-4">Connecting the right people to the right opportunities — professional job placement, resume creation and career guidance in Singhana.</p>
-          <ul class="text-sm md:text-base space-y-2 mb-6">
-            <li>✔ Trusted local consultants & partnered employers</li>
-            <li>✔ Free basic resume review with every application</li>
-            <li>✔ Quick shortlisting for interviews</li>
-          </ul>
-
-          <div class="flex flex-col sm:flex-row gap-3">
-            <a href="#contact" class="inline-block bg-white text-sky-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-white/90">Get in Touch</a>
-            <button onclick="openApply()" class="inline-block bg-sky-900/95 text-white font-semibold px-6 py-3 rounded-full shadow hover:opacity-95">Apply for Job</button>
-          </div>
-        </div>
-
-        <div class="glass rounded-xl p-6 fade-up" id="heroCard">
-          <h3 class="text-sky-900 font-bold text-lg mb-2">Fast Track Application</h3>
-          <p class="text-sm text-gray-700 mb-4">Fill a quick form and our HR team will review your profile within 48 hours.</p>
-          <form id="quickApply" class="space-y-3" onsubmit="handleQuickApply(event)">
-            <input name="name" required class="w-full border px-3 py-2 rounded" placeholder="Full name">
-            <input name="phone" required class="w-full border px-3 py-2 rounded" placeholder="Phone / Email">
-            <input name="position" class="w-full border px-3 py-2 rounded" placeholder="Position interested in">
-            <div class="flex gap-2">
-              <button type="submit" class="flex-1 bg-sky-600 text-white py-2 rounded font-semibold">Submit</button>
-              <button type="button" onclick="openApply()" class="flex-1 bg-white text-sky-700 border border-sky-200 py-2 rounded">Full Form</button>
-            </div>
-          </form>
-        </div>
-
+  <!-- Services Section -->
+  <section id="services" class="py-16 px-6 text-center">
+    <h2 class="text-4xl font-bold mb-8">Our Services</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white/10 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+        <h3 class="font-bold text-xl mb-3">Job Placement</h3>
+        <p>Connecting skilled candidates with the best companies for suitable positions.</p>
       </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="py-14 bg-white">
-      <div class="max-w-5xl mx-auto px-5">
-        <div class="md:flex md:items-center md:gap-10">
-          <div class="md:flex-1">
-            <h3 class="text-2xl font-bold text-sky-800 mb-2">About Us</h3>
-            <p class="text-gray-600 mb-3">MK Consultancy is a trusted job placement agency in Singhana focused on helping both job seekers and employers. We combine local knowledge with dedicated screening to place the right candidate at the right role.</p>
-            <p class="text-gray-600 mb-4">Our mission is to empower individuals and accelerate company growth by providing result-driven recruitment and career services.</p>
-            <div class="mt-3 p-4 bg-sky-50 rounded-lg">
-              <p class="text-sm text-gray-700"><strong>CEO / HR Manager:</strong> Manish Kumar</p>
-              <p class="text-sm text-gray-600 mt-1">Contact: +91 9664225417</p>
-            </div>
-          </div>
-          <div class="md:w-1/3 mt-6 md:mt-0">
-            <!-- Removed office photo as requested; replaced with feature list -->
-            <div class="bg-gradient-to-br from-white to-sky-50 rounded-lg p-4 shadow">
-              <h4 class="font-semibold text-sky-700 mb-2">Why choose us</h4>
-              <ul class="text-sm text-gray-700 space-y-2">
-                <li>• Verified employers</li>
-                <li>• Fast shortlisting & interview scheduling</li>
-                <li>• Free resume review & resume creation service</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+      <div class="bg-white/10 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+        <h3 class="font-bold text-xl mb-3">Interview Preparation</h3>
+        <p>Mock sessions and personalized training for your next interview success.</p>
       </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services" class="py-14 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-5 text-center">
-        <h3 class="text-2xl font-bold mb-8 text-sky-800">Our Services</h3>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
-            <h4 class="font-semibold text-lg mb-2 text-sky-700">Job Placement</h4>
-            <p class="text-gray-600 text-sm">Shortlisting, interview setup and employer liaison across sectors.</p>
-          </div>
-
-          <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
-            <h4 class="font-semibold text-lg mb-2 text-sky-700">Resume Making & Online Creation</h4>
-            <p class="text-gray-600 text-sm">Custom resumes built for ATS-friendly formatting. Online resume editor & templates to create professional resumes quickly.</p>
-            <a class="inline-block mt-3 text-sm font-semibold text-sky-600 hover:underline" href="#contact">Request Resume Help</a>
-          </div>
-
-          <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
-            <h4 class="font-semibold text-lg mb-2 text-sky-700">Career Counselling</h4>
-            <p class="text-gray-600 text-sm">Personalised guidance to choose the right career path and upskilling suggestions.</p>
-          </div>
-
-          <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
-            <h4 class="font-semibold text-lg mb-2 text-sky-700">Resume Review & Interview Prep</h4>
-            <p class="text-gray-600 text-sm">Detailed resume feedback and mock interview sessions to improve outcomes.</p>
-          </div>
-
-          <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
-            <h4 class="font-semibold text-lg mb-2 text-sky-700">Employer Services</h4>
-            <p class="text-gray-600 text-sm">Candidate sourcing, screening & payroll support for small businesses.</p>
-          </div>
-
-          <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
-            <h4 class="font-semibold text-lg mb-2 text-sky-700">Training & Upskilling</h4>
-            <p class="text-gray-600 text-sm">Short courses, interview skill workshops & CV clinics.</p>
-          </div>
-
-        </div>
+      <div class="bg-white/10 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+        <h3 class="font-bold text-xl mb-3">Resume Making</h3>
+        <p>Get a modern, professional resume crafted by experts — ready to impress employers.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="py-14 bg-white">
-      <div class="max-w-5xl mx-auto px-5">
-        <h3 class="text-2xl font-bold text-center mb-6">Contact Us</h3>
-        <div class="grid md:grid-cols-2 gap-8">
-
-          <form id="contactForm" class="space-y-4 bg-gray-50 p-6 rounded-lg shadow" onsubmit="handleContact(event)">
-            <div>
-              <label class="block text-sm font-medium mb-1">Full Name</label>
-              <input type="text" name="name" required class="w-full border px-3 py-2 rounded" placeholder="Your name">
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Email / Phone</label>
-              <input type="text" name="contact" required class="w-full border px-3 py-2 rounded" placeholder="example@mail.com / +91">
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Message</label>
-              <textarea name="message" rows="4" class="w-full border px-3 py-2 rounded" placeholder="Type your message here..."></textarea>
-            </div>
-            <div class="flex gap-2">
-              <button type="submit" class="bg-sky-600 text-white px-5 py-2 rounded font-semibold hover:bg-sky-700">Send Message</button>
-              <button type="button" onclick="openApply()" class="bg-white border border-sky-200 px-4 py-2 rounded">Apply Now</button>
-            </div>
-          </form>
-
-          <div class="bg-sky-50 p-6 rounded-lg shadow text-sm">
-            <h4 class="font-semibold text-lg text-sky-700 mb-3">MK Consultancy</h4>
-            <p class="text-gray-700 mb-2">2nd Floor, Above Raj. Gramin Bank, Chirawa Road,<br> Singhana, Rajasthan — 333516</p>
-            <p class="text-gray-700 mb-2">📞 +91 9664225417, 9799753065</p>
-            <p class="text-gray-700 mb-4">✉️ mkconsultancysinghana@gmail.com</p>
-            <p class="text-gray-600">We help you prepare a professional resume and connect with employers — reach out anytime!</p>
-          </div>
-
-        </div>
+  <!-- Working With Partners -->
+  <section class="py-10 px-6 text-center bg-white/5">
+    <h2 class="text-2xl font-bold mb-4">Working with the following partners</h2>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+      <div class="bg-white/10 p-4 rounded-lg w-64">
+        <h4 class="font-semibold">Lakshyaraj Skill Edutech Foundation</h4>
+        <p class="text-sm mt-1">Singhana</p>
       </div>
-    </section>
+      <div class="bg-white/10 p-4 rounded-lg w-64">
+        <h4 class="font-semibold">IT Excellenet</h4>
+        <p class="text-sm mt-1">Local Training Partner</p>
+      </div>
+      <div class="bg-white/10 p-4 rounded-lg w-64">
+        <h4 class="font-semibold">MK Consultancy</h4>
+        <p class="text-sm mt-1">Placement & Career Services</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- APPLY JOB POPUP (full form) -->
-    <div id="applyForm" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
-      <div class="bg-white w-full max-w-lg mx-4 rounded-lg shadow-lg p-6 relative">
-        <button onclick="toggleForm(false)" class="absolute top-3 right-3 text-gray-600 hover:text-gray-800">✕</button>
-        <h3 class="text-xl font-bold mb-4 text-sky-700 text-center">Job Application Form</h3>
-        <form id="jobForm" enctype="multipart/form-data" class="space-y-3" onsubmit="handleJobForm(event)">
-          <div>
-            <label class="block text-sm mb-1">Full Name</label>
-            <input type="text" name="name" class="w-full border px-3 py-2 rounded" required>
-          </div>
-          <div>
-            <label class="block text-sm mb-1">Email</label>
-            <input type="email" name="email" class="w-full border px-3 py-2 rounded" required>
-          </div>
-          <div>
-            <label class="block text-sm mb-1">Phone</label>
-            <input type="text" name="phone" class="w-full border px-3 py-2 rounded" required>
-          </div>
-          <div>
-            <label class="block text-sm mb-1">Position Applied For</label>
-            <input type="text" name="position" class="w-full border px-3 py-2 rounded" required>
-          </div>
-          <div>
-            <label class="block text-sm mb-1">Upload Resume (optional)</label>
-            <input type="file" name="resume" class="w-full border px-3 py-2 rounded">
-          </div>
-          <button type="submit" class="w-full bg-sky-600 text-white py-2 rounded font-semibold hover:bg-sky-700">Submit Application</button>
-        </form>
+  <!-- Hiring Posters / Business Pictures -->
+  <section class="py-12 px-6 text-center bg-white/5">
+    <h2 class="text-3xl font-bold mb-6">We’re Hiring!</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <img src="https://i.ibb.co/5Tq0d5V/hiring1.jpg" class="rounded-xl shadow-lg" alt="Hiring Poster 1">
+      <img src="https://i.ibb.co/6RRhZ8C/hiring2.jpg" class="rounded-xl shadow-lg" alt="Hiring Poster 2">
+      <img src="https://i.ibb.co/qmpH2Mx/hiring3.jpg" class="rounded-xl shadow-lg" alt="Hiring Poster 3">
+    </div>
+  </section>
+
+  <!-- Jobs Section (Search + Ongoing list) -->
+  <section id="jobs" class="py-16 px-6 text-center">
+    <h2 class="text-4xl font-bold mb-6">Ongoing Job Openings</h2>
+    <p class="text-gray-200 mb-4">Check out the latest job opportunities and apply easily.</p>
+    <div class="max-w-2xl mx-auto mb-6">
+      <div class="flex gap-2">
+        <input id="jobSearchInput" type="text" placeholder="Search jobs by title, location or company" class="flex-1 px-4 py-3 rounded-l-lg text-black" />
+        <button onclick="searchJobs()" class="bg-yellow-400 text-black px-5 py-3 rounded-r-lg font-semibold">Search Jobs</button>
       </div>
     </div>
 
-    <!-- THANK YOU POPUP -->
-    <div id="thankPopup" class="popup hidden">
-      <div class="popup-content">
-        <h3 class="text-green-600 text-3xl mb-2">✅</h3>
-        <p class="font-semibold text-gray-800 mb-2">Thank you! We received your submission.</p>
-        <p class="text-gray-600 text-sm mb-4">Our team will contact you shortly.</p>
-        <button onclick="closePopup()" class="bg-sky-600 text-white px-5 py-2 rounded hover:bg-sky-700">Close</button>
+    <div id="jobsList" class="max-w-4xl mx-auto grid gap-4">
+      <!-- Placeholder jobs; you can replace these with dynamic content -->
+      <div class="bg-white/10 p-4 rounded-lg text-left flex justify-between items-center">
+        <div>
+          <h3 class="font-semibold">Office Assistant — Retail Store</h3>
+          <p class="text-sm text-gray-200">Location: Singhana • Experience: 0-2 years</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="bg-teal-600 px-4 py-2 rounded">Apply</button>
+          <button class="bg-white/20 px-4 py-2 rounded">Details</button>
+        </div>
       </div>
+
+      <div class="bg-white/10 p-4 rounded-lg text-left flex justify-between items-center">
+        <div>
+          <h3 class="font-semibold">Computer Trainer</h3>
+          <p class="text-sm text-gray-200">Location: Singhana • Experience: 2+ years</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="bg-teal-600 px-4 py-2 rounded">Apply</button>
+          <button class="bg-white/20 px-4 py-2 rounded">Details</button>
+        </div>
+      </div>
+
+      <div class="bg-white/10 p-4 rounded-lg text-left flex justify-between items-center">
+        <div>
+          <h3 class="font-semibold">Placement Officer (Part-time)</h3>
+          <p class="text-sm text-gray-200">Location: Remote • Experience: 1+ years</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="bg-teal-600 px-4 py-2 rounded">Apply</button>
+          <button class="bg-white/20 px-4 py-2 rounded">Details</button>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-  </main>
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 px-6 bg-white/10 text-center">
+    <h2 class="text-3xl font-bold mb-6">Contact Us</h2>
+    <p>📍 MK Consultancy — Singhana, Rajasthan</p>
+    <p>📞 +91 9664225417</p>
+    <p>✉️ <a href="mailto:kumarmanish3065@gmail.com" class="underline text-yellow-300">kumarmanish3065@gmail.com</a></p>
+  </section>
 
-  <!-- FLOATING WHATSAPP (uses provided number) -->
-  <a class="whatsapp-btn" href="https://wa.me/919664225417" target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.76 11.76 0 0 0 12 0C5.37 0 .01 5.36.01 12c0 2.12.56 4.18 1.63 5.96L0 24l6.3-1.62A11.86 11.86 0 0 0 12 24c6.63 0 12-5.36 12-12 0-3.2-1.25-6.2-3.48-8.52z" fill="white"/><path d="M17.1 14.12c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.19.3-.74.98-.91 1.18-.17.2-.34.22-.63.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.34.45-.51.15-.17.2-.28.3-.46.1-.17.05-.33-.03-.48-.08-.15-.68-1.64-.93-2.26-.24-.59-.5-.51-.68-.52-.18-.01-.38-.01-.58-.01-.2 0-.52.07-.79.33-.27.26-1.03 1.01-1.03 2.46 0 1.45 1.06 2.85 1.21 3.05.15.2 2.09 3.2 5.07 4.49.71.31 1.26.5 1.69.64.71.24 1.36.21 1.87.13.57-.09 1.78-.73 2.03-1.43.24-.7.24-1.3.17-1.43-.07-.12-.28-.19-.58-.34z" fill="#06B652"/></svg>
-    <span class="hidden md:inline">Chat on WhatsApp</span>
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/919664225417" target="_blank" class="fixed bottom-5 right-5 bg-green-500 p-4 rounded-full shadow-lg hover:bg-green-600">
+    💬
   </a>
 
-  <!-- FOOTER -->
-  <footer class="bg-sky-800 text-white py-6 text-center mt-10">
-    <p class="text-sm">© <span id="year"></span> MK Consultancy — All Rights Reserved.</p>
-  </footer>
-
+  <!-- Scripts -->
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    function openResumePopup() {
+      document.getElementById('resumePopup').classList.remove('hidden');
+    }
+    function closeResumePopup() {
+      document.getElementById('resumePopup').classList.add('hidden');
+    }
 
-    // mobile nav
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileNav = document.getElementById('mobileNav');
-    const closeMobile = document.getElementById('closeMobile');
-    menuBtn?.addEventListener('click', ()=> mobileNav.classList.remove('hidden'));
-    closeMobile?.addEventListener('click', ()=> mobileNav.classList.add('hidden'));
-
-    // small animation on load
-    window.addEventListener('load', ()=> {
-      setTimeout(()=> document.getElementById('heroCard')?.classList.add('show'), 120);
-    });
-
-    // form handlers (client-side demo behavior)
-    function handleContact(e){
+    function handleResumeSubmit(e){
       e.preventDefault();
-      openThank();
-      e.target.reset();
-    }
-    function handleJobForm(e){
-      e.preventDefault();
-      openThank();
-      e.target.reset();
-      toggleForm(false);
-    }
-    function handleQuickApply(e){
-      e.preventDefault();
-      openApply();
+      // Demo behaviour: collect values and show success
+      const form = document.getElementById('resumeForm');
+      const name = form.name.value || '';
+      const email = form.email.value || '';
+      // You can replace this part with Formspree / API call to send resume to server or email
+      closeResumePopup();
+      alert('Thanks ' + (name ? name : '') + '! Your resume request has been submitted. We will email you at ' + (email ? email : '') + '.');
+      form.reset();
     }
 
-    // apply modal
-    function toggleForm(show){
-      const form = document.getElementById('applyForm');
-      if(!form) return;
-      if(show){ form.classList.remove('hidden'); form.classList.add('flex'); }
-      else { form.classList.add('hidden'); form.classList.remove('flex'); }
+    function searchJobs(){
+      const q = document.getElementById('jobSearchInput').value.trim().toLowerCase();
+      const jobs = Array.from(document.querySelectorAll('#jobsList > div'));
+      if(!q){
+        jobs.forEach(j=> j.style.display='flex');
+        return;
+      }
+      jobs.forEach(j=>{
+        const text = j.innerText.toLowerCase();
+        j.style.display = text.includes(q) ? 'flex' : 'none';
+      });
     }
-    function openApply(){ toggleForm(true); document.getElementById('applyForm')?.scrollIntoView({behavior:'smooth'});} 
-
-    // thank you popup
-    function openThank(){ document.getElementById('thankPopup')?.classList.remove('hidden'); }
-    function closePopup(){ document.getElementById('thankPopup')?.classList.add('hidden'); }
-
-    // close popup when clicking outside content
-    document.addEventListener('click', (ev)=>{
-      const popup = document.getElementById('thankPopup');
-      if(!popup || popup.classList.contains('hidden')) return;
-      const inside = ev.target.closest('.popup-content');
-      if(!inside) closePopup();
-    });
-
   </script>
 </body>
 </html>
