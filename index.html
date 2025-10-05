@@ -8,167 +8,169 @@
   <meta name="description" content="MK Consultancy — Professional job placement, resume building, and interview preparation services in Singhana, Rajasthan.">
   <meta name="keywords" content="MK Consultancy, Job Placement, Resume Service, Interview Preparation, Singhana, Rajasthan">
   <link rel="icon" href="favicon.ico">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
 </head>
+
 <body class="bg-gradient-to-br from-purple-100 via-purple-50 to-white text-gray-900 min-h-screen">
 
-  <!-- Header -->
-  <header class="flex justify-between items-center p-5 bg-white shadow-md sticky top-0 z-40">
-    <h1 class="text-2xl font-bold tracking-wide text-purple-700">MK Consultancy</h1>
-    <nav class="space-x-4 text-sm md:text-base">
-      <a href="#about" class="hover:text-purple-600">About</a>
-      <a href="#services" class="hover:text-purple-600">Services</a>
-      <a href="#jobs" class="hover:text-purple-600">Jobs</a>
-      <a href="#contact" class="hover:text-purple-600">Contact</a>
-    </nav>
-  </header>
+<!-- Header -->
+<header class="flex justify-between items-center p-6 bg-white shadow-md sticky top-0 z-50">
+  <h1 class="text-3xl font-extrabold tracking-wide text-purple-700">MK Consultancy</h1>
+  <nav class="space-x-4 text-sm md:text-base">
+    <a href="#about" class="hover:text-purple-600">About</a>
+    <a href="#services" class="hover:text-purple-600">Services</a>
+    <a href="#jobs" class="hover:text-purple-600">Jobs</a>
+    <a href="#contact" class="hover:text-purple-600">Contact</a>
+  </nav>
+</header>
 
-  <!-- Hero Section -->
-  <section class="text-center py-16 px-4 bg-gradient-to-r from-purple-200 via-white to-purple-100">
-    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-purple-800">Build Your Career With MK Consultancy</h2>
-    <p class="max-w-2xl mx-auto text-lg text-gray-700">
-      Professional recruitment, resume building & career guidance — all in one place.
-    </p>
-    <div class="mt-8 space-x-3">
-      <button onclick="openResumePopup()" class="bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition">Make Your Resume</button>
-      <button onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" class="bg-purple-100 text-purple-700 px-6 py-3 rounded-xl font-semibold border border-purple-300 hover:bg-purple-200 transition">Search Jobs</button>
+<!-- Hero Section -->
+<section class="text-center py-20 px-4 bg-gradient-to-r from-purple-200 via-white to-purple-100">
+  <h2 class="text-5xl font-extrabold mb-4 text-purple-800">Build Your Career With MK Consultancy</h2>
+  <p class="max-w-2xl mx-auto text-lg text-gray-700">Professional recruitment, resume building & career guidance — all in one place.</p>
+  <div class="mt-8 space-x-3">
+    <button onclick="openResumePopup()" class="bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition">Make Your Resume</button>
+    <button onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" class="bg-purple-100 text-purple-700 px-6 py-3 rounded-xl font-semibold border border-purple-300 hover:bg-purple-200 transition">Search Jobs</button>
+  </div>
+</section>
+
+<!-- Resume Popup -->
+<div id="resumePopup" class="fixed inset-0 hidden bg-black/50 flex justify-center items-center z-50">
+  <div class="bg-white text-gray-800 rounded-2xl p-6 w-11/12 md:w-1/2 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+    <button onclick="closeResumePopup()" class="absolute top-3 right-3 text-gray-500 hover:text-red-600">✕</button>
+    <h3 class="text-2xl font-bold mb-4 text-purple-700">Resume Maker</h3>
+    <form id="resumeForm" class="space-y-3" onsubmit="handleResumeSubmit(event)">
+      <input type="text" name="fullName" placeholder="Full Name" class="w-full border p-2 rounded" required />
+      <input type="text" name="address" placeholder="Address" class="w-full border p-2 rounded" required />
+      <input type="email" name="email" placeholder="Email" class="w-full border p-2 rounded" required />
+      <input type="text" name="mobile" placeholder="Mobile Number" class="w-full border p-2 rounded" required />
+      <input type="date" name="dob" placeholder="Date of Birth" class="w-full border p-2 rounded" required />
+      <input type="text" name="birthPlace" placeholder="Place of Birth" class="w-full border p-2 rounded" />
+      <input type="text" name="civilStatus" placeholder="Civil Status" class="w-full border p-2 rounded" />
+      <input type="text" name="citizenship" placeholder="Citizenship" class="w-full border p-2 rounded" />
+      <input type="text" name="religion" placeholder="Religion" class="w-full border p-2 rounded" />
+      <input type="text" name="height" placeholder="Height" class="w-full border p-2 rounded" />
+      <input type="text" name="weight" placeholder="Weight" class="w-full border p-2 rounded" />
+      <input type="text" name="father" placeholder="Father’s Name" class="w-full border p-2 rounded" />
+      <input type="text" name="mother" placeholder="Mother’s Name" class="w-full border p-2 rounded" />
+      <input type="text" name="sss" placeholder="SSS Number" class="w-full border p-2 rounded" />
+      <input type="text" name="tin" placeholder="TIN Number" class="w-full border p-2 rounded" />
+      <textarea name="education" placeholder="Education Background (Primary, Secondary, Tertiary)" class="w-full border p-2 rounded h-24"></textarea>
+      <textarea name="workHistory" placeholder="Employment History (Company, Role, Dates)" class="w-full border p-2 rounded h-24"></textarea>
+      <div class="flex gap-2">
+        <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">Submit & Create Resume</button>
+        <button type="button" onclick="closeResumePopup()" class="bg-gray-200 text-black px-4 py-2 rounded-lg">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Services Section -->
+<section id="services" class="py-16 px-6 text-center bg-white">
+  <h2 class="text-4xl font-bold mb-8 text-purple-700">Our Services</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+      <h3 class="font-bold text-xl mb-3 text-purple-700">Job Placement</h3>
+      <p>Connecting skilled candidates with top companies for suitable positions.</p>
     </div>
-  </section>
-
-  <!-- Resume Popup -->
-  <div id="resumePopup" class="fixed inset-0 hidden bg-black/50 flex justify-center items-center z-50">
-    <div class="bg-white text-gray-800 rounded-2xl p-6 w-11/12 md:w-1/2 relative shadow-2xl">
-      <button onclick="closeResumePopup()" class="absolute top-3 right-3 text-gray-500 hover:text-red-600">✕</button>
-      <h3 class="text-2xl font-bold mb-4 text-purple-700">Resume Maker</h3>
-      <form id="resumeForm" class="space-y-3" onsubmit="handleResumeSubmit(event)">
-        <input type="text" name="name" placeholder="Full Name" class="w-full border p-2 rounded" required />
-        <input type="email" name="email" placeholder="Email" class="w-full border p-2 rounded" required />
-        <input type="text" name="phone" placeholder="Mobile Number" class="w-full border p-2 rounded" required />
-        <input type="file" name="existingResume" class="w-full border p-2 rounded bg-gray-50" />
-        <textarea name="summary" placeholder="Your Qualifications / Skills / Experience (brief)" class="w-full border p-2 rounded h-24"></textarea>
-        <div class="flex gap-2">
-          <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">Submit & Create Resume</button>
-          <button type="button" onclick="closeResumePopup()" class="bg-gray-200 text-black px-4 py-2 rounded-lg">Cancel</button>
-        </div>
-      </form>
+    <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+      <h3 class="font-bold text-xl mb-3 text-purple-700">Interview Preparation</h3>
+      <p>Mock sessions and personalized training to help you succeed in interviews.</p>
+    </div>
+    <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+      <h3 class="font-bold text-xl mb-3 text-purple-700">Resume Making</h3>
+      <p>Get a modern, professional resume crafted by experts — ready to impress employers.</p>
     </div>
   </div>
+</section>
 
-  <!-- Services Section -->
-  <section id="services" class="py-16 px-6 text-center bg-white">
-    <h2 class="text-4xl font-bold mb-8 text-purple-700">Our Services</h2>
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
-        <h3 class="font-bold text-xl mb-3 text-purple-700">Job Placement</h3>
-        <p>Connecting skilled candidates with top companies for suitable positions.</p>
-      </div>
-      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
-        <h3 class="font-bold text-xl mb-3 text-purple-700">Interview Preparation</h3>
-        <p>Mock sessions and personalized training to help you succeed in interviews.</p>
-      </div>
-      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
-        <h3 class="font-bold text-xl mb-3 text-purple-700">Resume Making</h3>
-        <p>Get a modern, professional resume crafted by experts — ready to impress employers.</p>
-      </div>
+<!-- Partners Section -->
+<section class="py-10 px-6 text-center bg-purple-50">
+  <h2 class="text-2xl font-bold mb-4 text-purple-700">Working with the following partners</h2>
+  <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+    <div class="bg-white p-4 rounded-lg w-64 shadow">
+      <h4 class="font-semibold text-purple-700">Lakshyaraj Skill Edutech Foundation</h4>
+      <p class="text-sm mt-1 text-gray-600">Singhana</p>
     </div>
-  </section>
-
-  <!-- Working With Partners -->
-  <section class="py-10 px-6 text-center bg-purple-50">
-    <h2 class="text-2xl font-bold mb-4 text-purple-700">Working with the following partners</h2>
-    <div class="flex flex-col md:flex-row items-center justify-center gap-6">
-      <div class="bg-white p-4 rounded-lg w-64 shadow">
-        <h4 class="font-semibold text-purple-700">Lakshyaraj Skill Edutech Foundation</h4>
-        <p class="text-sm mt-1 text-gray-600">Singhana</p>
-      </div>
-      <div class="bg-white p-4 rounded-lg w-64 shadow">
-        <h4 class="font-semibold text-purple-700">IT Excellenet</h4>
-        <p class="text-sm mt-1 text-gray-600">Singhana</p>
-      </div>
+    <div class="bg-white p-4 rounded-lg w-64 shadow">
+      <h4 class="font-semibold text-purple-700">IT Excellenet</h4>
+      <p class="text-sm mt-1 text-gray-600">Singhana</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Jobs Section -->
-  <section id="jobs" class="py-16 px-6 text-center bg-white">
-    <h2 class="text-4xl font-bold mb-6 text-purple-700">Ongoing Job Openings</h2>
-    <p class="text-gray-600 mb-4">Find and apply for available job opportunities below.</p>
-
-    <div class="max-w-2xl mx-auto mb-6">
-      <div class="flex gap-2">
-        <input id="jobSearchInput" type="text" placeholder="Search jobs by title, location, or company" class="flex-1 px-4 py-3 rounded-l-lg border border-purple-300" />
-        <button onclick="searchJobs()" class="bg-purple-600 text-white px-5 py-3 rounded-r-lg font-semibold hover:bg-purple-700">Search Jobs</button>
-      </div>
+<!-- Jobs Section -->
+<section id="jobs" class="py-16 px-6 text-center bg-white">
+  <h2 class="text-4xl font-bold mb-6 text-purple-700">Ongoing Job Openings</h2>
+  <p class="text-gray-600 mb-4">Find and apply for available job opportunities below.</p>
+  <div class="max-w-2xl mx-auto mb-6">
+    <div class="flex gap-2">
+      <input id="jobSearchInput" type="text" placeholder="Search jobs by title, location, or company" class="flex-1 px-4 py-3 rounded-l-lg border border-purple-300" />
+      <button onclick="searchJobs()" class="bg-purple-600 text-white px-5 py-3 rounded-r-lg font-semibold hover:bg-purple-700">Search Jobs</button>
     </div>
+  </div>
+  <div id="jobsList" class="max-w-4xl mx-auto grid gap-4 text-gray-700">
+    <p class="text-lg italic text-gray-400">No ongoing jobs currently. Please check back soon.</p>
+  </div>
+</section>
 
-    <div id="jobsList" class="max-w-4xl mx-auto grid gap-4 text-gray-700">
-      <p class="text-lg italic text-gray-400">No ongoing jobs currently. Please check back soon.</p>
-    </div>
-  </section>
+<!-- Contact Section -->
+<section id="contact" class="py-16 px-6 bg-purple-50 text-center">
+  <h2 class="text-3xl font-bold mb-6 text-purple-700">Contact Us</h2>
+  <p>📍 MK Consultancy — Singhana, Rajasthan</p>
+  <p>📞 +91 9664225417</p>
+  <p>✉️ <a href="mailto:kumarmanish3065@gmail.com" class="underline text-purple-700">kumarmanish3065@gmail.com</a></p>
+</section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="py-16 px-6 bg-purple-50 text-center">
-    <h2 class="text-3xl font-bold mb-6 text-purple-700">Contact Us</h2>
-    <p>📍 MK Consultancy — Singhana, Rajasthan</p>
-    <p>📞 +91 9664225417</p>
-    <p>✉️ <a href="mailto:kumarmanish3065@gmail.com" class="underline text-purple-700">kumarmanish3065@gmail.com</a></p>
-  </section>
+<!-- CEO/Manager Section -->
+<section id="about" class="py-16 bg-white px-6 text-center">
+  <h3 class="text-3xl font-bold text-purple-800">Manish Kumar</h3>
+  <p class="text-purple-600 font-semibold">CEO / Manager</p>
+</section>
 
-  <!-- CEO Section -->
-  <section id="about" class="py-16 bg-white px-6 text-center">
-    <img src="mk.jpeg" alt="Manish Kumar - CEO, MK Consultancy" class="mx-auto rounded-full w-40 h-40 object-cover border-4 border-purple-400 shadow-xl" />
-    <h3 class="text-3xl font-bold mt-4 text-purple-800">Manish Kumar</h3>
-    <p class="text-purple-600 font-semibold">CEO, MK Consultancy</p>
+<!-- Footer -->
+<footer class="bg-purple-100 py-4 text-center text-sm text-gray-700">
+  © 2025 MK Consultancy — All rights reserved.
+</footer>
 
-    <div class="max-w-2xl mx-auto mt-6 bg-purple-50 p-6 rounded-2xl shadow-lg border border-purple-100">
-      <h4 class="text-2xl font-bold mb-3 text-purple-700">Message from CEO</h4>
-      <p class="text-gray-700 italic leading-relaxed">
-        “Success comes to those who prepare for it. At MK Consultancy, our vision is to empower individuals
-        with the right skills, confidence, and opportunities to build meaningful careers. 
-        Together, we strive to transform potential into achievement.”
-      </p>
-    </div>
-  </section>
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/919664225417" target="_blank" aria-label="Chat on WhatsApp" class="fixed bottom-5 right-5 bg-green-500 p-4 rounded-full shadow-lg hover:bg-green-600">💬</a>
 
-  <!-- Footer -->
-  <footer class="bg-purple-100 py-4 text-center text-sm text-gray-700">
-    © 2025 MK Consultancy — All rights reserved.
-  </footer>
-
-  <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/919664225417" target="_blank" aria-label="Chat on WhatsApp" class="fixed bottom-5 right-5 bg-green-500 p-4 rounded-full shadow-lg hover:bg-green-600">
-    💬
-  </a>
-
-  <!-- Scripts -->
-  <script>
-    function openResumePopup() {
-      document.getElementById('resumePopup').classList.remove('hidden');
+<!-- Scripts -->
+<script>
+  function openResumePopup() {
+    document.getElementById('resumePopup').classList.remove('hidden');
+  }
+  function closeResumePopup() {
+    document.getElementById('resumePopup').classList.add('hidden');
+  }
+  function handleResumeSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('resumeForm');
+    const name = form.fullName.value || '';
+    const email = form.email.value || '';
+    closeResumePopup();
+    alert('Thanks ' + name + '! Your resume request has been submitted. We will email you at ' + email + '.');
+    form.reset();
+  }
+  function searchJobs() {
+    const q = document.getElementById('jobSearchInput').value.trim().toLowerCase();
+    const jobs = Array.from(document.querySelectorAll('#jobsList > div'));
+    if (!q) {
+      jobs.forEach(j => j.style.display = 'flex');
+      return;
     }
-    function closeResumePopup() {
-      document.getElementById('resumePopup').classList.add('hidden');
-    }
+    jobs.forEach(j => {
+      const text = j.innerText.toLowerCase();
+      j.style.display = text.includes(q) ? 'flex' : 'none';
+    });
+  }
+</script>
 
-    function handleResumeSubmit(e){
-      e.preventDefault();
-      const form = document.getElementById('resumeForm');
-      const name = form.name.value || '';
-      const email = form.email.value || '';
-      closeResumePopup();
-      alert('Thanks ' + (name ? name : '') + '! Your resume request has been submitted. We will email you at ' + (email ? email : '') + '.');
-      form.reset();
-    }
-
-    function searchJobs(){
-      const q = document.getElementById('jobSearchInput').value.trim().toLowerCase();
-      const jobs = Array.from(document.querySelectorAll('#jobsList > div'));
-      if(!q){
-        jobs.forEach(j=> j.style.display='flex');
-        return;
-      }
-      jobs.forEach(j=>{
-        const text = j.innerText.toLowerCase();
-        j.style.display = text.includes(q) ? 'flex' : 'none';
-      });
-    }
-  </script>
 </body>
 </html>
