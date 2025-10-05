@@ -3,19 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MK Consultancy — Placement & Resume Services</title>
+  <title>MK Consultancy — Resume Builder</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="description" content="MK Consultancy — Professional job placement, resume building, and interview preparation services in Singhana, Rajasthan.">
-  <meta name="keywords" content="MK Consultancy, Job Placement, Resume Service, Interview Preparation, Singhana, Rajasthan">
-  <link rel="icon" href="favicon.ico">
-
-  <!-- Google Font -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
     .btn-primary { @apply bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-purple-800 transition; }
     .btn-secondary { @apply bg-white border border-purple-700 text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-100 transition; }
-    .btn-action { @apply bg-purple-600 text-white px-5 py-2 rounded hover:bg-purple-700 transition; }
   </style>
 </head>
 
@@ -27,18 +22,16 @@
   <nav class="space-x-4 text-sm md:text-base">
     <a href="#about" class="hover:text-purple-600 transition">About</a>
     <a href="#services" class="hover:text-purple-600 transition">Services</a>
-    <a href="#jobs" class="hover:text-purple-600 transition">Jobs</a>
     <a href="#contact" class="hover:text-purple-600 transition">Contact</a>
   </nav>
 </header>
 
-<!-- Hero Section -->
+<!-- Hero -->
 <section class="text-center py-24 px-4 bg-gradient-to-r from-purple-200 via-white to-purple-100">
-  <h2 class="text-5xl font-extrabold mb-4 text-purple-800">Build Your Career With MK Consultancy</h2>
-  <p class="max-w-2xl mx-auto text-lg text-gray-700">Professional recruitment, resume building & career guidance — all in one place.</p>
+  <h2 class="text-5xl font-extrabold mb-4 text-purple-800">Build Your Professional Resume</h2>
+  <p class="max-w-2xl mx-auto text-lg text-gray-700">Generate your ready-to-print PDF resume instantly with MK Consultancy.</p>
   <div class="mt-10 flex justify-center gap-4">
     <button onclick="openResumePopup()" class="btn-primary">Make Your Resume</button>
-    <button onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" class="btn-secondary">Search Jobs</button>
   </div>
 </section>
 
@@ -46,52 +39,40 @@
 <div id="resumePopup" class="fixed inset-0 hidden bg-black/50 flex justify-center items-center z-50">
   <div class="bg-white text-gray-800 rounded-2xl p-8 w-11/12 md:w-1/2 relative shadow-2xl max-h-[90vh] overflow-y-auto">
     <button onclick="closeResumePopup()" class="absolute top-4 right-4 text-gray-500 hover:text-red-600 text-xl font-bold">✕</button>
-    <h3 class="text-2xl font-bold mb-6 text-purple-700 text-center">Professional Resume Builder</h3>
-    <form id="resumeForm" class="space-y-4" onsubmit="handleResumeSubmit(event)">
+    <h3 class="text-2xl font-bold mb-6 text-purple-700 text-center">Create Resume</h3>
+    <form id="resumeForm" class="space-y-4" onsubmit="generatePDF(event)">
       <input type="text" name="fullName" placeholder="Full Name" class="w-full border p-3 rounded-lg" required />
       <input type="text" name="address" placeholder="Address" class="w-full border p-3 rounded-lg" required />
       <input type="email" name="email" placeholder="Email" class="w-full border p-3 rounded-lg" required />
       <input type="tel" name="mobile" placeholder="Mobile Number" class="w-full border p-3 rounded-lg" required />
-      <input type="date" name="dob" placeholder="Date of Birth" class="w-full border p-3 rounded-lg" required />
+      <label class="block text-sm font-semibold text-gray-600">Date of Birth <span class="text-xs text-gray-400">(e.g. 1998-07-15)</span></label>
+      <input type="date" name="dob" class="w-full border p-3 rounded-lg" required />
       <input type="text" name="birthPlace" placeholder="Place of Birth" class="w-full border p-3 rounded-lg" />
-      <input type="text" name="maritalStatus" placeholder="Marital Status" class="w-full border p-3 rounded-lg" />
+      
+      <label class="block text-sm font-semibold text-gray-600">Marital Status</label>
+      <select name="maritalStatus" class="w-full border p-3 rounded-lg">
+        <option value="Unmarried">Unmarried</option>
+        <option value="Married">Married</option>
+      </select>
+
       <textarea name="education" placeholder="Education Background (Primary, Secondary, Tertiary)" class="w-full border p-3 rounded-lg h-24"></textarea>
       <textarea name="workHistory" placeholder="Employment History (Company, Role, Dates)" class="w-full border p-3 rounded-lg h-24"></textarea>
+
       <div class="flex justify-between gap-3">
-        <button type="submit" class="btn-primary flex-1">Submit & Create Resume</button>
+        <button type="submit" class="btn-primary flex-1">Generate PDF</button>
         <button type="button" onclick="closeResumePopup()" class="btn-secondary flex-1">Cancel</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Services Section -->
-<section id="services" class="py-16 px-6 text-center bg-white">
-  <h2 class="text-4xl font-bold mb-12 text-purple-700">Our Services</h2>
-  <div class="grid md:grid-cols-3 gap-8">
-    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
-      <h3 class="font-bold text-xl mb-3 text-purple-700">Job Placement</h3>
-      <p>Connecting skilled candidates with top companies for suitable positions.</p>
-    </div>
-    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
-      <h3 class="font-bold text-xl mb-3 text-purple-700">Interview Preparation</h3>
-      <p>Mock sessions and personalized training to help you succeed in interviews.</p>
-    </div>
-    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
-      <h3 class="font-bold text-xl mb-3 text-purple-700">Resume Making</h3>
-      <p>Get a modern, professional resume crafted by experts — ready to impress employers.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CEO/Manager + Partners Section -->
+<!-- About Section -->
 <section id="about" class="py-20 bg-purple-50 px-6 text-center">
   <h3 class="text-3xl font-bold text-purple-800 mb-4">Manish Kumar</h3>
   <p class="text-purple-600 font-semibold mb-6">CEO / Manager</p>
   <p class="max-w-3xl mx-auto text-gray-700 text-lg mb-8">
     Welcome to MK Consultancy! Our mission is to empower professionals with the tools, guidance, and opportunities to succeed in their careers.
-    With personalized resume building, interview coaching, and job placement services, we ensure every client is prepared to shine. 
-    Your growth is our priority, and we’re committed to connecting talent with opportunity across Singhana and beyond.
+    With personalized resume building, interview coaching, and job placement services, we ensure every client is prepared to shine.
   </p>
   
   <h4 class="text-2xl font-semibold text-purple-700 mb-4">Our Trusted Partners</h4>
@@ -107,36 +88,17 @@
   </div>
 </section>
 
-<!-- Jobs Section -->
-<section id="jobs" class="py-16 px-6 text-center bg-white">
-  <h2 class="text-4xl font-bold mb-6 text-purple-700">Ongoing Job Openings</h2>
-  <p class="text-gray-600 mb-6">Find and apply for available job opportunities below.</p>
-  <div class="max-w-2xl mx-auto mb-6">
-    <div class="flex gap-2">
-      <input id="jobSearchInput" type="text" placeholder="Search jobs by title, location, or company" class="flex-1 px-4 py-3 rounded-l-lg border border-purple-300" />
-      <button onclick="searchJobs()" class="btn-action rounded-r-lg">Search Jobs</button>
-    </div>
-  </div>
-  <div id="jobsList" class="max-w-4xl mx-auto grid gap-4 text-gray-700">
-    <p class="text-lg italic text-gray-400">No ongoing jobs currently. Please check back soon.</p>
-  </div>
-</section>
-
 <!-- Contact Section -->
 <section id="contact" class="py-16 px-6 bg-purple-100 text-center">
   <h2 class="text-3xl font-bold mb-6 text-purple-700">Contact Us</h2>
   <p>📍 MK Consultancy — Singhana, Rajasthan</p>
   <p>📞 +91 9664225417</p>
-  <p>✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="underline text-purple-700">mkconsultancysinghana@gmail.com</a></p>
+  <p>✉️ <a href="mailto:kumarmanish3065@gmail.com" class="underline text-purple-700">kumarmanish3065@gmail.com</a></p>
 </section>
 
-<!-- Footer -->
 <footer class="bg-white py-6 text-center text-sm text-gray-700 shadow-inner">
   © 2025 MK Consultancy — All rights reserved.
 </footer>
-
-<!-- WhatsApp Floating Button -->
-<a href="https://wa.me/919664225417" target="_blank" aria-label="Chat on WhatsApp" class="fixed bottom-5 right-5 bg-green-500 p-4 rounded-full shadow-lg hover:bg-green-600">💬</a>
 
 <!-- Scripts -->
 <script>
@@ -146,26 +108,45 @@
   function closeResumePopup() {
     document.getElementById('resumePopup').classList.add('hidden');
   }
-  function handleResumeSubmit(e) {
+
+  async function generatePDF(e) {
     e.preventDefault();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
     const form = document.getElementById('resumeForm');
-    const name = form.fullName.value || '';
-    const email = form.email.value || '';
-    closeResumePopup();
-    alert('Thanks ' + name + '! Your resume request has been submitted. We will email you at ' + email + '.');
-    form.reset();
-  }
-  function searchJobs() {
-    const q = document.getElementById('jobSearchInput').value.trim().toLowerCase();
-    const jobs = Array.from(document.querySelectorAll('#jobsList > div'));
-    if (!q) {
-      jobs.forEach(j => j.style.display = 'flex');
-      return;
-    }
-    jobs.forEach(j => {
-      const text = j.innerText.toLowerCase();
-      j.style.display = text.includes(q) ? 'flex' : 'none';
+    const data = Object.fromEntries(new FormData(form));
+
+    doc.setFontSize(18);
+    doc.text('RESUME', 105, 20, null, null, 'center');
+    doc.setFontSize(12);
+    let y = 35;
+
+    const lines = [
+      `Full Name: ${data.fullName}`,
+      `Address: ${data.address}`,
+      `Email: ${data.email}`,
+      `Mobile: ${data.mobile}`,
+      `Date of Birth: ${data.dob}`,
+      `Place of Birth: ${data.birthPlace}`,
+      `Marital Status: ${data.maritalStatus}`,
+      '',
+      'Education Background:',
+      data.education || 'N/A',
+      '',
+      'Employment History:',
+      data.workHistory || 'N/A',
+    ];
+
+    lines.forEach(line => {
+      doc.text(line, 20, y);
+      y += 10;
+      if (y > 270) { doc.addPage(); y = 20; }
     });
+
+    doc.save(`${data.fullName.replace(/\s+/g, '_')}_Resume.pdf`);
+    closeResumePopup();
+    form.reset();
   }
 </script>
 
