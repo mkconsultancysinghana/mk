@@ -13,58 +13,53 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
+    .btn-primary { @apply bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-purple-800 transition; }
+    .btn-secondary { @apply bg-white border border-purple-700 text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-100 transition; }
+    .btn-action { @apply bg-purple-600 text-white px-5 py-2 rounded hover:bg-purple-700 transition; }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-purple-100 via-purple-50 to-white text-gray-900 min-h-screen">
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900 min-h-screen">
 
 <!-- Header -->
 <header class="flex justify-between items-center p-6 bg-white shadow-md sticky top-0 z-50">
   <h1 class="text-3xl font-extrabold tracking-wide text-purple-700">MK Consultancy</h1>
   <nav class="space-x-4 text-sm md:text-base">
-    <a href="#about" class="hover:text-purple-600">About</a>
-    <a href="#services" class="hover:text-purple-600">Services</a>
-    <a href="#jobs" class="hover:text-purple-600">Jobs</a>
-    <a href="#contact" class="hover:text-purple-600">Contact</a>
+    <a href="#about" class="hover:text-purple-600 transition">About</a>
+    <a href="#services" class="hover:text-purple-600 transition">Services</a>
+    <a href="#jobs" class="hover:text-purple-600 transition">Jobs</a>
+    <a href="#contact" class="hover:text-purple-600 transition">Contact</a>
   </nav>
 </header>
 
 <!-- Hero Section -->
-<section class="text-center py-20 px-4 bg-gradient-to-r from-purple-200 via-white to-purple-100">
+<section class="text-center py-24 px-4 bg-gradient-to-r from-purple-200 via-white to-purple-100">
   <h2 class="text-5xl font-extrabold mb-4 text-purple-800">Build Your Career With MK Consultancy</h2>
   <p class="max-w-2xl mx-auto text-lg text-gray-700">Professional recruitment, resume building & career guidance — all in one place.</p>
-  <div class="mt-8 space-x-3">
-    <button onclick="openResumePopup()" class="bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition">Make Your Resume</button>
-    <button onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" class="bg-purple-100 text-purple-700 px-6 py-3 rounded-xl font-semibold border border-purple-300 hover:bg-purple-200 transition">Search Jobs</button>
+  <div class="mt-10 flex justify-center gap-4">
+    <button onclick="openResumePopup()" class="btn-primary">Make Your Resume</button>
+    <button onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" class="btn-secondary">Search Jobs</button>
   </div>
 </section>
 
 <!-- Resume Popup -->
 <div id="resumePopup" class="fixed inset-0 hidden bg-black/50 flex justify-center items-center z-50">
-  <div class="bg-white text-gray-800 rounded-2xl p-6 w-11/12 md:w-1/2 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-    <button onclick="closeResumePopup()" class="absolute top-3 right-3 text-gray-500 hover:text-red-600">✕</button>
-    <h3 class="text-2xl font-bold mb-4 text-purple-700">Resume Maker</h3>
-    <form id="resumeForm" class="space-y-3" onsubmit="handleResumeSubmit(event)">
-      <input type="text" name="fullName" placeholder="Full Name" class="w-full border p-2 rounded" required />
-      <input type="text" name="address" placeholder="Address" class="w-full border p-2 rounded" required />
-      <input type="email" name="email" placeholder="Email" class="w-full border p-2 rounded" required />
-      <input type="text" name="mobile" placeholder="Mobile Number" class="w-full border p-2 rounded" required />
-      <input type="date" name="dob" placeholder="Date of Birth" class="w-full border p-2 rounded" required />
-      <input type="text" name="birthPlace" placeholder="Place of Birth" class="w-full border p-2 rounded" />
-      <input type="text" name="civilStatus" placeholder="Civil Status" class="w-full border p-2 rounded" />
-      <input type="text" name="citizenship" placeholder="Citizenship" class="w-full border p-2 rounded" />
-      <input type="text" name="religion" placeholder="Religion" class="w-full border p-2 rounded" />
-      <input type="text" name="height" placeholder="Height" class="w-full border p-2 rounded" />
-      <input type="text" name="weight" placeholder="Weight" class="w-full border p-2 rounded" />
-      <input type="text" name="father" placeholder="Father’s Name" class="w-full border p-2 rounded" />
-      <input type="text" name="mother" placeholder="Mother’s Name" class="w-full border p-2 rounded" />
-      <input type="text" name="sss" placeholder="SSS Number" class="w-full border p-2 rounded" />
-      <input type="text" name="tin" placeholder="TIN Number" class="w-full border p-2 rounded" />
-      <textarea name="education" placeholder="Education Background (Primary, Secondary, Tertiary)" class="w-full border p-2 rounded h-24"></textarea>
-      <textarea name="workHistory" placeholder="Employment History (Company, Role, Dates)" class="w-full border p-2 rounded h-24"></textarea>
-      <div class="flex gap-2">
-        <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">Submit & Create Resume</button>
-        <button type="button" onclick="closeResumePopup()" class="bg-gray-200 text-black px-4 py-2 rounded-lg">Cancel</button>
+  <div class="bg-white text-gray-800 rounded-2xl p-8 w-11/12 md:w-1/2 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+    <button onclick="closeResumePopup()" class="absolute top-4 right-4 text-gray-500 hover:text-red-600 text-xl font-bold">✕</button>
+    <h3 class="text-2xl font-bold mb-6 text-purple-700 text-center">Professional Resume Builder</h3>
+    <form id="resumeForm" class="space-y-4" onsubmit="handleResumeSubmit(event)">
+      <input type="text" name="fullName" placeholder="Full Name" class="w-full border p-3 rounded-lg" required />
+      <input type="text" name="address" placeholder="Address" class="w-full border p-3 rounded-lg" required />
+      <input type="email" name="email" placeholder="Email" class="w-full border p-3 rounded-lg" required />
+      <input type="tel" name="mobile" placeholder="Mobile Number" class="w-full border p-3 rounded-lg" required />
+      <input type="date" name="dob" placeholder="Date of Birth" class="w-full border p-3 rounded-lg" required />
+      <input type="text" name="birthPlace" placeholder="Place of Birth" class="w-full border p-3 rounded-lg" />
+      <input type="text" name="maritalStatus" placeholder="Marital Status" class="w-full border p-3 rounded-lg" />
+      <textarea name="education" placeholder="Education Background (Primary, Secondary, Tertiary)" class="w-full border p-3 rounded-lg h-24"></textarea>
+      <textarea name="workHistory" placeholder="Employment History (Company, Role, Dates)" class="w-full border p-3 rounded-lg h-24"></textarea>
+      <div class="flex justify-between gap-3">
+        <button type="submit" class="btn-primary flex-1">Submit & Create Resume</button>
+        <button type="button" onclick="closeResumePopup()" class="btn-secondary flex-1">Cancel</button>
       </div>
     </form>
   </div>
@@ -72,46 +67,42 @@
 
 <!-- Services Section -->
 <section id="services" class="py-16 px-6 text-center bg-white">
-  <h2 class="text-4xl font-bold mb-8 text-purple-700">Our Services</h2>
-  <div class="grid md:grid-cols-3 gap-6">
-    <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+  <h2 class="text-4xl font-bold mb-12 text-purple-700">Our Services</h2>
+  <div class="grid md:grid-cols-3 gap-8">
+    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
       <h3 class="font-bold text-xl mb-3 text-purple-700">Job Placement</h3>
       <p>Connecting skilled candidates with top companies for suitable positions.</p>
     </div>
-    <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
       <h3 class="font-bold text-xl mb-3 text-purple-700">Interview Preparation</h3>
       <p>Mock sessions and personalized training to help you succeed in interviews.</p>
     </div>
-    <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:scale-105 transition">
+    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
       <h3 class="font-bold text-xl mb-3 text-purple-700">Resume Making</h3>
       <p>Get a modern, professional resume crafted by experts — ready to impress employers.</p>
     </div>
   </div>
 </section>
 
-<!-- Partners Section -->
-<section class="py-10 px-6 text-center bg-purple-50">
-  <h2 class="text-2xl font-bold mb-4 text-purple-700">Working with the following partners</h2>
-  <div class="flex flex-col md:flex-row items-center justify-center gap-6">
-    <div class="bg-white p-4 rounded-lg w-64 shadow">
-      <h4 class="font-semibold text-purple-700">Lakshyaraj Skill Edutech Foundation</h4>
-      <p class="text-sm mt-1 text-gray-600">Singhana</p>
-    </div>
-    <div class="bg-white p-4 rounded-lg w-64 shadow">
-      <h4 class="font-semibold text-purple-700">IT Excellenet</h4>
-      <p class="text-sm mt-1 text-gray-600">Singhana</p>
-    </div>
-  </div>
+<!-- CEO/Manager Section -->
+<section id="about" class="py-20 bg-purple-50 px-6 text-center">
+  <h3 class="text-3xl font-bold text-purple-800 mb-4">Manish Kumar</h3>
+  <p class="text-purple-600 font-semibold mb-6">CEO / Manager</p>
+  <p class="max-w-3xl mx-auto text-gray-700 text-lg">
+    Welcome to MK Consultancy! Our mission is to empower professionals with the tools, guidance, and opportunities to succeed in their careers. 
+    With personalized resume building, interview coaching, and job placement services, we ensure every client is prepared to shine. 
+    Your growth is our priority, and we’re committed to connecting talent with opportunity across Singhana and beyond.
+  </p>
 </section>
 
 <!-- Jobs Section -->
 <section id="jobs" class="py-16 px-6 text-center bg-white">
   <h2 class="text-4xl font-bold mb-6 text-purple-700">Ongoing Job Openings</h2>
-  <p class="text-gray-600 mb-4">Find and apply for available job opportunities below.</p>
+  <p class="text-gray-600 mb-6">Find and apply for available job opportunities below.</p>
   <div class="max-w-2xl mx-auto mb-6">
     <div class="flex gap-2">
       <input id="jobSearchInput" type="text" placeholder="Search jobs by title, location, or company" class="flex-1 px-4 py-3 rounded-l-lg border border-purple-300" />
-      <button onclick="searchJobs()" class="bg-purple-600 text-white px-5 py-3 rounded-r-lg font-semibold hover:bg-purple-700">Search Jobs</button>
+      <button onclick="searchJobs()" class="btn-action rounded-r-lg">Search Jobs</button>
     </div>
   </div>
   <div id="jobsList" class="max-w-4xl mx-auto grid gap-4 text-gray-700">
@@ -120,21 +111,15 @@
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="py-16 px-6 bg-purple-50 text-center">
+<section id="contact" class="py-16 px-6 bg-purple-100 text-center">
   <h2 class="text-3xl font-bold mb-6 text-purple-700">Contact Us</h2>
   <p>📍 MK Consultancy — Singhana, Rajasthan</p>
   <p>📞 +91 9664225417</p>
   <p>✉️ <a href="mailto:kumarmanish3065@gmail.com" class="underline text-purple-700">kumarmanish3065@gmail.com</a></p>
 </section>
 
-<!-- CEO/Manager Section -->
-<section id="about" class="py-16 bg-white px-6 text-center">
-  <h3 class="text-3xl font-bold text-purple-800">Manish Kumar</h3>
-  <p class="text-purple-600 font-semibold">CEO / Manager</p>
-</section>
-
 <!-- Footer -->
-<footer class="bg-purple-100 py-4 text-center text-sm text-gray-700">
+<footer class="bg-white py-6 text-center text-sm text-gray-700 shadow-inner">
   © 2025 MK Consultancy — All rights reserved.
 </footer>
 
