@@ -1,558 +1,512 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MK Consultancy — Combined Frontend + Backend Code Bundle</title>
+  <title>MK Consultancy — Career Portal (Demo)</title>
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    .codebox { background:#0b1220; color:#d8eefe; padding:1rem; border-radius:8px; font-family: monospace; font-size:13px; white-space:pre-wrap; overflow:auto; max-height:420px; }
-    .copy-btn { background:#1f2937; color:white; padding:6px 10px; border-radius:6px; cursor:pointer; }
-    .panel { border:1px solid #e6e6e6; border-radius:10px; padding:12px; background: #fff; }
-    .dark .panel { background: #0b1220; color: #cfe8ff; border-color: #1f2937; }
-    .notice { background:#f8fafc; padding:8px 12px; border-left:4px solid #7c3aed; border-radius:6px; margin-bottom:12px;}
-    .live-demo { border-radius:12px; overflow:hidden; box-shadow: 0 6px 30px rgba(16,24,40,0.08); }
+    :root { --accent: #6D28D9; } /* purple-700 */
+    body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; scroll-behavior: smooth; }
+    .btn-primary { background-color: var(--accent); color: white; padding: .6rem 1.1rem; border-radius: .6rem; font-weight:600; box-shadow: 0 6px 18px rgba(109,40,217,.12); }
+    .btn-primary:hover { transform: translateY(-3px); }
+    .btn-secondary { background: white; border: 2px solid var(--accent); color: var(--accent); padding: .5rem .9rem; border-radius:.6rem; font-weight:600; }
+    .tab-active { background-color: var(--accent); color: white; border-radius: .5rem; padding: .45rem .6rem; }
+    .modal-show { animation: pop .16s ease-out; }
+    @keyframes pop { from { transform: translateY(8px) scale(.98); opacity: 0 } to { transform: translateY(0) scale(1); opacity:1 } }
+    .card-hover:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 18px 40px rgba(0,0,0,.06); }
+    input, textarea { border: 1px solid #E5E7EB; padding: .6rem; border-radius: .5rem; }
   </style>
-  <meta name="description" content="MK Consultancy — Combined frontend demo + backend code bundle (copyable).">
 </head>
-<body class="bg-gray-50 text-gray-900 p-6">
+<body class="bg-gradient-to-br from-gray-50 to-white min-h-screen text-gray-800">
 
-  <div class="max-w-7xl mx-auto">
-
-    <header class="flex items-center justify-between mb-6">
-      <div>
-        <h1 class="text-2xl font-extrabold text-purple-700">MK Consultancy — Combined Bundle</h1>
-        <p class="text-sm text-gray-600">Live frontend demo + ready-to-copy backend files (Node/Express + MongoDB).</p>
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 flex items-center justify-between py-4">
+      <div class="flex items-center gap-3">
+        <div class="rounded-full w-12 h-12 flex items-center justify-center bg-purple-100 text-purple-700 font-extrabold">MK</div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-extrabold text-purple-700">MK Consultancy</h1>
+          <p class="text-xs text-gray-500 -mt-1">Career Portal — Demo</p>
+        </div>
       </div>
-      <div class="text-right">
-        <div class="text-sm text-gray-600">Contact: <a href="mailto:mkconsultancysinghana@gmail.com" class="text-purple-700 underline">mkconsultancysinghana@gmail.com</a></div>
-        <div class="text-sm text-gray-600">WhatsApp: <a href="https://wa.me/919664225417" target="_blank" class="text-purple-700 underline">9664225417</a></div>
-      </div>
-    </header>
 
-    <section class="notice">
-      <strong>How to use:</strong>
-      <ul class="text-sm mt-2">
-        <li>1) Scroll to <strong>Live Frontend Demo</strong> to view/test the site right here in your browser.</li>
-        <li>2) Scroll to <strong>Backend Files (Copy)</strong> — click <em>Copy</em> on each file block and paste into your backend project files.</li>
-        <li>3) See the <strong>README</strong> block for steps to run the Node/Express backend with MongoDB Atlas or local MongoDB.</li>
-      </ul>
+      <nav class="hidden md:flex items-center gap-3 text-sm">
+        <button class="tab-btn tab-active px-3 py-2" data-target="home">Home</button>
+        <button class="tab-btn px-3 py-2" data-target="services">Services</button>
+        <button class="tab-btn px-3 py-2" data-target="jobs">Jobs</button>
+        <button class="tab-btn px-3 py-2" data-target="resume">Resume Builder</button>
+        <button class="tab-btn px-3 py-2" data-target="profile">Profile</button>
+        <button id="loginBtn" class="px-3 py-2 border rounded-md text-sm" onclick="openLogin()">Login / Signup</button>
+      </nav>
+
+      <div class="md:hidden">
+        <button id="mobileMenuBtn" class="px-3 py-2 rounded-md border" onclick="toggleMobileMenu()">Menu</button>
+      </div>
+    </div>
+
+    <!-- mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden">
+      <div class="px-4 pb-4 space-y-2">
+        <button class="w-full text-left tab-btn p-3" data-target="home">Home</button>
+        <button class="w-full text-left tab-btn p-3" data-target="services">Services</button>
+        <button class="w-full text-left tab-btn p-3" data-target="jobs">Jobs</button>
+        <button class="w-full text-left tab-btn p-3" data-target="resume">Resume Builder</button>
+        <button class="w-full text-left tab-btn p-3" data-target="profile">Profile</button>
+        <button class="w-full text-left p-3" onclick="openLogin()">Login / Signup</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-6xl mx-auto px-4 md:px-6 py-8">
+
+    <!-- Home -->
+    <section id="home" class="tab-content">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h2 class="text-4xl md:text-5xl font-extrabold text-purple-700 leading-tight">Build Your Career with <span class="text-gray-900">MK Consultancy</span></h2>
+          <p class="mt-4 text-gray-600 max-w-xl">Professional resume builder, mock interview help, job placement support and career guidance — demo frontend. Resume PDF download included.</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button onclick="openResumeBuilder()" class="btn-primary">Make Your Resume</button>
+            <button onclick="switchTo('jobs')" class="btn-secondary">Explore Jobs</button>
+            <a href="https://wa.me/919664225417" target="_blank" class="btn-secondary">WhatsApp Us</a>
+          </div>
+
+          <div class="mt-8 grid grid-cols-2 gap-3 max-w-md">
+            <div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 card-hover">
+              <div class="rounded-lg bg-purple-50 w-12 h-12 flex items-center justify-center text-purple-700 font-bold">✓</div>
+              <div>
+                <div class="text-sm font-semibold">Resume Builder</div>
+                <div class="text-xs text-gray-500">Download PDF instantly</div>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 card-hover">
+              <div class="rounded-lg bg-purple-50 w-12 h-12 flex items-center justify-center text-purple-700 font-bold">⚑</div>
+              <div>
+                <div class="text-sm font-semibold">Job Matching</div>
+                <div class="text-xs text-gray-500">Demo job listings</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden md:block">
+          <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 shadow-lg">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f4f56058c7f2f2c2b1ca93f9d4c6a7c" alt="career" class="rounded-xl w-full h-56 object-cover mb-4">
+            <h3 class="text-lg font-semibold text-purple-700">Step-by-step Resume Builder</h3>
+            <p class="text-sm text-gray-600 mt-2">Create a professional resume using the CareerHollic-style builder and export as PDF.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- LIVE FRONTEND DEMO (embedded) -->
-    <h2 class="text-xl font-semibold mt-6 mb-3">Live Frontend Demo</h2>
-    <div class="live-demo panel mb-8">
-      <!-- BEGIN: Frontend code (interactive demo). This is the full frontend from earlier, slightly compacted to keep page manageable -->
-      <div id="demo-root">
-        <!-- NAV -->
-        <header class="bg-white shadow p-4 flex justify-between items-center">
-          <div class="flex gap-3 items-center">
-            <h3 class="text-purple-700 font-bold">MK Consultancy</h3>
-            <span class="text-sm text-gray-500 hidden md:inline">Placement & Resume Services</span>
-          </div>
-          <div class="flex gap-2 items-center">
-            <button id="demoOpenLogin" class="px-3 py-2 bg-purple-700 text-white rounded">Login</button>
-            <a href="#demoJobs" class="px-3 py-2 border rounded">Jobs</a>
-          </div>
-        </header>
-
-        <!-- HERO -->
-        <section class="bg-gradient-to-r from-purple-100 via-white to-purple-50 p-6 md:p-10">
-          <div class="md:flex md:justify-between md:items-center max-w-6xl mx-auto">
-            <div>
-              <h2 class="text-3xl md:text-4xl font-extrabold text-purple-800">Find Jobs • Build Resumes • Get Placed</h2>
-              <p class="text-gray-700 mt-3 max-w-xl">MK Consultancy — Empowering candidates with resume building, interview training, and job placements across Rajasthan.</p>
-              <div class="mt-4 flex gap-3">
-                <button onclick="openDemoResume()" class="px-4 py-2 bg-purple-700 text-white rounded">Create Resume</button>
-                <button onclick="document.getElementById('demo-jobs-tab').scrollIntoView({behavior:'smooth'})" class="px-4 py-2 border rounded">View Jobs</button>
-              </div>
-            </div>
-            <div class="mt-6 md:mt-0">
-              <img src="https://cdn.pixabay.com/photo/2017/10/10/21/46/business-2837085_1280.jpg" alt="career" class="rounded-lg shadow max-w-sm">
-            </div>
-          </div>
-        </section>
-
-        <!-- TABS (Services / Jobs / Training) -->
-        <section id="demo-jobs-tab" class="p-6 max-w-6xl mx-auto">
-          <div class="flex gap-2 mb-4">
-            <button class="demo-tab active px-3 py-2 rounded bg-purple-700 text-white" data-target="svc">Services</button>
-            <button class="demo-tab px-3 py-2 rounded border" data-target="jobs">Jobs</button>
-            <button class="demo-tab px-3 py-2 rounded border" data-target="train">Training</button>
-          </div>
-
-          <div id="svc" class="demo-panel">
-            <div class="grid md:grid-cols-3 gap-4">
-              <div class="p-4 border rounded">
-                <h4 class="text-purple-700 font-semibold">Job Placement</h4>
-                <p class="text-sm text-gray-600">We connect candidates with verified companies.</p>
-              </div>
-              <div class="p-4 border rounded">
-                <h4 class="text-purple-700 font-semibold">Resume Builder</h4>
-                <p class="text-sm text-gray-600">Create recruiter-friendly resumes.</p>
-              </div>
-              <div class="p-4 border rounded">
-                <h4 class="text-purple-700 font-semibold">Interview Coaching</h4>
-                <p class="text-sm text-gray-600">Mock interviews & soft-skill training.</p>
-              </div>
-            </div>
-          </div>
-
-          <div id="jobs" class="demo-panel hidden">
-            <div id="demoJobList" class="space-y-3"></div>
-          </div>
-
-          <div id="train" class="demo-panel hidden">
-            <ul class="space-y-2 text-gray-700">
-              <li>• Soft skills workshop</li>
-              <li>• Interview bootcamp</li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- Demo resume popup -->
-        <div id="demoResumePopup" class="fixed inset-0 hidden bg-black/50 flex items-center justify-center z-40">
-          <div class="bg-white rounded p-4 w-[95%] max-w-lg">
-            <button onclick="closeDemoResume()" class="float-right text-gray-500">✕</button>
-            <h4 class="text-purple-700 font-semibold mb-2">Create Resume (Demo)</h4>
-            <form id="demoResumeForm" class="space-y-2">
-              <input name="fullName" placeholder="Full Name" class="w-full border px-3 py-2 rounded" required />
-              <input name="email" type="email" placeholder="Email" class="w-full border px-3 py-2 rounded" required />
-              <textarea name="education" placeholder="Education" class="w-full border px-3 py-2 rounded h-24"></textarea>
-              <div class="flex gap-2">
-                <button class="px-3 py-2 bg-purple-700 text-white rounded" type="submit">Generate PDF</button>
-                <button type="button" onclick="closeDemoResume()" class="px-3 py-2 border rounded">Cancel</button>
-              </div>
-            </form>
-          </div>
+    <!-- Services -->
+    <section id="services" class="tab-content hidden py-10">
+      <h3 class="text-3xl font-bold text-purple-700 text-center">Our Services</h3>
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+          <h4 class="font-semibold text-lg text-purple-700">Job Placement</h4>
+          <p class="text-sm text-gray-600 mt-2">Connecting candidates with employers across Rajasthan and India.</p>
         </div>
-
-        <!-- Demo auth modal -->
-        <div id="demoAuth" class="fixed inset-0 hidden bg-black/50 flex items-center justify-center z-50">
-          <div class="bg-white rounded p-4 w-[95%] max-w-md">
-            <button onclick="closeDemoAuth()" class="float-right text-gray-500">✕</button>
-            <h4 class="text-purple-700 font-semibold mb-2">Login / Signup (Demo)</h4>
-            <div id="demoAuthBody">
-              <form id="demoLogin" class="space-y-2">
-                <input id="demoLoginEmail" placeholder="Email" class="w-full border px-3 py-2 rounded" />
-                <input id="demoLoginPwd" type="password" placeholder="Password" class="w-full border px-3 py-2 rounded" />
-                <div class="flex gap-2">
-                  <button class="px-3 py-2 bg-purple-700 text-white rounded">Login</button>
-                  <button type="button" onclick="showDemoSignup()" class="px-3 py-2 border rounded">Signup</button>
-                </div>
-                <p class="text-xs text-gray-500 mt-2">Admin demo: admin@mkconsultancy.com / Admin@123</p>
-              </form>
-
-              <form id="demoSignup" class="space-y-2 hidden">
-                <input id="demoSignName" placeholder="Full name" class="w-full border px-3 py-2 rounded" />
-                <input id="demoSignEmail" placeholder="Email" class="w-full border px-3 py-2 rounded" />
-                <input id="demoSignPwd" type="password" placeholder="Password" class="w-full border px-3 py-2 rounded" />
-                <div class="flex gap-2">
-                  <button class="px-3 py-2 bg-purple-700 text-white rounded">Create</button>
-                  <button type="button" onclick="showDemoLogin()" class="px-3 py-2 border rounded">Back</button>
-                </div>
-              </form>
-            </div>
-          </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+          <h4 class="font-semibold text-lg text-purple-700">Resume Building</h4>
+          <p class="text-sm text-gray-600 mt-2">Step-by-step resume builder with instant PDF download.</p>
         </div>
-
+        <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+          <h4 class="font-semibold text-lg text-purple-700">Interview Prep</h4>
+          <p class="text-sm text-gray-600 mt-2">Mock interviews and tips to perform better in interviews.</p>
+        </div>
       </div>
-      <!-- END FRONTEND DEMO -->
+    </section>
+
+    <!-- Jobs -->
+    <section id="jobs" class="tab-content hidden py-10">
+      <h3 class="text-3xl font-bold text-purple-700 text-center">Current Job Openings</h3>
+      <div id="jobList" class="mt-8 grid md:grid-cols-2 gap-6"></div>
+    </section>
+
+    <!-- Resume Builder (CareerHollic-style multi-step) -->
+    <section id="resume" class="tab-content hidden py-10">
+      <h3 class="text-3xl font-bold text-purple-700 text-center mb-6">CareerHollic-style Resume Builder</h3>
+
+      <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm p-6">
+        <!-- progress -->
+        <div class="flex items-center gap-3 mb-6">
+          <div id="stepIndicator" class="text-sm text-gray-500">Step 1 of 3 — Personal</div>
+          <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div id="stepProgress" class="h-2 bg-purple-600 rounded-full w-1/3 transition-all"></div>
+          </div>
+        </div>
+
+        <!-- steps -->
+        <form id="chForm" class="space-y-4" onsubmit="event.preventDefault(); downloadCareerHollicPDF();">
+          <!-- Step 1: Personal -->
+          <div id="chStep1" class="ch-step">
+            <label class="block text-sm font-semibold">Full Name</label>
+            <input id="chName" required class="mt-1" placeholder="Your full name" />
+
+            <div class="grid md:grid-cols-2 gap-3 mt-3">
+              <div>
+                <label class="block text-sm font-semibold">Email</label>
+                <input id="chEmail" type="email" required class="mt-1" placeholder="you@example.com" />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold">Mobile</label>
+                <input id="chMobile" type="tel" required class="mt-1" placeholder="+91 9xxxxxxxxx" />
+              </div>
+            </div>
+
+            <label class="block text-sm font-semibold mt-3">Address</label>
+            <input id="chAddress" class="mt-1" placeholder="City, State, Country" />
+          </div>
+
+          <!-- Step 2: Education & Work -->
+          <div id="chStep2" class="ch-step hidden">
+            <label class="block text-sm font-semibold">Education (One per line)</label>
+            <textarea id="chEducation" rows="4" placeholder="B.Sc. Computer Science — 2018 — XYZ University" class="mt-1"></textarea>
+
+            <label class="block text-sm font-semibold mt-3">Work Experience (One per line)</label>
+            <textarea id="chWork" rows="4" placeholder="Software Developer — TechCorp — Jun 2019 to Present" class="mt-1"></textarea>
+          </div>
+
+          <!-- Step 3: Skills & Summary -->
+          <div id="chStep3" class="ch-step hidden">
+            <label class="block text-sm font-semibold">Professional Summary</label>
+            <textarea id="chSummary" rows="3" placeholder="Short summary about you" class="mt-1"></textarea>
+
+            <label class="block text-sm font-semibold mt-3">Skills (comma separated)</label>
+            <input id="chSkills" placeholder="JavaScript, HTML, CSS, React, SQL" class="mt-1" />
+          </div>
+
+          <!-- Controls -->
+          <div class="flex items-center gap-3 mt-4">
+            <button type="button" id="prevBtn" onclick="chPrev()" class="btn-secondary hidden">Back</button>
+            <button type="button" id="nextBtn" onclick="chNext()" class="btn-primary">Next</button>
+            <button type="submit" id="downloadBtn" class="btn-primary hidden">Download PDF</button>
+            <div class="ml-auto text-xs text-gray-500">Demo: data saved in browser only.</div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Profile -->
+    <section id="profile" class="tab-content hidden py-10">
+      <h3 class="text-3xl font-bold text-purple-700 text-center">Your Profile (Demo)</h3>
+      <div class="max-w-xl mx-auto mt-6">
+        <div id="profileCard" class="bg-white rounded-2xl p-6 shadow-sm hidden">
+          <p><strong>Name:</strong> <span id="pfName"></span></p>
+          <p><strong>Email:</strong> <span id="pfEmail"></span></p>
+          <p><strong>Mobile:</strong> <span id="pfMobile"></span></p>
+          <p><strong>Address:</strong> <span id="pfAddress"></span></p>
+          <div class="mt-4 flex gap-3">
+            <button class="btn-primary" onclick="logout()">Logout</button>
+            <button class="btn-secondary" onclick="openResumeBuilder()">Edit / Build Resume</button>
+          </div>
+        </div>
+        <p id="pfPrompt" class="text-center text-gray-500 mt-6">Please login to view your profile.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t mt-12">
+    <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-gray-600 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div>📍 Singhana, Jhunjhunu (Raj.) · 📞 +91 9664225417 · ✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="text-purple-700 underline">mkconsultancysinghana@gmail.com</a></div>
+      <div>© 2025 MK Consultancy — Demo</div>
     </div>
+  </footer>
 
-    <!-- BACKEND FILES (copyable) -->
-    <h2 class="text-xl font-semibold mt-8 mb-3">Backend Files (Copy & paste into your Node project)</h2>
-    <p class="text-sm text-gray-600 mb-4">Click <span class="font-semibold">Copy</span> on any block, then create the file in your backend folder and paste.</p>
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/919664225417" target="_blank" aria-label="WhatsApp" class="fixed bottom-6 right-6 bg-green-500 p-4 rounded-full shadow-lg hover:scale-105">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.93 11.93 0 0 0 12.02.5C6.1.5 1.52 5.08 1.52 11c0 1.93.5 3.83 1.45 5.48L.25 23.5l6.69-1.76c1.57.86 3.31 1.31 5.08 1.31 5.92 0 10.5-4.58 10.5-10.5 0-3.02-1.19-5.85-3.7-7.55zM12 21.5c-1.5 0-3-.36-4.35-1.04l-.31-.16-3.98 1.05 1.08-3.66-.2-.35A8.5 8.5 0 1 1 20.5 12c0 4.7-3.8 8.5-8.5 8.5z"></path><path d="M17.1 14.03c-.29-.15-1.7-.84-1.96-.93-.26-.09-.45-.15-.64.15-.19.29-.73.93-.9 1.12-.17.19-.34.21-.63.07-.29-.15-1.23-.45-2.35-1.45-.87-.78-1.46-1.74-1.63-2.04-.17-.31-.02-.48.13-.63.14-.14.31-.34.47-.51.15-.17.2-.29.3-.5.1-.2.04-.38-.02-.53-.07-.15-.64-1.54-.88-2.12-.23-.55-.46-.48-.64-.49l-.55-.01c-.19 0-.5.07-.77.36-.28.29-1.06 1.03-1.06 2.5 0 1.46 1.09 2.87 1.24 3.07.15.19 2.14 3.34 5.18 4.65 3.03 1.31 3.03.87 3.57.82.54-.06 1.74-.71 1.99-1.4.25-.69.25-1.28.18-1.4-.08-.12-.27-.19-.56-.34z"></path></svg>
+  </a>
 
-    <!-- helper script for copy -->
-    <div class="grid md:grid-cols-2 gap-6">
-
-      <!-- server.js -->
-      <div class="panel">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>server.js</strong> <span class="text-sm text-gray-500">(Express server)</span></div>
-          <button class="copy-btn" data-target="code-server">Copy</button>
-        </div>
-        <pre id="code-server" class="codebox">
-// server.js
-import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import cors from "cors";
-import path from "path";
-
-import authRoutes from "./routes/authRoutes.js";
-import jobRoutes from "./routes/jobRoutes.js";
-import contactRoutes from "./routes/contactRoutes.js";
-
-dotenv.config();
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-// Serve frontend (if you build and place into ../frontend)
-app.use(express.static(path.resolve("public")));
-
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser:true, useUnifiedTopology:true })
-  .then(()=> console.log("MongoDB connected"))
-  .catch(err=> console.error(err));
-
-app.use("/api/auth", authRoutes);
-app.use("/api/jobs", jobRoutes);
-app.use("/api/contact", contactRoutes);
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, ()=> console.log("Server running on port", PORT));
-        </pre>
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 hidden items-center justify-center z-60 bg-black/40">
+    <div class="bg-white rounded-2xl p-6 w-11/12 max-w-sm modal-show">
+      <div class="flex justify-between items-center mb-4">
+        <h4 class="text-lg font-semibold text-purple-700">Login / Signup (Demo)</h4>
+        <button onclick="closeLogin()" class="text-gray-500">✕</button>
       </div>
-
-      <!-- package.json -->
-      <div class="panel">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>package.json</strong></div>
-          <button class="copy-btn" data-target="code-pkg">Copy</button>
+      <form id="loginForm" onsubmit="event.preventDefault(); doLogin();">
+        <label class="block text-sm font-medium">Full Name</label>
+        <input id="loginName" required class="mt-1 mb-2" placeholder="Your name" />
+        <label class="block text-sm font-medium">Email</label>
+        <input id="loginEmail" type="email" required class="mt-1 mb-2" placeholder="you@example.com" />
+        <label class="block text-sm font-medium">Mobile</label>
+        <input id="loginMobile" type="tel" required class="mt-1 mb-3" placeholder="+91 9xxxxxxxxx" />
+        <div class="flex gap-3">
+          <button type="submit" class="btn-primary flex-1">Login / Signup</button>
+          <button type="button" class="btn-secondary flex-1" onclick="closeLogin()">Cancel</button>
         </div>
-        <pre id="code-pkg" class="codebox">
-{
-  "name": "mk-consultancy-backend",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "mongoose": "^7.0.0",
-    "multer": "^1.4.5-lts.1",
-    "jsonwebtoken": "^9.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.22"
-  }
-}
-        </pre>
-      </div>
-
-      <!-- models/User.js -->
-      <div class="panel">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>models/User.js</strong></div>
-          <button class="copy-btn" data-target="code-user">Copy</button>
-        </div>
-        <pre id="code-user" class="codebox">
-import mongoose from "mongoose";
-
-const userSchema = new mongoose.Schema({
-  name: { type: String, required:true },
-  email: { type: String, unique:true, required:true },
-  password: { type: String, required:true },
-  role: { type: String, enum: ["admin","candidate"], default: "candidate" }
-}, { timestamps:true });
-
-export default mongoose.model("User", userSchema);
-        </pre>
-      </div>
-
-      <!-- models/Job.js -->
-      <div class="panel">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>models/Job.js</strong></div>
-          <button class="copy-btn" data-target="code-job">Copy</button>
-        </div>
-        <pre id="code-job" class="codebox">
-import mongoose from "mongoose";
-
-const jobSchema = new mongoose.Schema({
-  title: String,
-  company: String,
-  location: String,
-  salary: String,
-  experience: String,
-  category: String,
-  description: String,
-  createdAt: { type: Date, default: Date.now }
-});
-
-export default mongoose.model("Job", jobSchema);
-        </pre>
-      </div>
-
-      <!-- models/Application.js -->
-      <div class="panel">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>models/Application.js</strong></div>
-          <button class="copy-btn" data-target="code-app">Copy</button>
-        </div>
-        <pre id="code-app" class="codebox">
-import mongoose from "mongoose";
-
-const applicationSchema = new mongoose.Schema({
-  jobId: { type: mongoose.Schema.Types.ObjectId, ref: "Job" },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  name: String,
-  email: String,
-  phone: String,
-  resumeUrl: String,
-  coverLetter: String,
-  appliedAt: { type: Date, default: Date.now }
-});
-
-export default mongoose.model("Application", applicationSchema);
-        </pre>
-      </div>
-
-      <!-- routes/authRoutes.js -->
-      <div class="panel md:col-span-2">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>routes/authRoutes.js</strong></div>
-          <button class="copy-btn" data-target="code-auth">Copy</button>
-        </div>
-        <pre id="code-auth" class="codebox">
-import express from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
-
-const router = express.Router();
-
-// register
-router.post("/register", async (req,res)=>{
-  try {
-    const { name, email, password } = req.body;
-    const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ error: "Email already registered" });
-    const hash = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hash });
-    await user.save();
-    res.json({ message: "Registered" });
-  } catch(err){ res.status(500).json({ error: err.message }); }
-});
-
-// login
-router.post("/login", async (req,res)=>{
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ error:"User not found" });
-    const ok = await bcrypt.compare(password, user.password);
-    if (!ok) return res.status(401).json({ error:"Invalid credentials" });
-    const token = jwt.sign({ id:user._id, role:user.role }, process.env.JWT_SECRET, { expiresIn:'1d' });
-    res.json({ token, user: { id:user._id, name:user.name, email:user.email, role:user.role } });
-  } catch(err){ res.status(500).json({ error: err.message }); }
-});
-
-export default router;
-        </pre>
-      </div>
-
-      <!-- routes/jobRoutes.js -->
-      <div class="panel md:col-span-2">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>routes/jobRoutes.js</strong></div>
-          <button class="copy-btn" data-target="code-jobroutes">Copy</button>
-        </div>
-        <pre id="code-jobroutes" class="codebox">
-import express from "express";
-import Job from "../models/Job.js";
-import jwt from "jsonwebtoken";
-
-const router = express.Router();
-
-// get all jobs
-router.get("/", async (req,res)=>{
-  const jobs = await Job.find().sort({ createdAt:-1 });
-  res.json(jobs);
-});
-
-// create job (protected: admin)
-router.post("/", async (req,res)=>{
-  // for demo: basic token check (expand in production)
-  try {
-    const job = new Job(req.body);
-    await job.save();
-    res.json({ message: "Job created", job });
-  } catch(err){ res.status(500).json({ error: err.message }); }
-});
-
-// get job by id
-router.get("/:id", async (req,res)=>{
-  const job = await Job.findById(req.params.id);
-  if (!job) return res.status(404).json({ error: "Job not found" });
-  res.json(job);
-});
-
-export default router;
-        </pre>
-      </div>
-
-      <!-- routes/contactRoutes.js -->
-      <div class="panel md:col-span-2">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>routes/contactRoutes.js</strong></div>
-          <button class="copy-btn" data-target="code-contact">Copy</button>
-        </div>
-        <pre id="code-contact" class="codebox">
-import express from "express";
-import fs from "fs";
-const router = express.Router();
-
-// simple contact save (for demo)
-router.post("/", async (req,res)=>{
-  const msg = { ...req.body, date: new Date().toISOString() };
-  // In production save to DB; demo: append to file
-  fs.appendFileSync("messages.json", JSON.stringify(msg) + "\\n");
-  res.json({ message: "Received" });
-});
-
-export default router;
-        </pre>
-      </div>
-
-      <!-- .env.example -->
-      <div class="panel md:col-span-2">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>.env.example</strong></div>
-          <button class="copy-btn" data-target="code-env">Copy</button>
-        </div>
-        <pre id="code-env" class="codebox">
-PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/mkconsultancy?retryWrites=true&w=majority
-JWT_SECRET=your_jwt_secret_here
-        </pre>
-      </div>
-
-      <!-- README -->
-      <div class="panel md:col-span-2">
-        <div class="flex justify-between items-center mb-3">
-          <div><strong>README / Run Instructions</strong></div>
-          <button class="copy-btn" data-target="code-readme">Copy</button>
-        </div>
-        <pre id="code-readme" class="codebox">
-# MK Consultancy Backend (Node/Express + MongoDB)
-
-1) Create project folder:
-   mkdir mk-backend && cd mk-backend
-
-2) Initialize:
-   npm init -y
-   // copy package.json content (from the code block) or run:
-   npm install express mongoose dotenv cors bcryptjs jsonwebtoken multer
-
-3) Create files & folders:
-   server.js
-   routes/authRoutes.js
-   routes/jobRoutes.js
-   routes/contactRoutes.js
-   models/User.js
-   models/Job.js
-   models/Application.js
-   .env (copy from .env.example and fill credentials)
-
-4) Start dev server:
-   npm install -D nodemon
-   npx nodemon server.js
-
-5) MongoDB:
-   - For quick setup use MongoDB Atlas (cloud). Create cluster, get connection string, paste in .env
-   - Or run local MongoDB and set MONGO_URI=mongodb://localhost:27017/mkconsultancy
-
-6) Frontend:
-   - Place your built frontend (index.html / assets) in a 'public' folder inside backend root so Express can serve it.
-   - Or run frontend separately and update API URLs to point to your backend.
-
-7) Notes:
-   - This is a starter template. Add validations, production JWT checks, proper file upload (Cloudinary), and rate limits for production.
-        </pre>
-      </div>
+      </form>
     </div>
-
-    <!-- Quick footer -->
-    <footer class="mt-8 text-sm text-gray-600">
-      <p>Address: Singhana, Jhunjhunu (Raj.), India • Email: <a href="mailto:mkconsultancysinghana@gmail.com" class="text-purple-700 underline">mkconsultancysinghana@gmail.com</a> • WhatsApp: <a href="https://wa.me/919664225417" class="text-purple-700 underline">9664225417</a></p>
-      <p class="text-xs text-gray-500 mt-2">Admin demo credentials: <strong>admin@mkconsultancy.com / Admin@123</strong></p>
-    </footer>
   </div>
 
-  <!-- small scripts: demo job load, copy handlers, demo modals -->
+  <!-- Apply Modal -->
+  <div id="applyModal" class="fixed inset-0 hidden items-center justify-center z-60 bg-black/40">
+    <div class="bg-white rounded-2xl p-6 w-11/12 max-w-md modal-show">
+      <div class="flex justify-between items-center mb-4">
+        <h4 id="applyTitle" class="text-lg font-semibold text-purple-700">Apply</h4>
+        <button onclick="closeApply()" class="text-gray-500">✕</button>
+      </div>
+      <form id="applyForm" onsubmit="event.preventDefault(); submitApplication();">
+        <label class="block text-sm font-medium">Full Name</label>
+        <input id="appName" required class="mt-1 mb-2" />
+        <label class="block text-sm font-medium">Email</label>
+        <input id="appEmail" type="email" required class="mt-1 mb-2" />
+        <label class="block text-sm font-medium">Mobile</label>
+        <input id="appMobile" type="tel" required class="mt-1 mb-3" />
+        <div class="flex gap-3">
+          <button type="submit" class="btn-primary flex-1">Submit Application</button>
+          <button type="button" class="btn-secondary flex-1" onclick="closeApply()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notifications area -->
+  <div id="toast" class="fixed bottom-6 left-6 hidden bg-black text-white px-4 py-2 rounded-lg"></div>
+
   <script>
-    // Demo jobs (frontend-live area)
-    const demoJobs = [
-      { id:'job_1', title:'Sales Executive', location:'Jaipur', experience:'0-1', category:'Sales', description:'Field sales & client acquisition.'},
-      { id:'job_2', title:'Content Writer', location:'Remote', experience:'1-3', category:'Content', description:'Create blogs & social copy.'},
-      { id:'job_3', title:'HR / Recruiter', location:'Singhana', experience:'0-1', category:'HR', description:'Hiring & onboarding.'}
+    /* -------------------------
+       Utility helpers
+       ------------------------- */
+    function showToast(text, time=3000) {
+      const t = document.getElementById('toast');
+      t.innerText = text; t.classList.remove('hidden');
+      setTimeout(()=> t.classList.add('hidden'), time);
+    }
+    function escapeHtml(str) {
+      if(!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /* -------------------------
+       Nav & mobile menu
+       ------------------------- */
+    function toggleMobileMenu(){ const m = document.getElementById('mobileMenu'); m.classList.toggle('hidden'); }
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target');
+      switchTo(target);
+      document.getElementById('mobileMenu')?.classList.add('hidden');
+    }));
+    function switchTo(target) {
+      if(!target) return;
+      document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
+      const el = document.getElementById(target);
+      if(el) el.classList.remove('hidden');
+      tabButtons.forEach(b => b.classList.remove('tab-active'));
+      document.querySelectorAll(`.tab-btn[data-target="${target}"]`).forEach(b=>b.classList.add('tab-active'));
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+    // default
+    switchTo('home');
+
+    /* -------------------------
+       Demo jobs & apply modal
+       ------------------------- */
+    const jobs = [
+      { id:1, title:'Software Developer', company:'TechCorp', location:'Jaipur, Rajasthan', desc:'Frontend/Fullstack role. HTML/CSS/JS required.' },
+      { id:2, title:'Data Analyst', company:'InfoTech', location:'Delhi', desc:'Excel / SQL / Visualization duties.' },
+      { id:3, title:'Graphic Designer', company:'Creative Minds', location:'Udaipur, Rajasthan', desc:'Adobe suite and portfolio required.' },
     ];
-    function renderDemoJobs(){
-      const list = document.getElementById('demoJobList');
-      list.innerHTML = '';
-      demoJobs.forEach(job=>{
-        const div = document.createElement('div');
-        div.className='p-3 border rounded flex justify-between items-start';
-        div.innerHTML = `
-          <div>
-            <h4 class="font-semibold text-purple-700">${job.title}</h4>
-            <div class="text-sm text-gray-600">${job.location} • ${job.experience}</div>
-            <p class="text-sm mt-2">${job.description}</p>
-          </div>
-          <div class="flex flex-col gap-2">
-            <button class="px-3 py-1 border rounded" onclick="alert('Demo: Apply flow')">Apply</button>
+    const jobListEl = document.getElementById('jobList');
+    function renderJobs(){
+      jobListEl.innerHTML = '';
+      jobs.forEach(j => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-5 rounded-2xl shadow-sm card-hover';
+        card.innerHTML = `
+          <h4 class="text-lg font-semibold text-purple-700">${escapeHtml(j.title)}</h4>
+          <p class="text-sm text-gray-600"><strong>Company:</strong> ${escapeHtml(j.company)} — <strong>Location:</strong> ${escapeHtml(j.location)}</p>
+          <p class="text-sm text-gray-600 mt-2">${escapeHtml(j.desc)}</p>
+          <div class="mt-4 flex gap-3">
+            <button class="btn-primary" onclick="openApply(${j.id})">Apply Now</button>
+            <button class="btn-secondary" onclick="saveJob(${j.id})">Save</button>
           </div>
         `;
-        list.appendChild(div);
+        jobListEl.appendChild(card);
       });
     }
-    renderDemoJobs();
+    function saveJob(id){ showToast('Saved job to demo list.'); }
+    renderJobs();
 
-    // Tabs
-    document.querySelectorAll('.demo-tab').forEach(btn=>{
-      btn.addEventListener('click', ()=> {
-        document.querySelectorAll('.demo-tab').forEach(b=>b.classList.remove('active','bg-purple-700','text-white'));
-        btn.classList.add('active','bg-purple-700','text-white');
-        const target = btn.getAttribute('data-target');
-        document.querySelectorAll('.demo-panel').forEach(p=>p.classList.add('hidden'));
-        document.getElementById(target).classList.remove('hidden');
-      });
-    });
+    let applyingJobId = null;
+    function openApply(id){
+      applyingJobId = id;
+      const job = jobs.find(x=>x.id===id);
+      document.getElementById('applyTitle').innerText = `Apply: ${job.title}`;
+      const u = getUser();
+      document.getElementById('appName').value = u?.name || '';
+      document.getElementById('appEmail').value = u?.email || '';
+      document.getElementById('appMobile').value = u?.mobile || '';
+      document.getElementById('applyModal').classList.remove('hidden');
+    }
+    function closeApply(){ document.getElementById('applyModal').classList.add('hidden'); applyingJobId = null; }
+    function submitApplication(){
+      const name = document.getElementById('appName').value.trim();
+      const email = document.getElementById('appEmail').value.trim();
+      const mobile = document.getElementById('appMobile').value.trim();
+      if(!name || !email || !mobile){ showToast('Please fill all fields.'); return; }
+      closeApply();
+      showToast('Application submitted (demo).');
+      // store demo application in localStorage (optional)
+      const apps = JSON.parse(localStorage.getItem('demo_applications') || '[]');
+      apps.push({ jobId: applyingJobId, name, email, mobile, date: new Date().toISOString() });
+      localStorage.setItem('demo_applications', JSON.stringify(apps));
+    }
 
-    // Resume popup
-    function openDemoResume(){ document.getElementById('demoResumePopup').classList.remove('hidden'); }
-    function closeDemoResume(){ document.getElementById('demoResumePopup').classList.add('hidden'); }
-    document.getElementById('demoResumeForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      alert('Demo: PDF will be generated (use production frontend for real jsPDF).');
-      closeDemoResume();
-    });
+    /* -------------------------
+       Login / Profile (localStorage demo)
+       ------------------------- */
+    function openLogin(){ document.getElementById('loginModal').classList.remove('hidden'); }
+    function closeLogin(){ document.getElementById('loginModal').classList.add('hidden'); }
+    function doLogin(){
+      const name = document.getElementById('loginName').value.trim();
+      const email = document.getElementById('loginEmail').value.trim();
+      const mobile = document.getElementById('loginMobile').value.trim();
+      if(!name || !email || !mobile){ showToast('Please complete the form.'); return; }
+      const user = { name, email, mobile };
+      localStorage.setItem('mk_user_demo', JSON.stringify(user));
+      closeLogin();
+      updateProfile();
+      switchTo('profile');
+      showToast('Logged in (demo).');
+    }
+    function getUser(){
+      try { return JSON.parse(localStorage.getItem('mk_user_demo')); } catch(e){ return null; }
+    }
+    function updateProfile(){
+      const u = getUser();
+      const card = document.getElementById('profileCard');
+      const prompt = document.getElementById('pfPrompt');
+      if(u){
+        card.classList.remove('hidden'); prompt.classList.add('hidden');
+        document.getElementById('pfName').innerText = u.name;
+        document.getElementById('pfEmail').innerText = u.email;
+        document.getElementById('pfMobile').innerText = u.mobile;
+        document.getElementById('pfAddress').innerText = 'Singhana, Jhunjhunu (Raj.), India';
+      } else {
+        card.classList.add('hidden'); prompt.classList.remove('hidden');
+      }
+    }
+    function logout(){
+      localStorage.removeItem('mk_user_demo');
+      updateProfile();
+      showToast('Logged out.');
+      switchTo('home');
+    }
+    // init
+    updateProfile();
 
-    // Auth demo
-    document.getElementById('demoOpenLogin').addEventListener('click', ()=> document.getElementById('demoAuth').classList.remove('hidden'));
-    function closeDemoAuth(){ document.getElementById('demoAuth').classList.add('hidden'); }
-    function showDemoSignup(){ document.getElementById('demoLogin').classList.add('hidden'); document.getElementById('demoSignup').classList.remove('hidden'); }
-    function showDemoLogin(){ document.getElementById('demoLogin').classList.remove('hidden'); document.getElementById('demoSignup').classList.add('hidden'); }
+    /* -------------------------
+       Resume builder logic (steps & PDF)
+       ------------------------- */
+    let chStep = 1;
+    const totalSteps = 3;
+    function chNext(){
+      if(chStep === 1){
+        // validation basic
+        const name = document.getElementById('chName').value.trim();
+        const email = document.getElementById('chEmail').value.trim();
+        const mobile = document.getElementById('chMobile').value.trim();
+        if(!name || !email || !mobile){ showToast('Please complete personal details.'); return; }
+      }
+      if(chStep < totalSteps) { chStep++; updateChUI(); }
+    }
+    function chPrev(){ if(chStep > 1){ chStep--; updateChUI(); } }
+    function updateChUI(){
+      for(let i=1;i<=totalSteps;i++){
+        const s = document.getElementById('chStep'+i);
+        if(i===chStep) s.classList.remove('hidden'); else s.classList.add('hidden');
+      }
+      document.getElementById('prevBtn').classList.toggle('hidden', chStep===1);
+      document.getElementById('nextBtn').classList.toggle('hidden', chStep===totalSteps);
+      document.getElementById('downloadBtn').classList.toggle('hidden', chStep!==totalSteps);
+      // progress
+      const pct = Math.round((chStep/totalSteps)*100);
+      document.getElementById('stepProgress').style.width = pct + '%';
+      const titles = ['Step 1 of 3 — Personal','Step 2 of 3 — Education & Work','Step 3 of 3 — Skills & Summary'];
+      document.getElementById('stepIndicator').innerText = titles[chStep-1];
+    }
+    updateChUI();
 
-    // COPY BUTTONS
-    document.querySelectorAll('.copy-btn').forEach(btn=>{
-      btn.addEventListener('click', async ()=> {
-        const id = btn.getAttribute('data-target');
-        const el = document.getElementById(id);
-        if (!el) return;
-        try {
-          await navigator.clipboard.writeText(el.textContent);
-          btn.textContent = 'Copied ✓';
-          setTimeout(()=> btn.textContent = 'Copy', 2000);
-        } catch (err) {
-          alert('Copy failed — open this page in a secure context (https) or select manually.');
-        }
-      });
-    });
+    function downloadCareerHollicPDF(){
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'pt' });
+      // collect data
+      const name = document.getElementById('chName').value || '';
+      const address = document.getElementById('chAddress').value || '';
+      const email = document.getElementById('chEmail').value || '';
+      const mobile = document.getElementById('chMobile').value || '';
+      const education = document.getElementById('chEducation').value || '';
+      const work = document.getElementById('chWork').value || '';
+      const summary = document.getElementById('chSummary').value || '';
+      const skills = document.getElementById('chSkills').value || '';
 
-    // Small UX: toggle dark class with double-click on header (just a tiny helper)
-    document.querySelector('header').addEventListener('dblclick', ()=> document.documentElement.classList.toggle('dark'));
+      // simple PDF layout
+      doc.setFontSize(18); doc.setFont('helvetica','bold');
+      doc.text(name || 'RESUME', 40, 50);
+      doc.setFontSize(11); doc.setFont('helvetica','normal');
+      doc.text(`Email: ${email}`, 40, 70);
+      doc.text(`Mobile: ${mobile}`, 40, 86);
+      doc.text(`Address: ${address}`, 40, 102);
+
+      let y = 130;
+      if(summary){
+        doc.setFont('helvetica','bold'); doc.text('Professional Summary', 40, y); y+=16;
+        doc.setFont('helvetica','normal');
+        const lines = doc.splitTextToSize(summary, 500);
+        doc.text(lines, 40, y); y += lines.length * 14 + 8;
+      }
+
+      if(skills){
+        doc.setFont('helvetica','bold'); doc.text('Skills', 40, y); y+=16;
+        doc.setFont('helvetica','normal');
+        const skillsLine = skills.split(',').map(s=>s.trim()).join(', ');
+        doc.text(skillsLine, 40, y); y += 22;
+      }
+
+      if(education){
+        doc.setFont('helvetica','bold'); doc.text('Education', 40, y); y+=16;
+        doc.setFont('helvetica','normal');
+        const edLines = education.split('\n').map(l=>l.trim()).filter(Boolean);
+        edLines.forEach(line => { const l = doc.splitTextToSize(line, 500); doc.text(l, 40, y); y += l.length * 14 + 6; });
+      }
+
+      if(work){
+        doc.setFont('helvetica','bold'); doc.text('Work Experience', 40, y); y+=16;
+        doc.setFont('helvetica','normal');
+        const wLines = work.split('\n').map(l=>l.trim()).filter(Boolean);
+        wLines.forEach(line => { const l = doc.splitTextToSize(line, 500); doc.text(l, 40, y); y += l.length * 14 + 6; });
+      }
+
+      // filename
+      const filename = (name ? name.replace(/\s+/g,'_') : 'resume') + '_Resume.pdf';
+      doc.save(filename);
+      showToast('PDF downloaded.');
+    }
+
+    /* -------------------------
+       small helpers for UX
+       ------------------------- */
+    function openResumeBuilder(){ switchTo('resume'); window.scrollTo({top:0,behavior:'smooth'}); }
+    // ensure profile updates when page loads (if logged in)
+    updateProfile();
   </script>
 </body>
 </html>
