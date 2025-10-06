@@ -1,415 +1,220 @@
-<!doctype html>
-<html lang="hi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MK Consultancy — Career Services & Resume Builder</title>
-  <meta name="description" content="MK Consultancy, Singhana — Resume builder, job placement, interview preparation, and career guidance. Create resume and download PDF instantly." />
-  <meta name="theme-color" content="#6D28D9" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="MK Consultancy — Career Services & Resume Builder" />
-  <meta property="og:description" content="Professional resume builder, job listings, interview prep & placement support. Create and download your resume as PDF." />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f4f56058c7f2f2c2b1ca93f9d4c6a7c" />
-  <meta property="og:type" content="website" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Fonts & CSS -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MK Consultancy — Placement & Resume Services</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+  <meta name="description" content="MK Consultancy — Professional job placement, resume building, and interview preparation services in Singhana, Rajasthan.">
+  <meta name="keywords" content="MK Consultancy, Job Placement, Resume Service, Career Guidance, Singhana, Rajasthan">
+  <link rel="icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--accent:#6D28D9}
-    body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial; background:linear-gradient(180deg,#fbfbff 0%, #f6f6ff 100%);}
-    .btn-primary{background:var(--accent);color:#fff;padding:.6rem 1rem;border-radius:.6rem;font-weight:600;box-shadow:0 8px 24px rgba(109,40,217,.12)}
-    .btn-primary:hover{transform:translateY(-3px)}
-    .btn-outline{background:#fff;border:2px solid var(--accent);color:var(--accent);padding:.55rem .9rem;border-radius:.6rem;font-weight:600}
-    .tab-active{background:var(--accent);color:#fff;padding:.35rem .5rem;border-radius:.45rem}
-    .card-hover:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(13,24,70,.06)}
-    input,textarea,select{border:1px solid #e6e6e9;padding:.6rem;border-radius:.6rem}
+    body { font-family: 'Inter', sans-serif; }
+    .btn-primary { @apply bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-purple-800 transition; }
+    .btn-secondary { @apply bg-white border border-purple-700 text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-100 transition; }
   </style>
 </head>
-<body>
 
-  <!-- Header -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b">
-    <div class="max-w-6xl mx-auto px-4 md:px-6 flex items-center justify-between py-4">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-extrabold">MK</div>
-        <div>
-          <h1 class="text-lg md:text-2xl font-extrabold text-purple-700">MK Consultancy</h1>
-          <p class="text-xs text-gray-500 -mt-1">Career Services · Resume Builder · Job Placement</p>
-        </div>
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900 min-h-screen">
+
+<!-- Header -->
+<header class="flex justify-between items-center p-6 bg-white shadow-md sticky top-0 z-50">
+  <h1 class="text-3xl font-extrabold tracking-wide text-purple-700">MK Consultancy</h1>
+  <nav class="space-x-4 text-sm md:text-base">
+    <a href="#about" class="hover:text-purple-600 transition">About</a>
+    <a href="#services" class="hover:text-purple-600 transition">Services</a>
+    <a href="#whyus" class="hover:text-purple-600 transition">Why Us</a>
+    <a href="#contact" class="hover:text-purple-600 transition">Contact</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="text-center py-24 px-6 bg-gradient-to-r from-purple-200 via-white to-purple-100">
+  <h2 class="text-5xl font-extrabold mb-6 text-purple-800">Build Your Career With MK Consultancy</h2>
+  <p class="max-w-3xl mx-auto text-lg text-gray-700 mb-8">
+    <strong>Our Vision:</strong> To empower every job seeker with the right guidance, professional resume, and opportunity to achieve their dream career.  
+    We believe in creating bridges between ambition and achievement.
+  </p>
+  <div class="flex justify-center gap-4">
+    <button onclick="openResumePopup()" class="btn-primary">Make Your Resume</button>
+    <a href="#services" class="btn-secondary">Explore Services</a>
+  </div>
+</section>
+
+<!-- Resume Popup -->
+<div id="resumePopup" class="fixed inset-0 hidden bg-black/50 flex justify-center items-center z-50">
+  <div class="bg-white text-gray-800 rounded-2xl p-8 w-11/12 md:w-1/2 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+    <button onclick="closeResumePopup()" class="absolute top-4 right-4 text-gray-500 hover:text-red-600 text-xl font-bold">✕</button>
+    <h3 class="text-2xl font-bold mb-6 text-purple-700 text-center">Create Resume</h3>
+    <form id="resumeForm" class="space-y-4" onsubmit="generatePDF(event)">
+      <input type="text" name="fullName" placeholder="Full Name" class="w-full border p-3 rounded-lg" required />
+      <input type="text" name="address" placeholder="Address" class="w-full border p-3 rounded-lg" required />
+      <input type="email" name="email" placeholder="Email" class="w-full border p-3 rounded-lg" required />
+      <input type="tel" name="mobile" placeholder="Mobile Number" class="w-full border p-3 rounded-lg" required />
+      <label class="block text-sm font-semibold text-gray-600">Date of Birth <span class="text-xs text-gray-400">(e.g. 1998-07-15)</span></label>
+      <input type="date" name="dob" class="w-full border p-3 rounded-lg" required />
+      <input type="text" name="birthPlace" placeholder="Place of Birth" class="w-full border p-3 rounded-lg" />
+      
+      <label class="block text-sm font-semibold text-gray-600">Marital Status</label>
+      <select name="maritalStatus" class="w-full border p-3 rounded-lg">
+        <option value="Unmarried">Unmarried</option>
+        <option value="Married">Married</option>
+      </select>
+
+      <textarea name="education" placeholder="Education Background (Primary, Secondary, Tertiary)" class="w-full border p-3 rounded-lg h-24"></textarea>
+      <textarea name="workHistory" placeholder="Employment History (Company, Role, Dates)" class="w-full border p-3 rounded-lg h-24"></textarea>
+
+      <div class="flex justify-between gap-3">
+        <button type="submit" class="btn-primary flex-1">Generate PDF</button>
+        <button type="button" onclick="closeResumePopup()" class="btn-secondary flex-1">Cancel</button>
       </div>
+    </form>
+  </div>
+</div>
 
-      <nav class="hidden md:flex items-center gap-3 text-sm">
-        <button class="nav-btn tab-active" data-target="home">Home</button>
-        <button class="nav-btn" data-target="services">Services</button>
-        <button class="nav-btn" data-target="jobs">Jobs</button>
-        <button class="nav-btn" data-target="resume">Resume Builder</button>
-        <a href="#contact" class="nav-btn">Contact</a>
-        <a href="https://wa.me/919664225417" target="_blank" class="ml-2 btn-outline">WhatsApp</a>
-      </nav>
-
-      <div class="md:hidden">
-        <button id="menuToggle" class="px-3 py-2 border rounded" onclick="toggleMobile()">Menu</button>
-      </div>
+<!-- Services Section -->
+<section id="services" class="py-20 px-8 text-center bg-white">
+  <h2 class="text-4xl font-bold mb-10 text-purple-700">Our Professional Services</h2>
+  <div class="grid md:grid-cols-3 gap-8">
+    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
+      <h3 class="font-bold text-xl mb-3 text-purple-700">Job Placement</h3>
+      <p>Connecting skilled candidates with top companies for suitable positions across Rajasthan and beyond.</p>
     </div>
-
-    <!-- Mobile links -->
-    <div id="mobileNav" class="md:hidden hidden border-t">
-      <div class="px-4 pb-4 pt-2 space-y-2">
-        <button class="nav-btn w-full text-left" data-target="home">Home</button>
-        <button class="nav-btn w-full text-left" data-target="services">Services</button>
-        <button class="nav-btn w-full text-left" data-target="jobs">Jobs</button>
-        <button class="nav-btn w-full text-left" data-target="resume">Resume Builder</button>
-        <a class="w-full block text-left p-2" href="#contact">Contact</a>
-      </div>
+    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
+      <h3 class="font-bold text-xl mb-3 text-purple-700">Interview Preparation</h3>
+      <p>Mock sessions and personalized training to help you succeed in real-world interviews confidently.</p>
     </div>
-  </header>
-
-  <!-- Main container -->
-  <main class="max-w-6xl mx-auto px-4 md:px-6 py-10">
-
-    <!-- HERO -->
-    <section id="home" class="section tab-content">
-      <div class="grid md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h2 class="text-4xl md:text-5xl font-extrabold text-purple-700 leading-tight">Aapke career ka agla kadam — <span class="text-gray-900">MK Consultancy</span></h2>
-          <p class="mt-4 text-gray-600 max-w-xl">Professional resume builder, interview preparation, and job placement services — tailored for students and professionals in Rajasthan and across India.</p>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <button class="btn-primary" onclick="openResume()">Banaye Resume</button>
-            <button class="btn-outline" onclick="scrollToSection('jobs')">Open Jobs</button>
-            <a class="btn-outline" href="https://wa.me/919664225417" target="_blank">Chat on WhatsApp</a>
-          </div>
-
-          <ul class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
-            <li class="bg-white p-4 rounded-lg shadow-sm flex gap-3 items-start card-hover">
-              <div class="rounded-lg bg-purple-50 w-10 h-10 flex items-center justify-center text-purple-700 font-bold">✓</div>
-              <div>
-                <div class="text-sm font-semibold">Resume PDF</div>
-                <div class="text-xs text-gray-500">Instant download after building</div>
-              </div>
-            </li>
-            <li class="bg-white p-4 rounded-lg shadow-sm flex gap-3 items-start card-hover">
-              <div class="rounded-lg bg-purple-50 w-10 h-10 flex items-center justify-center text-purple-700 font-bold">⦿</div>
-              <div>
-                <div class="text-sm font-semibold">Interview Prep</div>
-                <div class="text-xs text-gray-500">Mock sessions & tips</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="hidden md:block">
-          <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 shadow-lg">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f4f56058c7f2f2c2b1ca93f9d4c6a7c" alt="Career" class="rounded-xl w-full h-56 object-cover mb-4">
-            <h3 class="text-lg font-semibold text-purple-700">Professional Resume Builder</h3>
-            <p class="text-sm text-gray-600 mt-2">Step-by-step resume creation with export to PDF.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services" class="section tab-content hidden py-10">
-      <h3 class="text-3xl font-bold text-purple-700 text-center">Services</h3>
-      <div class="mt-8 grid md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm">
-          <h4 class="font-semibold text-purple-700">Resume Writing</h4>
-          <p class="text-sm text-gray-600 mt-2">Recruiter-friendly resumes tailored to job roles.</p>
-        </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm">
-          <h4 class="font-semibold text-purple-700">Interview Coaching</h4>
-          <p class="text-sm text-gray-600 mt-2">Mock interviews and feedback to boost confidence.</p>
-        </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm">
-          <h4 class="font-semibold text-purple-700">Job Placement</h4>
-          <p class="text-sm text-gray-600 mt-2">We connect candidates with local employers and recruiters.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- JOBS -->
-    <section id="jobs" class="section tab-content hidden py-10">
-      <h3 class="text-3xl font-bold text-purple-700 text-center">Open Positions</h3>
-      <div id="jobList" class="mt-8 grid md:grid-cols-2 gap-6"></div>
-    </section>
-
-    <!-- RESUME BUILDER -->
-    <section id="resume" class="section tab-content hidden py-10">
-      <h3 class="text-3xl font-bold text-purple-700 text-center mb-6">Resume Builder</h3>
-
-      <div class="max-w-3xl mx-auto bg-white rounded-2xl p-6 shadow-sm">
-        <div class="flex items-center gap-3 mb-6">
-          <div id="stepText" class="text-sm text-gray-500">Step 1 of 3 — Personal Details</div>
-          <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div id="progressBar" class="h-2 bg-purple-600 w-1/3 transition-all"></div>
-          </div>
-        </div>
-
-        <form id="resumeForm" onsubmit="event.preventDefault(); generateResumePDF();">
-          <!-- Step 1 -->
-          <div id="step1" class="step">
-            <label class="block text-sm font-semibold">Full Name</label>
-            <input id="name" required class="mt-1" placeholder="Your full name" />
-
-            <div class="grid md:grid-cols-2 gap-3 mt-3">
-              <div>
-                <label class="block text-sm font-semibold">Email</label>
-                <input id="email" type="email" required class="mt-1" placeholder="you@example.com" />
-              </div>
-              <div>
-                <label class="block text-sm font-semibold">Mobile</label>
-                <input id="mobile" type="tel" required class="mt-1" placeholder="+91 9xxxxxxxxx" />
-              </div>
-            </div>
-
-            <label class="block text-sm font-semibold mt-3">Address</label>
-            <input id="address" class="mt-1" placeholder="City, State, Country" />
-          </div>
-
-          <!-- Step 2 -->
-          <div id="step2" class="step hidden">
-            <label class="block text-sm font-semibold">Education (one per line)</label>
-            <textarea id="education" rows="4" class="mt-1" placeholder="B.Sc. — 2018 — XYZ University"></textarea>
-
-            <label class="block text-sm font-semibold mt-3">Work Experience (one per line)</label>
-            <textarea id="work" rows="4" class="mt-1" placeholder="Software Developer — Company — Jun 2019 to Present"></textarea>
-          </div>
-
-          <!-- Step 3 -->
-          <div id="step3" class="step hidden">
-            <label class="block text-sm font-semibold">Professional Summary</label>
-            <textarea id="summary" rows="3" class="mt-1" placeholder="Short summary about you"></textarea>
-
-            <label class="block text-sm font-semibold mt-3">Skills (comma separated)</label>
-            <input id="skills" class="mt-1" placeholder="JavaScript, HTML, CSS, React, SQL" />
-          </div>
-
-          <div class="flex items-center gap-3 mt-4">
-            <button type="button" id="backBtn" class="btn-outline hidden" onclick="prevStep()">Back</button>
-            <button type="button" id="nextBtn" class="btn-primary" onclick="nextStep()">Next</button>
-            <button type="submit" id="downloadBtn" class="btn-primary hidden">Download PDF</button>
-            <div class="ml-auto text-xs text-gray-500">Your data saved locally in browser during session.</div>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section tab-content hidden py-10">
-      <h3 class="text-3xl font-bold text-purple-700 text-center">Contact / Enquiry</h3>
-      <div class="max-w-3xl mx-auto mt-6 bg-white rounded-2xl p-6 shadow-sm">
-        <p class="text-sm text-gray-600">Direct contact: <strong>+91 9664225417</strong> · <a href="mailto:mkconsultancysinghana@gmail.com" class="text-purple-700 underline">mkconsultancysinghana@gmail.com</a></p>
-
-        <form id="contactForm" class="mt-4" onsubmit="event.preventDefault(); sendContact();">
-          <label class="block text-sm font-medium">Your Name</label>
-          <input id="cName" required class="mt-1 mb-2" />
-
-          <label class="block text-sm font-medium">Email</label>
-          <input id="cEmail" type="email" required class="mt-1 mb-2" />
-
-          <label class="block text-sm font-medium">Message</label>
-          <textarea id="cMsg" rows="4" required class="mt-1 mb-3"></textarea>
-
-          <div class="flex gap-3">
-            <button type="submit" class="btn-primary">Send Message</button>
-            <a href="https://wa.me/919664225417" target="_blank" class="btn-outline">WhatsApp</a>
-          </div>
-        </form>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-white border-t">
-    <div class="max-w-6xl mx-auto px-4 md:px-6 py-6 text-sm text-gray-600 flex flex-col md:flex-row items-center justify-between gap-2">
-      <div>📍 Singhana, Jhunjhunu (Raj.) · 📞 <a href="tel:+919664225417" class="text-purple-700">+91 9664225417</a> · ✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="text-purple-700">mkconsultancysinghana@gmail.com</a></div>
-      <div>© 2025 MK Consultancy — All rights reserved.</div>
+    <div class="bg-purple-50 p-8 rounded-2xl shadow-md hover:scale-105 transition">
+      <h3 class="font-bold text-xl mb-3 text-purple-700">Resume Building</h3>
+      <p>Get a professional, modern, and recruiter-approved resume crafted in minutes.</p>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <!-- Floating WhatsApp -->
-  <a href="https://wa.me/919664225417" target="_blank" aria-label="WhatsApp" class="fixed bottom-6 right-6 bg-green-500 p-4 rounded-full shadow-lg hover:scale-105">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.93 11.93 0 0 0 12.02.5C6.1.5 1.52 5.08 1.52 11c0 1.93.5 3.83 1.45 5.48L.25 23.5l6.69-1.76c1.57.86 3.31 1.31 5.08 1.31 5.92 0 10.5-4.58 10.5-10.5 0-3.02-1.19-5.85-3.7-7.55zM12 21.5c-1.5 0-3-.36-4.35-1.04l-.31-.16-3.98 1.05 1.08-3.66-.2-.35A8.5 8.5 0 1 1 20.5 12c0 4.7-3.8 8.5-8.5 8.5z"></path><path d="M17.1 14.03c-.29-.15-1.7-.84-1.96-.93-.26-.09-.45-.15-.64.15-.19.29-.73.93-.9 1.12-.17.19-.34.21-.63.07-.29-.15-1.23-.45-2.35-1.45-.87-.78-1.46-1.74-1.63-2.04-.17-.31-.02-.48.13-.63.14-.14.31-.34.47-.51.15-.17.2-.29.3-.50.1-.20.04-.38-.02-.53-.07-.15-.64-1.54-.88-2.12-.23-.55-.46-.48-.64-.49l-.55-.01c-.19 0-.5.07-.77.36-.28.29-1.06 1.03-1.06 2.5 0 1.46 1.09 2.87 1.24 3.07.15.19 2.14 3.34 5.18 4.65 3.03 1.31 3.03.87 3.57.82.54-.06 1.74-.71 1.99-1.4.25-.69.25-1.28.18-1.40-.08-.12-.27-.19-.56-.34z"></path></svg>
-  </a>
+<!-- Why Choose Us -->
+<section id="whyus" class="py-20 px-8 bg-gradient-to-r from-purple-50 via-white to-purple-50 text-center">
+  <h2 class="text-4xl font-bold mb-8 text-purple-700">Why Choose MK Consultancy?</h2>
+  <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h4 class="font-semibold text-lg text-purple-700 mb-2">Trusted Network</h4>
+      <p>Strong tie-ups with reputed educational institutions and companies in Singhana and nearby cities.</p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h4 class="font-semibold text-lg text-purple-700 mb-2">Personalized Support</h4>
+      <p>We treat every candidate individually, guiding them to the right job or opportunity.</p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h4 class="font-semibold text-lg text-purple-700 mb-2">Affordable & Fast</h4>
+      <p>Quick services at minimal charges — perfect for students, freshers, and professionals alike.</p>
+    </div>
+  </div>
+</section>
 
-  <!-- Toast -->
-  <div id="toast" class="fixed left-6 bottom-6 hidden bg-black text-white px-4 py-2 rounded-lg"></div>
+<!-- Testimonials -->
+<section class="py-20 px-8 bg-white text-center">
+  <h2 class="text-4xl font-bold mb-8 text-purple-700">What Our Clients Say</h2>
+  <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    <div class="bg-purple-50 p-6 rounded-2xl shadow-md">
+      <p class="italic mb-3"> “MK Consultancy has been a great support in helping our students get placed in reputed companies.
+        With their guidance and recruitment assistance, more than <strong>200+ candidates</strong> have successfully started their careers. 
+        Their commitment to youth employment is truly commendable.”</p>
+      <p class="font-semibold text-purple-700">— Virendra Singh  Shekhawat</p>
+    </div>
+    <div class="bg-purple-50 p-6 rounded-2xl shadow-md">
+      <p class="italic mb-3">“Professional guidance and interview practice gave me the confidence to crack my interviews easily.”</p>
+      <p class="font-semibold text-purple-700">— Anil Kumar</p>
+    </div>
+  </div>
+</section>
 
-  <script>
-    /* UI helpers */
-    function showToast(msg, t=3000){
-      const el = document.getElementById('toast');
-      el.innerText = msg; el.classList.remove('hidden');
-      setTimeout(()=> el.classList.add('hidden'), t);
-    }
+<!-- About / CEO Section -->
+<section id="about" class="py-20 bg-purple-50 px-6 text-center">
+  <h3 class="text-3xl font-bold text-purple-800 mb-4">Manish Kumar</h3>
+  <p class="text-purple-600 font-semibold mb-6">CEO / Manager</p>
+  <p class="max-w-3xl mx-auto text-gray-700 text-lg mb-8">
+    Welcome to MK Consultancy! Our mission is to empower professionals with the tools, guidance, and opportunities to succeed in their careers.
+    With personalized resume building, interview coaching, and job placement services, we ensure every client is prepared to shine.
+  </p>
+  
+  <h4 class="text-2xl font-semibold text-purple-700 mb-4">Our Trusted Partners</h4>
+  <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+    <div class="bg-white p-6 rounded-xl shadow-md w-72">
+      <h5 class="font-bold text-purple-700">Lakshyaraj Skill Edutech Foundation</h5>
+      <p class="text-sm text-gray-600 mt-1">Singhana, Rajasthan</p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-md w-72">
+      <h5 class="font-bold text-purple-700">IT Excellent Computer Center</h5>
+      <p class="text-sm text-gray-600 mt-1">Singhana, Rajasthan</p>
+    </div>
+  </div>
+</section>
 
-    function toggleMobile(){ document.getElementById('mobileNav').classList.toggle('hidden'); }
+<!-- Contact -->
+<section id="contact" class="py-20 px-6 bg-white text-center">
+  <h2 class="text-3xl font-bold mb-6 text-purple-700">Get in Touch</h2>
+  <p class="text-gray-700 mb-4">Have questions or need career advice? We’re here to help you every step of the way.</p>
+  <p>📍 MK Consultancy — Singhana, Rajasthan</p>
+  <p>📞 +91 9664225417</p>
+  <p>✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="underline text-purple-700">mkconsultancysinghana@gmail.com</a></p>
+</section>
 
-    // Nav buttons
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = btn.getAttribute('data-target');
-        if(target) {
-          document.querySelectorAll('.tab-content').forEach(s=>s.classList.add('hidden'));
-          document.getElementById(target).classList.remove('hidden');
-          window.scrollTo({top:0,behavior:'smooth'});
-        }
-      });
+<footer class="bg-purple-100 py-6 text-center text-sm text-gray-700 shadow-inner">
+  © 2025 MK Consultancy — All rights reserved.
+</footer>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/919664225417" target="_blank" aria-label="Chat on WhatsApp" class="fixed bottom-5 right-5 bg-green-500 p-4 rounded-full shadow-lg hover:bg-green-600">💬</a>
+
+<!-- Scripts -->
+<script>
+  function openResumePopup() {
+    document.getElementById('resumePopup').classList.remove('hidden');
+  }
+  function closeResumePopup() {
+    document.getElementById('resumePopup').classList.add('hidden');
+  }
+
+  async function generatePDF(e) {
+    e.preventDefault();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const form = document.getElementById('resumeForm');
+    const data = Object.fromEntries(new FormData(form));
+
+    doc.setFontSize(18);
+    doc.text('RESUME', 105, 20, null, null, 'center');
+    doc.setFontSize(12);
+    let y = 35;
+    const lines = [
+      `Full Name: ${data.fullName}`,
+      `Address: ${data.address}`,
+      `Email: ${data.email}`,
+      `Mobile: ${data.mobile}`,
+      `Date of Birth: ${data.dob}`,
+      `Place of Birth: ${data.birthPlace}`,
+      `Marital Status: ${data.maritalStatus}`,
+      '',
+      'Education Background:',
+      data.education || 'N/A',
+      '',
+      'Employment History:',
+      data.workHistory || 'N/A',
+    ];
+
+    lines.forEach(line => {
+      doc.text(line, 20, y);
+      y += 10;
+      if (y > 270) { doc.addPage(); y = 20; }
     });
 
-    // helper: scroll to section
-    function scrollToSection(id){
-      const el = document.getElementById(id);
-      if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
-      // show that section
-      document.querySelectorAll('.tab-content').forEach(s=>s.classList.add('hidden'));
-      el.classList.remove('hidden');
-    }
+    doc.save(`${data.fullName.replace(/\s+/g, '_')}_Resume.pdf`);
+    closeResumePopup();
+    form.reset();
+  }
+</script>
 
-    /* Jobs data and rendering */
-    const jobs = [
-      {id:1, title:'Software Developer', company:'TechCorp', location:'Jaipur, Rajasthan', desc:'Frontend / Fullstack — HTML, CSS, JS required.'},
-      {id:2, title:'Data Analyst', company:'InfoTech', location:'Delhi', desc:'SQL, Excel, Tableau preferred.'},
-      {id:3, title:'Graphic Designer', company:'Creative Minds', location:'Udaipur, Rajasthan', desc:'Portfolio required — Adobe Suite.'}
-    ];
-    function renderJobs(){
-      const list = document.getElementById('jobList');
-      list.innerHTML = '';
-      jobs.forEach(j => {
-        const card = document.createElement('div');
-        card.className = 'bg-white p-5 rounded-2xl shadow-sm';
-        card.innerHTML = `
-          <h4 class="text-lg font-semibold text-purple-700">${escapeHtml(j.title)}</h4>
-          <p class="text-sm text-gray-600"><strong>${escapeHtml(j.company)}</strong> · ${escapeHtml(j.location)}</p>
-          <p class="text-sm text-gray-600 mt-2">${escapeHtml(j.desc)}</p>
-          <div class="mt-4 flex gap-3">
-            <a class="btn-primary" href="mailto:mkconsultancysinghana@gmail.com?subject=Application%20for%20${encodeURIComponent(j.title)}&body=Hello%20MK%20Consultancy%2C%0A%0AI%20would%20like%20to%20apply%20for%20the%20position%20of%20${encodeURIComponent(j.title)}.%0A%0ARegards%2C" target="_blank">Apply via Email</a>
-            <button class="btn-outline" onclick="saveJob(${j.id})">Save</button>
-          </div>
-        `;
-        list.appendChild(card);
-      });
-    }
-    function saveJob(id){
-      const saved = JSON.parse(localStorage.getItem('mk_saved_jobs') || '[]');
-      if(!saved.includes(id)) saved.push(id);
-      localStorage.setItem('mk_saved_jobs', JSON.stringify(saved));
-      showToast('Job saved locally.');
-    }
-    renderJobs();
-
-    /* CONTACT form: mailto + backup locally */
-    function sendContact(){
-      const name = document.getElementById('cName').value.trim();
-      const email = document.getElementById('cEmail').value.trim();
-      const msg = document.getElementById('cMsg').value.trim();
-      if(!name||!email||!msg){ showToast('कृपया सभी फ़ील्ड भरें।'); return; }
-      // save locally
-      const contacts = JSON.parse(localStorage.getItem('mk_contacts') || '[]');
-      contacts.push({name,email,msg,date:new Date().toISOString()});
-      localStorage.setItem('mk_contacts', JSON.stringify(contacts));
-      // open mail client
-      const subject = encodeURIComponent('Website Enquiry from ' + name);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`);
-      window.location.href = `mailto:mkconsultancysinghana@gmail.com?subject=${subject}&body=${body}`;
-      showToast('Mail client opened — भेजने के बाद धन्यवाद।');
-      document.getElementById('contactForm').reset();
-    }
-
-    /* Resume builder (CareerHollic-style) */
-    let curStep = 1, total = 3;
-    function updateStepUI(){
-      for(let i=1;i<=total;i++){
-        const el = document.getElementById('step'+i);
-        if(el){ if(i===curStep) el.classList.remove('hidden'); else el.classList.add('hidden'); }
-      }
-      document.getElementById('backBtn').classList.toggle('hidden', curStep===1);
-      document.getElementById('nextBtn').classList.toggle('hidden', curStep===total);
-      document.getElementById('downloadBtn').classList.toggle('hidden', curStep!==total);
-      const pct = Math.round((curStep/total)*100);
-      document.getElementById('progressBar').style.width = pct + '%';
-      const labels = ['Step 1 of 3 — Personal Details','Step 2 of 3 — Education & Work','Step 3 of 3 — Summary & Skills'];
-      document.getElementById('stepText').innerText = labels[curStep-1];
-    }
-    function nextStep(){ 
-      // minimal validation on step1
-      if(curStep===1){
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const mobile = document.getElementById('mobile').value.trim();
-        if(!name||!email||!mobile){ showToast('कृपया व्यक्तिगत विवरण पूरा करें।'); return; }
-      }
-      if(curStep<total){ curStep++; updateStepUI(); }
-    }
-    function prevStep(){ if(curStep>1){ curStep--; updateStepUI(); } }
-    function openResume(){ scrollToSection('resume'); curStep=1; updateStepUI(); }
-
-    updateStepUI();
-
-    function generateResumePDF(){
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({unit:'pt'});
-      const name = document.getElementById('name').value || '';
-      const address = document.getElementById('address').value || '';
-      const email = document.getElementById('email').value || '';
-      const mobile = document.getElementById('mobile').value || '';
-      const education = document.getElementById('education').value || '';
-      const work = document.getElementById('work').value || '';
-      const summary = document.getElementById('summary').value || '';
-      const skills = document.getElementById('skills').value || '';
-
-      doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.text(name || 'RESUME', 40, 50);
-      doc.setFontSize(11); doc.setFont('helvetica','normal');
-      doc.text(`Email: ${email}`, 40, 70);
-      doc.text(`Mobile: ${mobile}`, 40, 86);
-      doc.text(`Address: ${address}`, 40, 102);
-
-      let y = 130;
-      if(summary){
-        doc.setFont('helvetica','bold'); doc.text('Professional Summary', 40, y); y+=16;
-        doc.setFont('helvetica','normal');
-        const lines = doc.splitTextToSize(summary, 500);
-        doc.text(lines, 40, y); y += lines.length * 14 + 8;
-      }
-
-      if(skills){
-        doc.setFont('helvetica','bold'); doc.text('Skills', 40, y); y+=16;
-        doc.setFont('helvetica','normal');
-        doc.text(skills, 40, y); y += 22;
-      }
-
-      if(education){
-        doc.setFont('helvetica','bold'); doc.text('Education', 40, y); y+=16;
-        doc.setFont('helvetica','normal');
-        education.split('\n').filter(Boolean).forEach(line=>{
-          const l = doc.splitTextToSize(line, 500); doc.text(l, 40, y); y += l.length*14 + 6;
-        });
-      }
-
-      if(work){
-        doc.setFont('helvetica','bold'); doc.text('Work Experience', 40, y); y+=16;
-        doc.setFont('helvetica','normal');
-        work.split('\n').filter(Boolean).forEach(line=>{
-          const l = doc.splitTextToSize(line, 500); doc.text(l, 40, y); y += l.length*14 + 6;
-        });
-      }
-
-      const filename = (name ? name.replace(/\s+/g,'_') : 'MK_Resume') + '_Resume.pdf';
-      doc.save(filename);
-      showToast('Resume generated — PDF downloaded.');
-    }
-
-    /* small helpers */
-    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  </script>
 </body>
 </html>
+
