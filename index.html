@@ -9,16 +9,15 @@
   <link rel="icon" href="favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root{
-      --primary-600: #0f4c81; /* deep blue */
+      --primary-600: #0f4c81;
       --primary-500: #146fb3;
-      --muted: #6b7280;
     }
     body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
     .btn-primary { background: linear-gradient(90deg,var(--primary-600),var(--primary-500)); color: white; }
     .btn-outline { border: 1px solid rgba(15,76,129,0.12); color: var(--primary-600); background: white; }
-    /* subtle focus outline */
     :focus { outline: 3px solid rgba(20,111,179,0.12); outline-offset: 2px; }
   </style>
 </head>
@@ -29,7 +28,6 @@
     <div class="max-w-6xl mx-auto px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
         <div class="flex items-center gap-4">
-          <!-- Logo (text) -->
           <a href="#" class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-md bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold">MK</div>
             <div class="hidden sm:block">
@@ -45,13 +43,13 @@
           <a href="#whyus" class="hover:text-[var(--primary-600)] transition">Why Us</a>
           <a href="#testimonials" class="hover:text-[var(--primary-600)] transition">Testimonials</a>
           <a href="#contact" class="hover:text-[var(--primary-600)] transition">Contact</a>
+          <button onclick="openResumePopup()" class="btn-outline px-3 py-1 rounded-md text-sm hover:bg-gray-100">Resume Maker</button>
         </nav>
 
         <div class="flex items-center gap-3">
           <a href="mailto:mkconsultancysinghana@gmail.com" class="hidden md:inline-block text-sm text-gray-600">mkconsultancysinghana@gmail.com</a>
           <a href="tel:+919664225417" class="btn-outline px-4 py-2 rounded-md text-sm hover:bg-gray-50">+91 9664225417</a>
 
-          <!-- Mobile menu button -->
           <button id="mobileBtn" class="md:hidden p-2 rounded-md hover:bg-gray-100">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -61,15 +59,13 @@
       </div>
     </div>
 
-    <!-- Mobile menu -->
-    <div id="mobileMenu" class="md:hidden hidden border-t">
-      <div class="px-6 py-4 space-y-3">
-        <a href="#about" class="block">About</a>
-        <a href="#services" class="block">Services</a>
-        <a href="#whyus" class="block">Why Us</a>
-        <a href="#testimonials" class="block">Testimonials</a>
-        <a href="#contact" class="block">Contact</a>
-      </div>
+    <div id="mobileMenu" class="md:hidden hidden border-t px-6 py-4 space-y-3">
+      <a href="#about" class="block">About</a>
+      <a href="#services" class="block">Services</a>
+      <a href="#whyus" class="block">Why Us</a>
+      <a href="#testimonials" class="block">Testimonials</a>
+      <a href="#contact" class="block">Contact</a>
+      <button onclick="openResumePopup()" class="block w-full text-left text-[var(--primary-600)] font-semibold">Resume Maker</button>
     </div>
   </header>
 
@@ -79,52 +75,28 @@
       <div class="max-w-6xl mx-auto px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-2 gap-10 items-center">
         <div>
           <h2 class="text-4xl sm:text-5xl font-extrabold leading-tight text-[var(--primary-600)]">Build Your Career With MK Consultancy</h2>
-          <p class="mt-4 text-lg text-gray-600 max-w-xl">
-            We empower job seekers with professional guidance, recruiter-ready resumes, interview coaching and trusted placement support across Singhana and nearby regions.
-            If you're looking to start or accelerate your career — you're at the right place.
-          </p>
-
+          <p class="mt-4 text-lg text-gray-600 max-w-xl">We empower job seekers with professional guidance, recruiter-ready resumes, interview coaching and trusted placement support across Singhana and nearby regions.</p>
           <div class="mt-8 space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-4">
             <a href="#services" class="inline-flex items-center justify-center btn-primary px-5 py-3 rounded-md text-sm font-semibold shadow">Explore Services</a>
             <a href="#contact" class="inline-flex items-center justify-center btn-outline px-5 py-3 rounded-md text-sm font-semibold">Contact Us</a>
           </div>
-
-          <div class="mt-8">
-            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-4">
-              <p class="text-sm text-gray-700">Trusted partners: <span class="font-medium text-[var(--primary-600)]">Lakshyaraj Skill Edutech Foundation</span>, <span class="font-medium text-[var(--primary-600)]">IT Excellent Computer Center</span></p>
-            </div>
-          </div>
         </div>
 
-        <!-- Job Search Card (no job listings) -->
+        <!-- Job Search Card -->
         <div>
           <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow p-6">
             <h3 class="text-xl font-semibold text-gray-800">Find Your Dream Job</h3>
-            <p class="text-sm text-gray-600 mt-1">Search jobs by role, location or keyword. (Currently there are no vacancies.)</p>
+            <p class="text-sm text-gray-600 mt-1">(Currently there are no vacancies.)</p>
 
             <form id="jobSearchForm" class="mt-4 grid grid-cols-1 gap-3">
               <input type="text" id="q" name="q" placeholder="Job title, skill or keyword" class="w-full border p-3 rounded-md" />
-              <input type="text" id="loc" name="loc" placeholder="City or location (e.g. Singhana)" class="w-full border p-3 rounded-md" />
+              <input type="text" id="loc" name="loc" placeholder="City or location" class="w-full border p-3 rounded-md" />
               <div class="flex gap-3">
                 <button type="submit" class="flex-1 btn-primary px-4 py-3 rounded-md font-semibold">Search</button>
                 <button type="button" id="clearBtn" class="flex-1 btn-outline px-4 py-3 rounded-md">Clear</button>
               </div>
             </form>
-
-            <!-- Result placeholder -->
-            <div id="searchResult" class="mt-4 rounded-md p-4 bg-white border border-dashed border-gray-200 text-gray-600 hidden">
-              <!-- Filled by JS -->
-            </div>
-
-            <p class="mt-4 text-xs text-gray-500">Tip: You can call or WhatsApp us at <a href="tel:+919664225417" class="text-[var(--primary-600)] font-medium">+91 9664225417</a> for immediate enquiries.</p>
-          </div>
-
-          <!-- Small info panel -->
-          <div class="mt-4">
-            <div class="bg-white p-4 rounded-lg shadow-sm border">
-              <h4 class="text-sm font-semibold text-gray-800">Why register with us?</h4>
-              <p class="text-sm text-gray-600 mt-1">We maintain relationships with local employers and training centers — register your details and we'll reach out as vacancies open up.</p>
-            </div>
+            <div id="searchResult" class="mt-4 rounded-md p-4 bg-white border border-dashed border-gray-200 text-gray-600 hidden"></div>
           </div>
         </div>
       </div>
@@ -134,19 +106,15 @@
     <section id="services" class="py-16 bg-gray-50">
       <div class="max-w-6xl mx-auto px-6 lg:px-8">
         <h3 class="text-3xl font-bold text-[var(--primary-600)]">Our Professional Services</h3>
-        <p class="mt-2 text-gray-600 max-w-2xl">We offer a range of services tailored to students, freshers and working professionals.</p>
-
         <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="bg-white rounded-2xl p-6 shadow-sm border">
             <h4 class="font-semibold text-lg text-[var(--primary-600)]">Job Placement</h4>
             <p class="text-sm text-gray-600 mt-2">Connecting skilled candidates with companies for suitable positions across Rajasthan and beyond.</p>
           </div>
-
           <div class="bg-white rounded-2xl p-6 shadow-sm border">
             <h4 class="font-semibold text-lg text-[var(--primary-600)]">Interview Preparation</h4>
             <p class="text-sm text-gray-600 mt-2">Mock sessions and personalized coaching to help you perform confidently in interviews.</p>
           </div>
-
           <div class="bg-white rounded-2xl p-6 shadow-sm border">
             <h4 class="font-semibold text-lg text-[var(--primary-600)]">Resume Building</h4>
             <p class="text-sm text-gray-600 mt-2">Professional, recruiter-friendly resumes tailored to your target role.</p>
@@ -159,18 +127,18 @@
     <section id="whyus" class="py-16 bg-white">
       <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
         <h3 class="text-3xl font-bold text-[var(--primary-600)]">Why Choose MK Consultancy?</h3>
-        <div class="mt-8 grid md:grid-cols-3 gap-6">
-          <div class="p-6 bg-gray-50 rounded-xl border">
-            <h4 class="font-semibold text-[var(--primary-600)]">Trusted Network</h4>
-            <p class="text-sm text-gray-600 mt-2">Strong tie-ups with reputed educational institutions and companies in Singhana and nearby cities.</p>
+        <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-gray-50 rounded-xl p-6 shadow-sm border">
+            <h4 class="font-semibold text-[var(--primary-600)] mb-2">Trusted Network</h4>
+            <p class="text-gray-600 text-sm">Strong tie-ups with reputed educational institutions and companies in Singhana and nearby cities.</p>
           </div>
-          <div class="p-6 bg-gray-50 rounded-xl border">
-            <h4 class="font-semibold text-[var(--primary-600)]">Personalized Support</h4>
-            <p class="text-sm text-gray-600 mt-2">Individual attention and tailored guidance for each candidate.</p>
+          <div class="bg-gray-50 rounded-xl p-6 shadow-sm border">
+            <h4 class="font-semibold text-[var(--primary-600)] mb-2">Personalized Support</h4>
+            <p class="text-gray-600 text-sm">We treat every candidate individually, guiding them to the right job or opportunity.</p>
           </div>
-          <div class="p-6 bg-gray-50 rounded-xl border">
-            <h4 class="font-semibold text-[var(--primary-600)]">Affordable & Fast</h4>
-            <p class="text-sm text-gray-600 mt-2">Quick services at minimal charges — ideal for students and freshers.</p>
+          <div class="bg-gray-50 rounded-xl p-6 shadow-sm border">
+            <h4 class="font-semibold text-[var(--primary-600)] mb-2">Affordable & Fast</h4>
+            <p class="text-gray-600 text-sm">Quick services at minimal charges — perfect for students, freshers, and professionals alike.</p>
           </div>
         </div>
       </div>
@@ -178,157 +146,98 @@
 
     <!-- Testimonials -->
     <section id="testimonials" class="py-16 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-6 lg:px-8">
-        <h3 class="text-3xl font-bold text-[var(--primary-600)] text-center">What Our Clients Say</h3>
-        <div class="mt-8 grid md:grid-cols-2 gap-6">
-          <div class="bg-white p-6 rounded-2xl shadow-sm border">
-            <p class="italic text-gray-700">“MK Consultancy has been a great support in helping our students get placed in reputed companies. With their guidance and recruitment assistance, more than <strong>200+ candidates</strong> have successfully started their careers. Their commitment to youth employment is truly commendable.”</p>
-            <p class="mt-4 font-semibold text-[var(--primary-600)]">— Virendra Singh Shekhawat</p>
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+        <h3 class="text-3xl font-bold text-[var(--primary-600)]">What Our Clients Say</h3>
+        <div class="mt-8 grid sm:grid-cols-2 gap-6">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border">
+            <p class="italic text-gray-600">“MK Consultancy has been a great support in helping our students get placed in reputed companies. More than <strong>200+ candidates</strong> have successfully started their careers.”</p>
+            <p class="font-semibold mt-4 text-[var(--primary-600)]">— Virendra Singh Shekhawat</p>
           </div>
-
-          <div class="bg-white p-6 rounded-2xl shadow-sm border">
-            <p class="italic text-gray-700">“Professional guidance and interview practice gave me the confidence to crack my interviews easily.”</p>
-            <p class="mt-4 font-semibold text-[var(--primary-600)]">— Anil Kumar</p>
+          <div class="bg-white rounded-2xl p-6 shadow-sm border">
+            <p class="italic text-gray-600">“Professional guidance and interview practice gave me the confidence to crack my interviews easily.”</p>
+            <p class="font-semibold mt-4 text-[var(--primary-600)]">— Anil Kumar</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CEO / About -->
-    <section id="about" class="py-16 bg-white">
-      <div class="max-w-4xl mx-auto px-6 text-center">
-        <h3 class="text-2xl font-bold text-[var(--primary-600)]">Manish Kumar</h3>
-        <p class="text-sm text-gray-600 font-medium">CEO / Manager</p>
-        <p class="mt-4 text-gray-700">
-          Welcome to MK Consultancy! Our mission is to empower professionals with the tools, guidance, and opportunities to succeed in their careers.
-          With personalized resume building, interview coaching, and job placement services, we ensure every client is prepared to shine.
-        </p>
-
-        <div class="mt-6 grid sm:grid-cols-2 gap-4">
-          <div class="bg-gray-50 p-4 rounded-lg border">
-            <h4 class="text-sm font-semibold text-[var(--primary-600)]">Trusted Partners</h4>
-            <p class="text-sm text-gray-600 mt-1">Lakshyaraj Skill Edutech Foundation — Jhunjhunu (Raj.)</p>
-            <p class="text-sm text-gray-600">IT Excellent Computer Center — Singhana(Raj.)</p>
-          </div>
-          <div class="bg-gray-50 p-4 rounded-lg border">
-            <h4 class="text-sm font-semibold text-[var(--primary-600)]">Contact Info</h4>
-            <p class="text-sm text-gray-600 mt-1">📍 Singhana, Rajasthan</p>
-            <p class="text-sm text-gray-600">📞 <a href="tel:+919664225417" class="text-[var(--primary-600)] font-medium">+91 9664225417</a></p>
-            <p class="text-sm text-gray-600">✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="text-[var(--primary-600)] font-medium">mkconsultancysinghana@gmail.com</a></p>
-          </div>
-        </div>
+    <!-- About -->
+    <section id="about" class="py-16 bg-white text-center">
+      <div class="max-w-3xl mx-auto px-6">
+        <h3 class="text-3xl font-bold text-[var(--primary-600)]">Manish Kumar</h3>
+        <p class="text-gray-600 font-semibold mt-1">CEO / Manager</p>
+        <p class="text-gray-600 mt-4">Welcome to MK Consultancy! Our mission is to empower professionals with the tools, guidance, and opportunities to succeed in their careers. Personalized resume building, interview coaching, and job placement services ensure every client is prepared to shine.</p>
       </div>
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="py-16 bg-gray-100">
-      <div class="max-w-4xl mx-auto px-6">
-        <div class="bg-white rounded-2xl p-8 shadow-sm border">
-          <h3 class="text-2xl font-bold text-[var(--primary-600)]">Get in Touch</h3>
-          <p class="text-gray-600 mt-2">Have questions or need career advice? Send us a message or call/WhatsApp for quick support.</p>
-
-          <form id="contactForm" class="mt-6 grid grid-cols-1 gap-4">
-            <div class="grid sm:grid-cols-2 gap-4">
-              <input type="text" name="name" placeholder="Your name" required class="w-full p-3 border rounded-md" />
-              <input type="email" name="email" placeholder="Email address" required class="w-full p-3 border rounded-md" />
-            </div>
-            <input type="tel" name="phone" placeholder="Phone number" class="w-full p-3 border rounded-md" />
-            <textarea name="message" rows="5" placeholder="How can we help?" class="w-full p-3 border rounded-md"></textarea>
-
-            <div class="flex items-center gap-3">
-              <button type="submit" class="btn-primary px-5 py-3 rounded-md font-semibold">Send Message</button>
-              <button type="reset" class="btn-outline px-4 py-3 rounded-md">Reset</button>
-            </div>
-
-            <p id="contactNotice" class="text-sm text-green-600 hidden">Message sent — we'll contact you soon.</p>
-          </form>
-        </div>
+    <section id="contact" class="py-16 bg-gray-50 text-center">
+      <div class="max-w-3xl mx-auto px-6">
+        <h3 class="text-3xl font-bold text-[var(--primary-600)]">Get in Touch</h3>
+        <p class="mt-2 text-gray-600">Have questions or need career advice? We’re here to help you every step of the way.</p>
+        <p class="mt-2">📍 MK Consultancy — Singhana, Rajasthan</p>
+        <p>📞 +91 9664225417</p>
+        <p>✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="underline text-[var(--primary-600)]">mkconsultancysinghana@gmail.com</a></p>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-white border-t">
-    <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-      <div>
-        <h4 class="font-bold text-[var(--primary-600)]">MK Consultancy</h4>
-        <p class="text-sm text-gray-600 mt-1">Placement & Resume Services — Singhana, Rajasthan</p>
-        <p class="text-xs text-gray-400 mt-2">© 2025 MK Consultancy — All rights reserved.</p>
-      </div>
-
-      <div class="flex gap-6">
-        <div>
-          <p class="text-sm font-semibold text-gray-700">Quick Links</p>
-          <ul class="text-sm text-gray-600 mt-2 space-y-1">
-            <li><a href="#services">Services</a></li>
-            <li><a href="#whyus">Why Us</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <p class="text-sm font-semibold text-gray-700">Contact</p>
-          <p class="text-sm text-gray-600 mt-2"><a href="tel:+919664225417" class="text-[var(--primary-600)] font-medium">+91 9664225417</a></p>
-          <p class="text-sm text-gray-600"><a href="mailto:mkconsultancysinghana@gmail.com" class="text-[var(--primary-600)]">mkconsultancysinghana@gmail.com</a></p>
-        </div>
-      </div>
-    </div>
+  <footer class="py-6 text-center text-gray-500 text-sm bg-white border-t">
+    © 2025 MK Consultancy — All rights reserved.
   </footer>
 
-  <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/919664225417" target="_blank" aria-label="Chat on WhatsApp"
-     class="fixed right-5 bottom-5 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg z-50">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15a4 4 0 01-3 3.87A19 19 0 015 5.1 4 4 0 018 3h.5a4 4 0 013 1.2L12 6l1 1 .8.8A4 4 0 0121 15z"/>
-    </svg>
-  </a>
+  <!-- WhatsApp -->
+  <a href="https://wa.me/919664225417" target="_blank" class="fixed bottom-5 right-5 bg-green-500 p-4 rounded-full shadow-lg hover:bg-green-600">💬</a>
 
-  <!-- Scripts -->
+  <!-- Resume Maker Popup -->
+  <div id="resumePopup" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50 overflow-y-auto">
+    <div class="bg-white rounded-2xl p-6 md:p-10 w-11/12 md:w-1/2 relative shadow-2xl">
+      <button onclick="closeResumePopup()" class="absolute top-4 right-4 text-gray-500 hover:text-red-600 font-bold text-xl">✕</button>
+      <h3 class="text-2xl font-bold text-[var(--primary-600)] text-center mb-4">Create Resume</h3>
+      <form id="resumeForm" class="space-y-3" onsubmit="generatePDF(event)">
+        <input type="text" name="fullName" placeholder="Full Name" class="w-full border p-3 rounded-md" required />
+        <input type="text" name="address" placeholder="Address" class="w-full border p-3 rounded-md" required />
+        <input type="email" name="email" placeholder="Email" class="w-full border p-3 rounded-md" required />
+        <input type="tel" name="mobile" placeholder="Mobile Number" class="w-full border p-3 rounded-md" required />
+        <label class="text-sm font-semibold text-gray-500">Date of Birth</label>
+        <input type="date" name="dob" class="w-full border p-3 rounded-md" required />
+        <textarea name="education" placeholder="Education Background" class="w-full border p-3 rounded-md h-20"></textarea>
+        <textarea name="workHistory" placeholder="Employment History" class="w-full border p-3 rounded-md h-20"></textarea>
+        <button type="submit" class="btn-primary w-full py-3 rounded-md mt-2 font-semibold">Generate PDF</button>
+      </form>
+    </div>
+  </div>
+
   <script>
-    // Mobile menu toggle
+    // Mobile Menu
     const mobileBtn = document.getElementById('mobileBtn');
     const mobileMenu = document.getElementById('mobileMenu');
-    mobileBtn?.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+    mobileBtn.addEventListener('click', ()=> mobileMenu.classList.toggle('hidden'));
 
-    // Job search handling: No vacancies shown — friendly notice
-    const jobForm = document.getElementById('jobSearchForm');
-    const resultBox = document.getElementById('searchResult');
-    const clearBtn = document.getElementById('clearBtn');
+    // Resume Popup
+    function openResumePopup() { document.getElementById('resumePopup').classList.remove('hidden'); }
+    function closeResumePopup() { document.getElementById('resumePopup').classList.add('hidden'); }
 
-    jobForm?.addEventListener('submit', (e) => {
+    async function generatePDF(e) {
       e.preventDefault();
-      resultBox.classList.remove('hidden');
-      resultBox.innerHTML = `
-        <div class="text-sm text-gray-700">
-          <p class="font-semibold text-gray-800">No current vacancies</p>
-          <p class="mt-2">Currently there are no job openings listed. Please share your resume or contact us at <a href="tel:+919664225417" class="text-[var(--primary-600)] font-medium">+91 9664225417</a> or email <a href="mailto:mkconsultancysinghana@gmail.com" class="text-[var(--primary-600)]">mkconsultancysinghana@gmail.com</a>. We'll notify you when suitable roles are available.</p>
-        </div>
-      `;
-      // Optional: scroll to result
-      resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-
-    clearBtn?.addEventListener('click', () => {
-      (document.getElementById('q') || {}).value = '';
-      (document.getElementById('loc') || {}).value = '';
-      resultBox.classList.add('hidden');
-      resultBox.innerHTML = '';
-    });
-
-    // Contact form (local demo only) — do basic validation and show notice (no backend)
-    const contactForm = document.getElementById('contactForm');
-    const contactNotice = document.getElementById('contactNotice');
-    contactForm?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      // Here you'd normally send to backend — for now we show a success message
-      contactNotice.classList.remove('hidden');
-      setTimeout(() => {
-        contactNotice.classList.add('hidden');
-        contactForm.reset();
-      }, 2500);
-    });
+      const { jsPDF } = window.jspdf;
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form));
+      const doc = new jsPDF();
+      let y = 20;
+      doc.setFontSize(18); doc.text('RESUME', 105, y, null, null, 'center'); y+=12;
+      doc.setFontSize(12);
+      ['Full Name','Address','Email','Mobile','DOB','Education','Work History'].forEach((field, idx)=>{
+        let value = data[field.replace(' ','').toLowerCase()]||'N/A';
+        doc.text(`${field}: ${value}`, 20, y);
+        y+=10; if(y>280){ doc.addPage(); y=20;}
+      });
+      doc.save(`${data.fullName.replace(/\s+/g,'_')}_Resume.pdf`);
+      form.reset();
+      closeResumePopup();
+    }
   </script>
+
 </body>
 </html>
