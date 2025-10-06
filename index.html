@@ -1,466 +1,373 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hi">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MK Consultancy — Career Portal (Demo)</title>
+  <title>MK Consultancy — Career Services & Resume Builder</title>
+  <meta name="description" content="MK Consultancy, Singhana — Resume builder, job placement, interview preparation, and career guidance. Create resume and download PDF instantly." />
+  <meta name="theme-color" content="#6D28D9" />
 
-  <!-- Tailwind CDN -->
+  <!-- Open Graph -->
+  <meta property="og:title" content="MK Consultancy — Career Services & Resume Builder" />
+  <meta property="og:description" content="Professional resume builder, job listings, interview prep & placement support. Create and download your resume as PDF." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f4f56058c7f2f2c2b1ca93f9d4c6a7c" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts & CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- jsPDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
-    :root { --accent: #6D28D9; } /* purple-700 */
-    body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; scroll-behavior: smooth; }
-    .btn-primary { background-color: var(--accent); color: white; padding: .6rem 1.1rem; border-radius: .6rem; font-weight:600; box-shadow: 0 6px 18px rgba(109,40,217,.12); }
-    .btn-primary:hover { transform: translateY(-3px); }
-    .btn-secondary { background: white; border: 2px solid var(--accent); color: var(--accent); padding: .5rem .9rem; border-radius:.6rem; font-weight:600; }
-    .tab-active { background-color: var(--accent); color: white; border-radius: .5rem; padding: .45rem .6rem; }
-    .modal-show { animation: pop .16s ease-out; }
-    @keyframes pop { from { transform: translateY(8px) scale(.98); opacity: 0 } to { transform: translateY(0) scale(1); opacity:1 } }
-    .card-hover:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 18px 40px rgba(0,0,0,.06); }
-    input, textarea { border: 1px solid #E5E7EB; padding: .6rem; border-radius: .5rem; }
+    :root{--accent:#6D28D9}
+    body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial; background:linear-gradient(180deg,#fbfbff 0%, #f6f6ff 100%);}
+    .btn-primary{background:var(--accent);color:#fff;padding:.6rem 1rem;border-radius:.6rem;font-weight:600;box-shadow:0 8px 24px rgba(109,40,217,.12)}
+    .btn-primary:hover{transform:translateY(-3px)}
+    .btn-outline{background:#fff;border:2px solid var(--accent);color:var(--accent);padding:.55rem .9rem;border-radius:.6rem;font-weight:600}
+    .tab-active{background:var(--accent);color:#fff;padding:.35rem .5rem;border-radius:.45rem}
+    .card-hover:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(13,24,70,.06)}
+    input,textarea,select{border:1px solid #e6e6e9;padding:.6rem;border-radius:.6rem}
   </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-white min-h-screen text-gray-800">
+<body>
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b">
     <div class="max-w-6xl mx-auto px-4 md:px-6 flex items-center justify-between py-4">
       <div class="flex items-center gap-3">
-        <div class="rounded-full w-12 h-12 flex items-center justify-center bg-purple-100 text-purple-700 font-extrabold">MK</div>
+        <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-extrabold">MK</div>
         <div>
-          <h1 class="text-xl md:text-2xl font-extrabold text-purple-700">MK Consultancy</h1>
-          <p class="text-xs text-gray-500 -mt-1">Career Portal — Demo</p>
+          <h1 class="text-lg md:text-2xl font-extrabold text-purple-700">MK Consultancy</h1>
+          <p class="text-xs text-gray-500 -mt-1">Career Services · Resume Builder · Job Placement</p>
         </div>
       </div>
 
       <nav class="hidden md:flex items-center gap-3 text-sm">
-        <button class="tab-btn tab-active px-3 py-2" data-target="home">Home</button>
-        <button class="tab-btn px-3 py-2" data-target="services">Services</button>
-        <button class="tab-btn px-3 py-2" data-target="jobs">Jobs</button>
-        <button class="tab-btn px-3 py-2" data-target="resume">Resume Builder</button>
-        <button class="tab-btn px-3 py-2" data-target="profile">Profile</button>
-        <button id="loginBtn" class="px-3 py-2 border rounded-md text-sm" onclick="openLogin()">Login / Signup</button>
+        <button class="nav-btn tab-active" data-target="home">Home</button>
+        <button class="nav-btn" data-target="services">Services</button>
+        <button class="nav-btn" data-target="jobs">Jobs</button>
+        <button class="nav-btn" data-target="resume">Resume Builder</button>
+        <a href="#contact" class="nav-btn">Contact</a>
+        <a href="https://wa.me/919664225417" target="_blank" class="ml-2 btn-outline">WhatsApp</a>
       </nav>
 
       <div class="md:hidden">
-        <button id="mobileMenuBtn" class="px-3 py-2 rounded-md border" onclick="toggleMobileMenu()">Menu</button>
+        <button id="menuToggle" class="px-3 py-2 border rounded" onclick="toggleMobile()">Menu</button>
       </div>
     </div>
 
-    <!-- mobile menu -->
-    <div id="mobileMenu" class="md:hidden hidden">
-      <div class="px-4 pb-4 space-y-2">
-        <button class="w-full text-left tab-btn p-3" data-target="home">Home</button>
-        <button class="w-full text-left tab-btn p-3" data-target="services">Services</button>
-        <button class="w-full text-left tab-btn p-3" data-target="jobs">Jobs</button>
-        <button class="w-full text-left tab-btn p-3" data-target="resume">Resume Builder</button>
-        <button class="w-full text-left tab-btn p-3" data-target="profile">Profile</button>
-        <button class="w-full text-left p-3" onclick="openLogin()">Login / Signup</button>
+    <!-- Mobile links -->
+    <div id="mobileNav" class="md:hidden hidden border-t">
+      <div class="px-4 pb-4 pt-2 space-y-2">
+        <button class="nav-btn w-full text-left" data-target="home">Home</button>
+        <button class="nav-btn w-full text-left" data-target="services">Services</button>
+        <button class="nav-btn w-full text-left" data-target="jobs">Jobs</button>
+        <button class="nav-btn w-full text-left" data-target="resume">Resume Builder</button>
+        <a class="w-full block text-left p-2" href="#contact">Contact</a>
       </div>
     </div>
   </header>
 
-  <!-- Main -->
-  <main class="max-w-6xl mx-auto px-4 md:px-6 py-8">
+  <!-- Main container -->
+  <main class="max-w-6xl mx-auto px-4 md:px-6 py-10">
 
-    <!-- Home -->
-    <section id="home" class="tab-content">
+    <!-- HERO -->
+    <section id="home" class="section tab-content">
       <div class="grid md:grid-cols-2 gap-8 items-center">
         <div>
-          <h2 class="text-4xl md:text-5xl font-extrabold text-purple-700 leading-tight">Build Your Career with <span class="text-gray-900">MK Consultancy</span></h2>
-          <p class="mt-4 text-gray-600 max-w-xl">Professional resume builder, mock interview help, job placement support and career guidance — demo frontend. Resume PDF download included.</p>
+          <h2 class="text-4xl md:text-5xl font-extrabold text-purple-700 leading-tight">Aapke career ka agla kadam — <span class="text-gray-900">MK Consultancy</span></h2>
+          <p class="mt-4 text-gray-600 max-w-xl">Professional resume builder, interview preparation, and job placement services — tailored for students and professionals in Rajasthan and across India.</p>
           <div class="mt-6 flex flex-wrap gap-3">
-            <button onclick="openResumeBuilder()" class="btn-primary">Make Your Resume</button>
-            <button onclick="switchTo('jobs')" class="btn-secondary">Explore Jobs</button>
-            <a href="https://wa.me/919664225417" target="_blank" class="btn-secondary">WhatsApp Us</a>
+            <button class="btn-primary" onclick="openResume()">Banaye Resume</button>
+            <button class="btn-outline" onclick="scrollToSection('jobs')">Open Jobs</button>
+            <a class="btn-outline" href="https://wa.me/919664225417" target="_blank">Chat on WhatsApp</a>
           </div>
 
-          <div class="mt-8 grid grid-cols-2 gap-3 max-w-md">
-            <div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 card-hover">
-              <div class="rounded-lg bg-purple-50 w-12 h-12 flex items-center justify-center text-purple-700 font-bold">✓</div>
+          <ul class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
+            <li class="bg-white p-4 rounded-lg shadow-sm flex gap-3 items-start card-hover">
+              <div class="rounded-lg bg-purple-50 w-10 h-10 flex items-center justify-center text-purple-700 font-bold">✓</div>
               <div>
-                <div class="text-sm font-semibold">Resume Builder</div>
-                <div class="text-xs text-gray-500">Download PDF instantly</div>
+                <div class="text-sm font-semibold">Resume PDF</div>
+                <div class="text-xs text-gray-500">Instant download after building</div>
               </div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 card-hover">
-              <div class="rounded-lg bg-purple-50 w-12 h-12 flex items-center justify-center text-purple-700 font-bold">⚑</div>
+            </li>
+            <li class="bg-white p-4 rounded-lg shadow-sm flex gap-3 items-start card-hover">
+              <div class="rounded-lg bg-purple-50 w-10 h-10 flex items-center justify-center text-purple-700 font-bold">⦿</div>
               <div>
-                <div class="text-sm font-semibold">Job Matching</div>
-                <div class="text-xs text-gray-500">Demo job listings</div>
+                <div class="text-sm font-semibold">Interview Prep</div>
+                <div class="text-xs text-gray-500">Mock sessions & tips</div>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
 
         <div class="hidden md:block">
           <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 shadow-lg">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f4f56058c7f2f2c2b1ca93f9d4c6a7c" alt="career" class="rounded-xl w-full h-56 object-cover mb-4">
-            <h3 class="text-lg font-semibold text-purple-700">Step-by-step Resume Builder</h3>
-            <p class="text-sm text-gray-600 mt-2">Create a professional resume using the CareerHollic-style builder and export as PDF.</p>
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6f4f56058c7f2f2c2b1ca93f9d4c6a7c" alt="Career" class="rounded-xl w-full h-56 object-cover mb-4">
+            <h3 class="text-lg font-semibold text-purple-700">Professional Resume Builder</h3>
+            <p class="text-sm text-gray-600 mt-2">Step-by-step resume creation with export to PDF.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Services -->
-    <section id="services" class="tab-content hidden py-10">
-      <h3 class="text-3xl font-bold text-purple-700 text-center">Our Services</h3>
+    <!-- SERVICES -->
+    <section id="services" class="section tab-content hidden py-10">
+      <h3 class="text-3xl font-bold text-purple-700 text-center">Services</h3>
       <div class="mt-8 grid md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
-          <h4 class="font-semibold text-lg text-purple-700">Job Placement</h4>
-          <p class="text-sm text-gray-600 mt-2">Connecting candidates with employers across Rajasthan and India.</p>
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+          <h4 class="font-semibold text-purple-700">Resume Writing</h4>
+          <p class="text-sm text-gray-600 mt-2">Recruiter-friendly resumes tailored to job roles.</p>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
-          <h4 class="font-semibold text-lg text-purple-700">Resume Building</h4>
-          <p class="text-sm text-gray-600 mt-2">Step-by-step resume builder with instant PDF download.</p>
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+          <h4 class="font-semibold text-purple-700">Interview Coaching</h4>
+          <p class="text-sm text-gray-600 mt-2">Mock interviews and feedback to boost confidence.</p>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
-          <h4 class="font-semibold text-lg text-purple-700">Interview Prep</h4>
-          <p class="text-sm text-gray-600 mt-2">Mock interviews and tips to perform better in interviews.</p>
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+          <h4 class="font-semibold text-purple-700">Job Placement</h4>
+          <p class="text-sm text-gray-600 mt-2">We connect candidates with local employers and recruiters.</p>
         </div>
       </div>
     </section>
 
-    <!-- Jobs -->
-    <section id="jobs" class="tab-content hidden py-10">
-      <h3 class="text-3xl font-bold text-purple-700 text-center">Current Job Openings</h3>
+    <!-- JOBS -->
+    <section id="jobs" class="section tab-content hidden py-10">
+      <h3 class="text-3xl font-bold text-purple-700 text-center">Open Positions</h3>
       <div id="jobList" class="mt-8 grid md:grid-cols-2 gap-6"></div>
     </section>
 
-    <!-- Resume Builder (CareerHollic-style multi-step) -->
-    <section id="resume" class="tab-content hidden py-10">
-      <h3 class="text-3xl font-bold text-purple-700 text-center mb-6">CareerHollic-style Resume Builder</h3>
+    <!-- RESUME BUILDER -->
+    <section id="resume" class="section tab-content hidden py-10">
+      <h3 class="text-3xl font-bold text-purple-700 text-center mb-6">Resume Builder</h3>
 
-      <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm p-6">
-        <!-- progress -->
+      <div class="max-w-3xl mx-auto bg-white rounded-2xl p-6 shadow-sm">
         <div class="flex items-center gap-3 mb-6">
-          <div id="stepIndicator" class="text-sm text-gray-500">Step 1 of 3 — Personal</div>
+          <div id="stepText" class="text-sm text-gray-500">Step 1 of 3 — Personal Details</div>
           <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div id="stepProgress" class="h-2 bg-purple-600 rounded-full w-1/3 transition-all"></div>
+            <div id="progressBar" class="h-2 bg-purple-600 w-1/3 transition-all"></div>
           </div>
         </div>
 
-        <!-- steps -->
-        <form id="chForm" class="space-y-4" onsubmit="event.preventDefault(); downloadCareerHollicPDF();">
-          <!-- Step 1: Personal -->
-          <div id="chStep1" class="ch-step">
+        <form id="resumeForm" onsubmit="event.preventDefault(); generateResumePDF();">
+          <!-- Step 1 -->
+          <div id="step1" class="step">
             <label class="block text-sm font-semibold">Full Name</label>
-            <input id="chName" required class="mt-1" placeholder="Your full name" />
+            <input id="name" required class="mt-1" placeholder="Your full name" />
 
             <div class="grid md:grid-cols-2 gap-3 mt-3">
               <div>
                 <label class="block text-sm font-semibold">Email</label>
-                <input id="chEmail" type="email" required class="mt-1" placeholder="you@example.com" />
+                <input id="email" type="email" required class="mt-1" placeholder="you@example.com" />
               </div>
               <div>
                 <label class="block text-sm font-semibold">Mobile</label>
-                <input id="chMobile" type="tel" required class="mt-1" placeholder="+91 9xxxxxxxxx" />
+                <input id="mobile" type="tel" required class="mt-1" placeholder="+91 9xxxxxxxxx" />
               </div>
             </div>
 
             <label class="block text-sm font-semibold mt-3">Address</label>
-            <input id="chAddress" class="mt-1" placeholder="City, State, Country" />
+            <input id="address" class="mt-1" placeholder="City, State, Country" />
           </div>
 
-          <!-- Step 2: Education & Work -->
-          <div id="chStep2" class="ch-step hidden">
-            <label class="block text-sm font-semibold">Education (One per line)</label>
-            <textarea id="chEducation" rows="4" placeholder="B.Sc. Computer Science — 2018 — XYZ University" class="mt-1"></textarea>
+          <!-- Step 2 -->
+          <div id="step2" class="step hidden">
+            <label class="block text-sm font-semibold">Education (one per line)</label>
+            <textarea id="education" rows="4" class="mt-1" placeholder="B.Sc. — 2018 — XYZ University"></textarea>
 
-            <label class="block text-sm font-semibold mt-3">Work Experience (One per line)</label>
-            <textarea id="chWork" rows="4" placeholder="Software Developer — TechCorp — Jun 2019 to Present" class="mt-1"></textarea>
+            <label class="block text-sm font-semibold mt-3">Work Experience (one per line)</label>
+            <textarea id="work" rows="4" class="mt-1" placeholder="Software Developer — Company — Jun 2019 to Present"></textarea>
           </div>
 
-          <!-- Step 3: Skills & Summary -->
-          <div id="chStep3" class="ch-step hidden">
+          <!-- Step 3 -->
+          <div id="step3" class="step hidden">
             <label class="block text-sm font-semibold">Professional Summary</label>
-            <textarea id="chSummary" rows="3" placeholder="Short summary about you" class="mt-1"></textarea>
+            <textarea id="summary" rows="3" class="mt-1" placeholder="Short summary about you"></textarea>
 
             <label class="block text-sm font-semibold mt-3">Skills (comma separated)</label>
-            <input id="chSkills" placeholder="JavaScript, HTML, CSS, React, SQL" class="mt-1" />
+            <input id="skills" class="mt-1" placeholder="JavaScript, HTML, CSS, React, SQL" />
           </div>
 
-          <!-- Controls -->
           <div class="flex items-center gap-3 mt-4">
-            <button type="button" id="prevBtn" onclick="chPrev()" class="btn-secondary hidden">Back</button>
-            <button type="button" id="nextBtn" onclick="chNext()" class="btn-primary">Next</button>
+            <button type="button" id="backBtn" class="btn-outline hidden" onclick="prevStep()">Back</button>
+            <button type="button" id="nextBtn" class="btn-primary" onclick="nextStep()">Next</button>
             <button type="submit" id="downloadBtn" class="btn-primary hidden">Download PDF</button>
-            <div class="ml-auto text-xs text-gray-500">Demo: data saved in browser only.</div>
+            <div class="ml-auto text-xs text-gray-500">Your data saved locally in browser during session.</div>
           </div>
         </form>
       </div>
     </section>
 
-    <!-- Profile -->
-    <section id="profile" class="tab-content hidden py-10">
-      <h3 class="text-3xl font-bold text-purple-700 text-center">Your Profile (Demo)</h3>
-      <div class="max-w-xl mx-auto mt-6">
-        <div id="profileCard" class="bg-white rounded-2xl p-6 shadow-sm hidden">
-          <p><strong>Name:</strong> <span id="pfName"></span></p>
-          <p><strong>Email:</strong> <span id="pfEmail"></span></p>
-          <p><strong>Mobile:</strong> <span id="pfMobile"></span></p>
-          <p><strong>Address:</strong> <span id="pfAddress"></span></p>
-          <div class="mt-4 flex gap-3">
-            <button class="btn-primary" onclick="logout()">Logout</button>
-            <button class="btn-secondary" onclick="openResumeBuilder()">Edit / Build Resume</button>
+    <!-- CONTACT -->
+    <section id="contact" class="section tab-content hidden py-10">
+      <h3 class="text-3xl font-bold text-purple-700 text-center">Contact / Enquiry</h3>
+      <div class="max-w-3xl mx-auto mt-6 bg-white rounded-2xl p-6 shadow-sm">
+        <p class="text-sm text-gray-600">Direct contact: <strong>+91 9664225417</strong> · <a href="mailto:mkconsultancysinghana@gmail.com" class="text-purple-700 underline">mkconsultancysinghana@gmail.com</a></p>
+
+        <form id="contactForm" class="mt-4" onsubmit="event.preventDefault(); sendContact();">
+          <label class="block text-sm font-medium">Your Name</label>
+          <input id="cName" required class="mt-1 mb-2" />
+
+          <label class="block text-sm font-medium">Email</label>
+          <input id="cEmail" type="email" required class="mt-1 mb-2" />
+
+          <label class="block text-sm font-medium">Message</label>
+          <textarea id="cMsg" rows="4" required class="mt-1 mb-3"></textarea>
+
+          <div class="flex gap-3">
+            <button type="submit" class="btn-primary">Send Message</button>
+            <a href="https://wa.me/919664225417" target="_blank" class="btn-outline">WhatsApp</a>
           </div>
-        </div>
-        <p id="pfPrompt" class="text-center text-gray-500 mt-6">Please login to view your profile.</p>
+        </form>
       </div>
     </section>
 
   </main>
 
   <!-- Footer -->
-  <footer class="bg-white border-t mt-12">
-    <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-gray-600 flex flex-col md:flex-row items-center justify-between gap-3">
-      <div>📍 Singhana, Jhunjhunu (Raj.) · 📞 +91 9664225417 · ✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="text-purple-700 underline">mkconsultancysinghana@gmail.com</a></div>
-      <div>© 2025 MK Consultancy — Demo</div>
+  <footer class="bg-white border-t">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-6 text-sm text-gray-600 flex flex-col md:flex-row items-center justify-between gap-2">
+      <div>📍 Singhana, Jhunjhunu (Raj.) · 📞 <a href="tel:+919664225417" class="text-purple-700">+91 9664225417</a> · ✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="text-purple-700">mkconsultancysinghana@gmail.com</a></div>
+      <div>© 2025 MK Consultancy — All rights reserved.</div>
     </div>
   </footer>
 
   <!-- Floating WhatsApp -->
   <a href="https://wa.me/919664225417" target="_blank" aria-label="WhatsApp" class="fixed bottom-6 right-6 bg-green-500 p-4 rounded-full shadow-lg hover:scale-105">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.93 11.93 0 0 0 12.02.5C6.1.5 1.52 5.08 1.52 11c0 1.93.5 3.83 1.45 5.48L.25 23.5l6.69-1.76c1.57.86 3.31 1.31 5.08 1.31 5.92 0 10.5-4.58 10.5-10.5 0-3.02-1.19-5.85-3.7-7.55zM12 21.5c-1.5 0-3-.36-4.35-1.04l-.31-.16-3.98 1.05 1.08-3.66-.2-.35A8.5 8.5 0 1 1 20.5 12c0 4.7-3.8 8.5-8.5 8.5z"></path><path d="M17.1 14.03c-.29-.15-1.7-.84-1.96-.93-.26-.09-.45-.15-.64.15-.19.29-.73.93-.9 1.12-.17.19-.34.21-.63.07-.29-.15-1.23-.45-2.35-1.45-.87-.78-1.46-1.74-1.63-2.04-.17-.31-.02-.48.13-.63.14-.14.31-.34.47-.51.15-.17.2-.29.3-.5.1-.2.04-.38-.02-.53-.07-.15-.64-1.54-.88-2.12-.23-.55-.46-.48-.64-.49l-.55-.01c-.19 0-.5.07-.77.36-.28.29-1.06 1.03-1.06 2.5 0 1.46 1.09 2.87 1.24 3.07.15.19 2.14 3.34 5.18 4.65 3.03 1.31 3.03.87 3.57.82.54-.06 1.74-.71 1.99-1.4.25-.69.25-1.28.18-1.4-.08-.12-.27-.19-.56-.34z"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.93 11.93 0 0 0 12.02.5C6.1.5 1.52 5.08 1.52 11c0 1.93.5 3.83 1.45 5.48L.25 23.5l6.69-1.76c1.57.86 3.31 1.31 5.08 1.31 5.92 0 10.5-4.58 10.5-10.5 0-3.02-1.19-5.85-3.7-7.55zM12 21.5c-1.5 0-3-.36-4.35-1.04l-.31-.16-3.98 1.05 1.08-3.66-.2-.35A8.5 8.5 0 1 1 20.5 12c0 4.7-3.8 8.5-8.5 8.5z"></path><path d="M17.1 14.03c-.29-.15-1.7-.84-1.96-.93-.26-.09-.45-.15-.64.15-.19.29-.73.93-.9 1.12-.17.19-.34.21-.63.07-.29-.15-1.23-.45-2.35-1.45-.87-.78-1.46-1.74-1.63-2.04-.17-.31-.02-.48.13-.63.14-.14.31-.34.47-.51.15-.17.2-.29.3-.50.1-.20.04-.38-.02-.53-.07-.15-.64-1.54-.88-2.12-.23-.55-.46-.48-.64-.49l-.55-.01c-.19 0-.5.07-.77.36-.28.29-1.06 1.03-1.06 2.5 0 1.46 1.09 2.87 1.24 3.07.15.19 2.14 3.34 5.18 4.65 3.03 1.31 3.03.87 3.57.82.54-.06 1.74-.71 1.99-1.4.25-.69.25-1.28.18-1.40-.08-.12-.27-.19-.56-.34z"></path></svg>
   </a>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="fixed inset-0 hidden items-center justify-center z-60 bg-black/40">
-    <div class="bg-white rounded-2xl p-6 w-11/12 max-w-sm modal-show">
-      <div class="flex justify-between items-center mb-4">
-        <h4 class="text-lg font-semibold text-purple-700">Login / Signup (Demo)</h4>
-        <button onclick="closeLogin()" class="text-gray-500">✕</button>
-      </div>
-      <form id="loginForm" onsubmit="event.preventDefault(); doLogin();">
-        <label class="block text-sm font-medium">Full Name</label>
-        <input id="loginName" required class="mt-1 mb-2" placeholder="Your name" />
-        <label class="block text-sm font-medium">Email</label>
-        <input id="loginEmail" type="email" required class="mt-1 mb-2" placeholder="you@example.com" />
-        <label class="block text-sm font-medium">Mobile</label>
-        <input id="loginMobile" type="tel" required class="mt-1 mb-3" placeholder="+91 9xxxxxxxxx" />
-        <div class="flex gap-3">
-          <button type="submit" class="btn-primary flex-1">Login / Signup</button>
-          <button type="button" class="btn-secondary flex-1" onclick="closeLogin()">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Apply Modal -->
-  <div id="applyModal" class="fixed inset-0 hidden items-center justify-center z-60 bg-black/40">
-    <div class="bg-white rounded-2xl p-6 w-11/12 max-w-md modal-show">
-      <div class="flex justify-between items-center mb-4">
-        <h4 id="applyTitle" class="text-lg font-semibold text-purple-700">Apply</h4>
-        <button onclick="closeApply()" class="text-gray-500">✕</button>
-      </div>
-      <form id="applyForm" onsubmit="event.preventDefault(); submitApplication();">
-        <label class="block text-sm font-medium">Full Name</label>
-        <input id="appName" required class="mt-1 mb-2" />
-        <label class="block text-sm font-medium">Email</label>
-        <input id="appEmail" type="email" required class="mt-1 mb-2" />
-        <label class="block text-sm font-medium">Mobile</label>
-        <input id="appMobile" type="tel" required class="mt-1 mb-3" />
-        <div class="flex gap-3">
-          <button type="submit" class="btn-primary flex-1">Submit Application</button>
-          <button type="button" class="btn-secondary flex-1" onclick="closeApply()">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Notifications area -->
-  <div id="toast" class="fixed bottom-6 left-6 hidden bg-black text-white px-4 py-2 rounded-lg"></div>
+  <!-- Toast -->
+  <div id="toast" class="fixed left-6 bottom-6 hidden bg-black text-white px-4 py-2 rounded-lg"></div>
 
   <script>
-    /* -------------------------
-       Utility helpers
-       ------------------------- */
-    function showToast(text, time=3000) {
-      const t = document.getElementById('toast');
-      t.innerText = text; t.classList.remove('hidden');
-      setTimeout(()=> t.classList.add('hidden'), time);
-    }
-    function escapeHtml(str) {
-      if(!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    /* UI helpers */
+    function showToast(msg, t=3000){
+      const el = document.getElementById('toast');
+      el.innerText = msg; el.classList.remove('hidden');
+      setTimeout(()=> el.classList.add('hidden'), t);
     }
 
-    /* -------------------------
-       Nav & mobile menu
-       ------------------------- */
-    function toggleMobileMenu(){ const m = document.getElementById('mobileMenu'); m.classList.toggle('hidden'); }
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    tabButtons.forEach(btn => btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-target');
-      switchTo(target);
-      document.getElementById('mobileMenu')?.classList.add('hidden');
-    }));
-    function switchTo(target) {
-      if(!target) return;
-      document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
-      const el = document.getElementById(target);
-      if(el) el.classList.remove('hidden');
-      tabButtons.forEach(b => b.classList.remove('tab-active'));
-      document.querySelectorAll(`.tab-btn[data-target="${target}"]`).forEach(b=>b.classList.add('tab-active'));
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-    // default
-    switchTo('home');
+    function toggleMobile(){ document.getElementById('mobileNav').classList.toggle('hidden'); }
 
-    /* -------------------------
-       Demo jobs & apply modal
-       ------------------------- */
+    // Nav buttons
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-target');
+        if(target) {
+          document.querySelectorAll('.tab-content').forEach(s=>s.classList.add('hidden'));
+          document.getElementById(target).classList.remove('hidden');
+          window.scrollTo({top:0,behavior:'smooth'});
+        }
+      });
+    });
+
+    // helper: scroll to section
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+      // show that section
+      document.querySelectorAll('.tab-content').forEach(s=>s.classList.add('hidden'));
+      el.classList.remove('hidden');
+    }
+
+    /* Jobs data and rendering */
     const jobs = [
-      { id:1, title:'Software Developer', company:'TechCorp', location:'Jaipur, Rajasthan', desc:'Frontend/Fullstack role. HTML/CSS/JS required.' },
-      { id:2, title:'Data Analyst', company:'InfoTech', location:'Delhi', desc:'Excel / SQL / Visualization duties.' },
-      { id:3, title:'Graphic Designer', company:'Creative Minds', location:'Udaipur, Rajasthan', desc:'Adobe suite and portfolio required.' },
+      {id:1, title:'Software Developer', company:'TechCorp', location:'Jaipur, Rajasthan', desc:'Frontend / Fullstack — HTML, CSS, JS required.'},
+      {id:2, title:'Data Analyst', company:'InfoTech', location:'Delhi', desc:'SQL, Excel, Tableau preferred.'},
+      {id:3, title:'Graphic Designer', company:'Creative Minds', location:'Udaipur, Rajasthan', desc:'Portfolio required — Adobe Suite.'}
     ];
-    const jobListEl = document.getElementById('jobList');
     function renderJobs(){
-      jobListEl.innerHTML = '';
+      const list = document.getElementById('jobList');
+      list.innerHTML = '';
       jobs.forEach(j => {
         const card = document.createElement('div');
-        card.className = 'bg-white p-5 rounded-2xl shadow-sm card-hover';
+        card.className = 'bg-white p-5 rounded-2xl shadow-sm';
         card.innerHTML = `
           <h4 class="text-lg font-semibold text-purple-700">${escapeHtml(j.title)}</h4>
-          <p class="text-sm text-gray-600"><strong>Company:</strong> ${escapeHtml(j.company)} — <strong>Location:</strong> ${escapeHtml(j.location)}</p>
+          <p class="text-sm text-gray-600"><strong>${escapeHtml(j.company)}</strong> · ${escapeHtml(j.location)}</p>
           <p class="text-sm text-gray-600 mt-2">${escapeHtml(j.desc)}</p>
           <div class="mt-4 flex gap-3">
-            <button class="btn-primary" onclick="openApply(${j.id})">Apply Now</button>
-            <button class="btn-secondary" onclick="saveJob(${j.id})">Save</button>
+            <a class="btn-primary" href="mailto:mkconsultancysinghana@gmail.com?subject=Application%20for%20${encodeURIComponent(j.title)}&body=Hello%20MK%20Consultancy%2C%0A%0AI%20would%20like%20to%20apply%20for%20the%20position%20of%20${encodeURIComponent(j.title)}.%0A%0ARegards%2C" target="_blank">Apply via Email</a>
+            <button class="btn-outline" onclick="saveJob(${j.id})">Save</button>
           </div>
         `;
-        jobListEl.appendChild(card);
+        list.appendChild(card);
       });
     }
-    function saveJob(id){ showToast('Saved job to demo list.'); }
+    function saveJob(id){
+      const saved = JSON.parse(localStorage.getItem('mk_saved_jobs') || '[]');
+      if(!saved.includes(id)) saved.push(id);
+      localStorage.setItem('mk_saved_jobs', JSON.stringify(saved));
+      showToast('Job saved locally.');
+    }
     renderJobs();
 
-    let applyingJobId = null;
-    function openApply(id){
-      applyingJobId = id;
-      const job = jobs.find(x=>x.id===id);
-      document.getElementById('applyTitle').innerText = `Apply: ${job.title}`;
-      const u = getUser();
-      document.getElementById('appName').value = u?.name || '';
-      document.getElementById('appEmail').value = u?.email || '';
-      document.getElementById('appMobile').value = u?.mobile || '';
-      document.getElementById('applyModal').classList.remove('hidden');
-    }
-    function closeApply(){ document.getElementById('applyModal').classList.add('hidden'); applyingJobId = null; }
-    function submitApplication(){
-      const name = document.getElementById('appName').value.trim();
-      const email = document.getElementById('appEmail').value.trim();
-      const mobile = document.getElementById('appMobile').value.trim();
-      if(!name || !email || !mobile){ showToast('Please fill all fields.'); return; }
-      closeApply();
-      showToast('Application submitted (demo).');
-      // store demo application in localStorage (optional)
-      const apps = JSON.parse(localStorage.getItem('demo_applications') || '[]');
-      apps.push({ jobId: applyingJobId, name, email, mobile, date: new Date().toISOString() });
-      localStorage.setItem('demo_applications', JSON.stringify(apps));
+    /* CONTACT form: mailto + backup locally */
+    function sendContact(){
+      const name = document.getElementById('cName').value.trim();
+      const email = document.getElementById('cEmail').value.trim();
+      const msg = document.getElementById('cMsg').value.trim();
+      if(!name||!email||!msg){ showToast('कृपया सभी फ़ील्ड भरें।'); return; }
+      // save locally
+      const contacts = JSON.parse(localStorage.getItem('mk_contacts') || '[]');
+      contacts.push({name,email,msg,date:new Date().toISOString()});
+      localStorage.setItem('mk_contacts', JSON.stringify(contacts));
+      // open mail client
+      const subject = encodeURIComponent('Website Enquiry from ' + name);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`);
+      window.location.href = `mailto:mkconsultancysinghana@gmail.com?subject=${subject}&body=${body}`;
+      showToast('Mail client opened — भेजने के बाद धन्यवाद।');
+      document.getElementById('contactForm').reset();
     }
 
-    /* -------------------------
-       Login / Profile (localStorage demo)
-       ------------------------- */
-    function openLogin(){ document.getElementById('loginModal').classList.remove('hidden'); }
-    function closeLogin(){ document.getElementById('loginModal').classList.add('hidden'); }
-    function doLogin(){
-      const name = document.getElementById('loginName').value.trim();
-      const email = document.getElementById('loginEmail').value.trim();
-      const mobile = document.getElementById('loginMobile').value.trim();
-      if(!name || !email || !mobile){ showToast('Please complete the form.'); return; }
-      const user = { name, email, mobile };
-      localStorage.setItem('mk_user_demo', JSON.stringify(user));
-      closeLogin();
-      updateProfile();
-      switchTo('profile');
-      showToast('Logged in (demo).');
-    }
-    function getUser(){
-      try { return JSON.parse(localStorage.getItem('mk_user_demo')); } catch(e){ return null; }
-    }
-    function updateProfile(){
-      const u = getUser();
-      const card = document.getElementById('profileCard');
-      const prompt = document.getElementById('pfPrompt');
-      if(u){
-        card.classList.remove('hidden'); prompt.classList.add('hidden');
-        document.getElementById('pfName').innerText = u.name;
-        document.getElementById('pfEmail').innerText = u.email;
-        document.getElementById('pfMobile').innerText = u.mobile;
-        document.getElementById('pfAddress').innerText = 'Singhana, Jhunjhunu (Raj.), India';
-      } else {
-        card.classList.add('hidden'); prompt.classList.remove('hidden');
+    /* Resume builder (CareerHollic-style) */
+    let curStep = 1, total = 3;
+    function updateStepUI(){
+      for(let i=1;i<=total;i++){
+        const el = document.getElementById('step'+i);
+        if(el){ if(i===curStep) el.classList.remove('hidden'); else el.classList.add('hidden'); }
       }
+      document.getElementById('backBtn').classList.toggle('hidden', curStep===1);
+      document.getElementById('nextBtn').classList.toggle('hidden', curStep===total);
+      document.getElementById('downloadBtn').classList.toggle('hidden', curStep!==total);
+      const pct = Math.round((curStep/total)*100);
+      document.getElementById('progressBar').style.width = pct + '%';
+      const labels = ['Step 1 of 3 — Personal Details','Step 2 of 3 — Education & Work','Step 3 of 3 — Summary & Skills'];
+      document.getElementById('stepText').innerText = labels[curStep-1];
     }
-    function logout(){
-      localStorage.removeItem('mk_user_demo');
-      updateProfile();
-      showToast('Logged out.');
-      switchTo('home');
+    function nextStep(){ 
+      // minimal validation on step1
+      if(curStep===1){
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+        if(!name||!email||!mobile){ showToast('कृपया व्यक्तिगत विवरण पूरा करें।'); return; }
+      }
+      if(curStep<total){ curStep++; updateStepUI(); }
     }
-    // init
-    updateProfile();
+    function prevStep(){ if(curStep>1){ curStep--; updateStepUI(); } }
+    function openResume(){ scrollToSection('resume'); curStep=1; updateStepUI(); }
 
-    /* -------------------------
-       Resume builder logic (steps & PDF)
-       ------------------------- */
-    let chStep = 1;
-    const totalSteps = 3;
-    function chNext(){
-      if(chStep === 1){
-        // validation basic
-        const name = document.getElementById('chName').value.trim();
-        const email = document.getElementById('chEmail').value.trim();
-        const mobile = document.getElementById('chMobile').value.trim();
-        if(!name || !email || !mobile){ showToast('Please complete personal details.'); return; }
-      }
-      if(chStep < totalSteps) { chStep++; updateChUI(); }
-    }
-    function chPrev(){ if(chStep > 1){ chStep--; updateChUI(); } }
-    function updateChUI(){
-      for(let i=1;i<=totalSteps;i++){
-        const s = document.getElementById('chStep'+i);
-        if(i===chStep) s.classList.remove('hidden'); else s.classList.add('hidden');
-      }
-      document.getElementById('prevBtn').classList.toggle('hidden', chStep===1);
-      document.getElementById('nextBtn').classList.toggle('hidden', chStep===totalSteps);
-      document.getElementById('downloadBtn').classList.toggle('hidden', chStep!==totalSteps);
-      // progress
-      const pct = Math.round((chStep/totalSteps)*100);
-      document.getElementById('stepProgress').style.width = pct + '%';
-      const titles = ['Step 1 of 3 — Personal','Step 2 of 3 — Education & Work','Step 3 of 3 — Skills & Summary'];
-      document.getElementById('stepIndicator').innerText = titles[chStep-1];
-    }
-    updateChUI();
+    updateStepUI();
 
-    function downloadCareerHollicPDF(){
+    function generateResumePDF(){
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'pt' });
-      // collect data
-      const name = document.getElementById('chName').value || '';
-      const address = document.getElementById('chAddress').value || '';
-      const email = document.getElementById('chEmail').value || '';
-      const mobile = document.getElementById('chMobile').value || '';
-      const education = document.getElementById('chEducation').value || '';
-      const work = document.getElementById('chWork').value || '';
-      const summary = document.getElementById('chSummary').value || '';
-      const skills = document.getElementById('chSkills').value || '';
+      const doc = new jsPDF({unit:'pt'});
+      const name = document.getElementById('name').value || '';
+      const address = document.getElementById('address').value || '';
+      const email = document.getElementById('email').value || '';
+      const mobile = document.getElementById('mobile').value || '';
+      const education = document.getElementById('education').value || '';
+      const work = document.getElementById('work').value || '';
+      const summary = document.getElementById('summary').value || '';
+      const skills = document.getElementById('skills').value || '';
 
-      // simple PDF layout
-      doc.setFontSize(18); doc.setFont('helvetica','bold');
-      doc.text(name || 'RESUME', 40, 50);
+      doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.text(name || 'RESUME', 40, 50);
       doc.setFontSize(11); doc.setFont('helvetica','normal');
       doc.text(`Email: ${email}`, 40, 70);
       doc.text(`Mobile: ${mobile}`, 40, 86);
@@ -477,36 +384,32 @@
       if(skills){
         doc.setFont('helvetica','bold'); doc.text('Skills', 40, y); y+=16;
         doc.setFont('helvetica','normal');
-        const skillsLine = skills.split(',').map(s=>s.trim()).join(', ');
-        doc.text(skillsLine, 40, y); y += 22;
+        doc.text(skills, 40, y); y += 22;
       }
 
       if(education){
         doc.setFont('helvetica','bold'); doc.text('Education', 40, y); y+=16;
         doc.setFont('helvetica','normal');
-        const edLines = education.split('\n').map(l=>l.trim()).filter(Boolean);
-        edLines.forEach(line => { const l = doc.splitTextToSize(line, 500); doc.text(l, 40, y); y += l.length * 14 + 6; });
+        education.split('\n').filter(Boolean).forEach(line=>{
+          const l = doc.splitTextToSize(line, 500); doc.text(l, 40, y); y += l.length*14 + 6;
+        });
       }
 
       if(work){
         doc.setFont('helvetica','bold'); doc.text('Work Experience', 40, y); y+=16;
         doc.setFont('helvetica','normal');
-        const wLines = work.split('\n').map(l=>l.trim()).filter(Boolean);
-        wLines.forEach(line => { const l = doc.splitTextToSize(line, 500); doc.text(l, 40, y); y += l.length * 14 + 6; });
+        work.split('\n').filter(Boolean).forEach(line=>{
+          const l = doc.splitTextToSize(line, 500); doc.text(l, 40, y); y += l.length*14 + 6;
+        });
       }
 
-      // filename
-      const filename = (name ? name.replace(/\s+/g,'_') : 'resume') + '_Resume.pdf';
+      const filename = (name ? name.replace(/\s+/g,'_') : 'MK_Resume') + '_Resume.pdf';
       doc.save(filename);
-      showToast('PDF downloaded.');
+      showToast('Resume generated — PDF downloaded.');
     }
 
-    /* -------------------------
-       small helpers for UX
-       ------------------------- */
-    function openResumeBuilder(){ switchTo('resume'); window.scrollTo({top:0,behavior:'smooth'}); }
-    // ensure profile updates when page loads (if logged in)
-    updateProfile();
+    /* small helpers */
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   </script>
 </body>
 </html>
