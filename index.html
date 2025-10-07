@@ -3,181 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MK Consultancy - Job & Resume Builder</title>
+<title>MK Consultancy — Professional Job & Resume Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-/* Basic Reset & Fonts */
-body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f4f4f4;color:#333;}
-a{color:#007bff;text-decoration:none;}
-a:hover{color:#0056b3;}
-.container{width:90%;max-width:1200px;margin:auto;padding:20px;}
-header{background:#007bff;color:white;padding:20px 0;text-align:center;}
-header h1{margin:0;font-size:2em;}
-nav{margin-top:10px;text-align:center;}
-nav a{margin:0 15px;font-weight:bold;}
-section{margin:40px 0;background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
-h2{color:#007bff;margin-bottom:20px;}
-input,textarea,select{width:100%;padding:10px;margin:5px 0 15px 0;border-radius:5px;border:1px solid #ccc;}
-button{padding:10px 20px;background:#007bff;color:white;border:none;border-radius:5px;cursor:pointer;}
-button:hover{background:#0056b3;}
-/* Resume Styles */
-.resume-preview{border:1px solid #333;padding:20px;margin-top:20px;background:#fff;}
-.resume-preview h3{margin-top:0;text-align:center;text-decoration:underline;}
-.resume-section{margin-bottom:15px;}
-.resume-section h4{margin-bottom:5px;color:#007bff;text-decoration:underline;}
-.admin-panel{display:none;}
-label{font-weight:bold;}
+body{font-family:'Inter',sans-serif;background:#f0f2f5;margin:0;padding:0;color:#333;}
+a{text-decoration:none;color:#6b21a8;transition:0.3s}a:hover{color:#4c1d95}
+.btn-primary{@apply bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-purple-800 transition}
+.btn-secondary{@apply bg-white border border-purple-700 text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-100 transition}
+header{background:white;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,0.1);padding:1.5rem;display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:1.8rem;font-weight:800;color:#6b21a8}
+nav a{margin-left:1rem;font-weight:600}
+section{padding:4rem 1rem}
+.hero{background:linear-gradient(135deg,#a78bfa,#f3e8ff);text-align:center;padding:6rem 1rem;border-radius:1rem}
+.hero h2{font-size:2.5rem;font-weight:800;color:#4c1d95;margin-bottom:1rem}
+.hero p{max-width:800px;margin:auto;color:#4b5563;font-size:1.125rem;margin-bottom:2rem}
+.flex{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center}
+.card{background:white;border-radius:1rem;padding:2rem;box-shadow:0 4px 15px rgba(0,0,0,0.08);transition:0.3s}
+.card:hover{box-shadow:0 8px 25px rgba(0,0,0,0.15);transform:translateY(-5px)}
+.resume-popup{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:50}
+.resume-popup .content{background:white;padding:2rem;border-radius:1rem;width:90%;max-width:600px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2)}
+.close-popup{position:absolute;top:1rem;right:1rem;font-size:1.25rem;font-weight:700;color:#6b21a8;cursor:pointer}
+input,textarea,select{width:100%;padding:0.75rem;margin-top:0.5rem;margin-bottom:1rem;border-radius:0.5rem;border:1px solid #d1d5db;box-shadow:inset 0 1px 3px rgba(0,0,0,0.05)}
+button{cursor:pointer}
 </style>
 </head>
 <body>
+
+<!-- Header -->
 <header>
 <h1>MK Consultancy</h1>
 <nav>
-<a href="#jobs">Jobs</a>
-<a href="#resume">Resume Builder</a>
+<a href="#hero">Home</a>
+<a href="#about">About</a>
+<a href="#services">Services</a>
+<a href="#whyus">Why Us</a>
+<a href="#resume">Resume</a>
 <a href="#testimonials">Testimonials</a>
 <a href="#contact">Contact</a>
-<a href="#admin" id="adminLink">Admin Login</a>
 </nav>
 </header>
-<div class="container">
 
-<!-- Jobs Section -->
-<section id="jobs">
-<h2>Available Jobs</h2>
-<div id="jobsList"></div>
+<!-- Hero -->
+<section id="hero" class="hero">
+<h2>Build Your Career With MK Consultancy</h2>
+<p>Our vision: Empowering every job seeker with guidance, professional resume, and opportunities to achieve their dream career.</p>
+<button class="btn-primary" onclick="openResumePopup()">Make Resume</button>
 </section>
 
-<!-- Resume Builder Section -->
-<section id="resume">
-<h2>Candidate Resume Builder</h2>
+<!-- About / CEO Section -->
+<section id="about" class="text-center bg-purple-50 rounded-xl m-4">
+<h2 class="text-3xl font-bold text-purple-700 mb-2">Manish Kumar</h2>
+<p class="text-purple-600 font-semibold mb-4">CEO / HR Manager</p>
+<p class="max-w-3xl mx-auto text-gray-700 mb-6">Welcome to MK Consultancy! We help candidates with professional resumes, interview prep, and job placements to achieve career success.</p>
+<h3 class="text-2xl font-semibold text-purple-700 mb-4">Our Trusted Partners</h3>
+<div class="flex flex-wrap justify-center gap-6">
+<div class="card"><h4 class="font-bold text-purple-700">Lakshyaraj Skill Edutech Foundation</h4><p class="text-gray-600 text-sm">Singhana, Rajasthan</p></div>
+<div class="card"><h4 class="font-bold text-purple-700">IT Excellent Computer Center</h4><p class="text-gray-600 text-sm">Singhana, Rajasthan</p></div>
+</div>
+</section>
+
+<!-- Services -->
+<section id="services" class="text-center">
+<h2 class="text-3xl font-bold text-purple-700 mb-8">Our Services</h2>
+<div class="flex flex-wrap gap-6">
+<div class="card"><h3 class="font-bold text-purple-700 mb-2">Job Placement</h3><p>Connecting skilled candidates with top companies.</p></div>
+<div class="card"><h3 class="font-bold text-purple-700 mb-2">Interview Preparation</h3><p>Mock sessions and personalized training for confidence.</p></div>
+<div class="card"><h3 class="font-bold text-purple-700 mb-2">Resume Building</h3><p>Professional, recruiter-approved resumes crafted in minutes.</p></div>
+</div>
+</section>
+
+<!-- Why Choose Us -->
+<section id="whyus" class="text-center bg-purple-50 rounded-xl m-4">
+<h2 class="text-3xl font-bold text-purple-700 mb-8">Why Choose Us?</h2>
+<div class="flex flex-wrap gap-6 justify-center">
+<div class="card"><h4 class="font-semibold text-purple-700 mb-2">Trusted Network</h4><p>Strong tie-ups with reputed institutions and companies.</p></div>
+<div class="card"><h4 class="font-semibold text-purple-700 mb-2">Personalized Support</h4><p>Guiding every candidate individually for the right opportunities.</p></div>
+<div class="card"><h4 class="font-semibold text-purple-700 mb-2">Affordable & Fast</h4><p>Quick services at minimal charges for students & professionals.</p></div>
+</div>
+</section>
+
+<!-- Resume Builder Popup -->
+<div id="resumePopup" class="resume-popup flex">
+<div class="content">
+<span class="close-popup" onclick="closeResumePopup()">✕</span>
+<h2 class="text-2xl font-bold text-purple-700 text-center mb-4">Candidate Resume Builder</h2>
 <form id="resumeForm">
-<label>Full Name</label><input type="text" id="resName" placeholder="John Doe" required>
-<label>Father's Name</label><input type="text" id="resFather" placeholder="Father Name" required>
-<label>Mobile</label><input type="text" id="resMobile" placeholder="+91-XXXXXXXXXX" required>
-<label>Email</label><input type="email" id="resEmail" placeholder="email@example.com" required>
-<label>Address</label><textarea id="resAddress" placeholder="Permanent Address"></textarea>
-<label>Date of Birth</label><input type="date" id="resDOB">
-<label>Languages Known</label><input type="text" id="resLang" placeholder="English, Hindi">
-<label>Marital Status</label><select id="resStatus"><option value="Single">Single</option><option value="Married">Married</option></select>
-<label>Educational Qualification</label><textarea id="resEdu" placeholder="E.g. Graduated from XYZ University"></textarea>
-<label>Technical Qualification</label><textarea id="resTech" placeholder="E.g. Computer Diploma in ABC"></textarea>
-<label>Experience</label><textarea id="resExp" placeholder="E.g. 1.5 years in XYZ"></textarea>
-<label>Competencies</label><textarea id="resComp" placeholder="E.g. Fast learner, Team Player"></textarea>
-<label>Interests</label><textarea id="resInter" placeholder="E.g. Reading, Net Surfing"></textarea>
-<button type="submit">Generate Resume</button>
+<input type="text" name="fullName" placeholder="Full Name" required />
+<input type="text" name="fatherName" placeholder="Father's Name" required />
+<input type="tel" name="mobile" placeholder="Mobile Number" required />
+<input type="email" name="email" placeholder="Email" required />
+<textarea name="address" placeholder="Permanent Address" rows="2"></textarea>
+<input type="date" name="dob" required />
+<select name="maritalStatus"><option value="Single">Single</option><option value="Married">Married</option></select>
+<textarea name="education" placeholder="Educational Qualification" rows="2"></textarea>
+<textarea name="technical" placeholder="Technical Qualification" rows="2"></textarea>
+<textarea name="experience" placeholder="Experience" rows="2"></textarea>
+<textarea name="competencies" placeholder="Competencies" rows="2"></textarea>
+<textarea name="interests" placeholder="Interests" rows="2"></textarea>
+<button type="submit" class="btn-primary w-full mt-2">Generate PDF</button>
 </form>
-<div class="resume-preview" id="resumePreview" style="display:none;"></div>
-</section>
+</div>
+</div>
 
-<!-- Testimonials Section -->
-<section id="testimonials">
-<h2>Testimonials</h2>
-<div id="testimonialsList"></div>
-</section>
-
-<!-- Contact Section -->
-<section id="contact">
-<h2>Contact Us</h2>
-<form id="contactForm">
-<label>Name</label><input type="text" id="contactName" required>
-<label>Email</label><input type="email" id="contactEmail" required>
-<label>Message</label><textarea id="contactMessage" required></textarea>
-<button type="submit">Send Message</button>
-</form>
-</section>
-
-<!-- Admin Section -->
-<section id="admin" class="admin-panel">
-<h2>Admin Panel</h2>
-<form id="adminLogin">
-<label>Password</label><input type="password" id="adminPass" required>
-<button type="submit">Login</button>
-</form>
-<div id="adminPanelContent" style="display:none;">
-<h3>Manage Jobs</h3>
-<form id="addJobForm">
-<label>Title</label><input type="text" id="jobTitle" required>
-<label>Location</label><input type="text" id="jobLoc" required>
-<label>Description</label><textarea id="jobDesc" required></textarea>
-<button type="submit">Add Job</button>
-</form>
-<h3>Contact Messages</h3>
-<div id="adminMessages"></div>
-<h3>Testimonials</h3>
-<form id="addTestimonialForm">
-<label>Name</label><input type="text" id="testName" required>
-<label>Message</label><textarea id="testMsg" required></textarea>
-<button type="submit">Add Testimonial</button>
-</form>
-<div id="adminTestimonials"></div>
+<!-- Testimonials -->
+<section id="testimonials" class="text-center">
+<h2 class="text-3xl font-bold text-purple-700 mb-8">What Our Clients Say</h2>
+<div class="flex flex-wrap gap-6 justify-center">
+<div class="card"><p class="italic mb-2">“MK Consultancy has helped 200+ candidates successfully start their careers.”</p><p class="font-semibold text-purple-700">— Virendra Singh</p></div>
+<div class="card"><p class="italic mb-2">“Professional guidance and interview practice gave me confidence to crack interviews.”</p><p class="font-semibold text-purple-700">— Anil Kumar</p></div>
 </div>
 </section>
 
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<!-- Contact -->
+<section id="contact" class="text-center bg-white rounded-xl m-4">
+<h2 class="text-3xl font-bold text-purple-700 mb-4">Contact Us</h2>
+<p>📍 Singhana, Rajasthan | 📞 +91 9664225417 | ✉️ <a href="mailto:mkconsultancysinghana@gmail.com">mkconsultancysinghana@gmail.com</a></p>
+</section>
+
+<!-- Footer -->
+<footer class="bg-purple-100 py-6 text-center text-gray-700">© 2025 MK Consultancy — All rights reserved.</footer>
+
+<!-- WhatsApp Chat Button -->
+<a href="https://wa.me/919664225417" target="_blank" class="fixed bottom-5 right-5 bg-green-500 p-4 rounded-full shadow-lg hover:bg-green-600">💬</a>
+
 <script>
-const API_BASE=''; // LocalStorage based, backend not needed
+function openResumePopup(){document.getElementById('resumePopup').style.display='flex';}
+function closeResumePopup(){document.getElementById('resumePopup').style.display='none';}
 
-// ----- Admin Login -----
-const adminPassHash='91f0f2460e59b271b11e1e2376e4e2d3a9e03b7e9632c276a3085b0c6d0c8aa2'; // SHA256 of Mkl@753065
-const adminLink=document.getElementById('adminLink');
-const adminSection=document.getElementById('admin');
-const adminLoginForm=document.getElementById('adminLogin');
-const adminPanelContent=document.getElementById('adminPanelContent');
-adminLink.addEventListener('click',()=>{adminSection.style.display='block';window.scrollTo(0,adminSection.offsetTop);});
-adminLoginForm.addEventListener('submit',e=>{
-e.preventDefault();
-const pass=document.getElementById('adminPass').value;
-const hash=CryptoJS.SHA256(pass).toString();
-if(hash===adminPassHash){
-adminPanelContent.style.display='block';
-adminLoginForm.style.display='none';
-alert('Admin Login Successful');
-}else{alert('Incorrect Password');}
-});
-
-// ----- LocalStorage Jobs -----
-function loadJobs(){const jobs=JSON.parse(localStorage.getItem('jobs')||'[]');const jobsDiv=document.getElementById('jobsList');jobsDiv.innerHTML='';jobs.forEach(j=>{const d=document.createElement('div');d.innerHTML=`<h4>${j.title} (${j.loc})</h4><p>${j.desc}</p>`;jobsDiv.appendChild(d);});}
-loadJobs();
-document.getElementById('addJobForm')?.addEventListener('submit',e=>{e.preventDefault();const jobs=JSON.parse(localStorage.getItem('jobs')||'[]');jobs.push({title:document.getElementById('jobTitle').value,loc:document.getElementById('jobLoc').value,desc:document.getElementById('jobDesc').value});localStorage.setItem('jobs',JSON.stringify(jobs));loadJobs();alert('Job Added');});
-
-// ----- Testimonials -----
-function loadTestimonials(){const tests=JSON.parse(localStorage.getItem('testimonials')||'[]');const testDiv=document.getElementById('testimonialsList');const adminTestDiv=document.getElementById('adminTestimonials');
-testDiv.innerHTML='';adminTestDiv.innerHTML='';
-tests.forEach(t=>{const d=document.createElement('div');d.innerHTML=`<strong>${t.name}:</strong> ${t.msg}`;testDiv.appendChild(d);adminTestDiv.appendChild(d.cloneNode(true));});}
-loadTestimonials();
-document.getElementById('addTestimonialForm')?.addEventListener('submit',e=>{e.preventDefault();const tests=JSON.parse(localStorage.getItem('testimonials')||'[]');tests.push({name:document.getElementById('testName').value,msg:document.getElementById('testMsg').value});localStorage.setItem('testimonials',JSON.stringify(tests));loadTestimonials();alert('Testimonial Added');});
-
-// ----- Contact Messages -----
-document.getElementById('contactForm')?.addEventListener('submit',e=>{e.preventDefault();const msgs=JSON.parse(localStorage.getItem('messages')||'[]');msgs.push({name:document.getElementById('contactName').value,email:document.getElementById('contactEmail').value,msg:document.getElementById('contactMessage').value});localStorage.setItem('messages',JSON.stringify(msgs));document.getElementById('adminMessages').innerHTML=msgs.map(m=>`<p><strong>${m.name}</strong> (${m.email}): ${m.msg}</p>`).join('');alert('Message Sent');document.getElementById('contactForm').reset();});
-
-// Load existing messages in admin panel
-const adminMsgs=JSON.parse(localStorage.getItem('messages')||'[]');
-document.getElementById('adminMessages').innerHTML=adminMsgs.map(m=>`<p><strong>${m.name}</strong> (${m.email}): ${m.msg}</p>`).join('');
-
-// ----- Resume Builder -----
-document.getElementById('resumeForm').addEventListener('submit',e=>{
-e.preventDefault();
-const resume=document.getElementById('resumePreview');
-resume.style.display='block';
-resume.innerHTML=`<h3>RESUME</h3>
-<div class='resume-section'><h4>Personal Details</h4>
-<p>NAME: ${document.getElementById('resName').value}</p>
-<p>Father's Name: ${document.getElementById('resFather').value}</p>
-<p>MOB: ${document.getElementById('resMobile').value}</p>
-<p>Email: ${document.getElementById('resEmail').value}</p>
-<p>Address: ${document.getElementById('resAddress').value}</p>
-<p>Date of Birth: ${document.getElementById('resDOB').value}</p>
-<p>Languages Known: ${document.getElementById('resLang').value}</p>
-<p>Marital Status: ${document.getElementById('resStatus').value}</p>
-</div>
-<div class='resume-section'><h4>Educational Qualification</h4><p>${document.getElementById('resEdu').value}</p></div>
-<div class='resume-section'><h4>Technical Qualification</h4><p>${document.getElementById('resTech').value}</p></div>
-<div class='resume-section'><h4>Experience</h4><p>${document.getElementById('resExp').value}</p></div>
-<div class='resume-section'><h4>Competencies</h4><p>${document.getElementById('resComp').value}</p></div>
-<div class='resume-section'><h4>Interests</h4><p>${document.getElementById('resInter').value}</p></div>
-<div class='resume-section'><h4>Declaration</h4><p>I hereby declare that the information furnished above is true to the best of my knowledge.</p></div>`;
+const form=document.getElementById('resumeForm');
+form.addEventListener('submit',function(e){
+ e.preventDefault();
+ const { jsPDF } = window.jspdf;
+ const doc = new jsPDF();
+ const data = Object.fromEntries(new FormData(form));
+ doc.setFontSize(18); doc.text('RESUME',105,20,null,null,'center');
+ let y=35;
+ const lines=[
+ `Full Name: ${data.fullName}`,
+ `Father's Name: ${data.fatherName}`,
+ `Mobile: ${data.mobile}`,
+ `Email: ${data.email}`,
+ `Address: ${data.address}`,
+ `Date of Birth: ${data.dob}`,
+ `Marital Status: ${data.maritalStatus}`,
+ '',
+ 'Educational Qualification:', data.education || 'N/A','',
+ 'Technical Qualification:', data.technical || 'N/A','',
+ 'Experience:', data.experience || 'N/A','',
+ 'Competencies:', data.competencies || 'N/A','',
+ 'Interests:', data.interests || 'N/A'
+ ];
+ lines.forEach(line=>{doc.text(line,20,y);y+=10;if(y>270){doc.addPage();y=20;}});
+ doc.save(`${data.fullName.replace(/\s+/g,'_')}_Resume.pdf`);
+ closeResumePopup();
+ form.reset();
 });
 </script>
+
 </body>
 </html>
