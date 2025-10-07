@@ -1,120 +1,183 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MK Consultancy — Job Hiring & Resume Builder</title>
-<meta name="description" content="MK Consultancy — Build professional resumes and get hired quickly. Single-file professional website, admin and candidate features included.">
-<script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MK Consultancy - Job & Resume Builder</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f8fafc;color:#1e293b;margin:0}
-.card{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
-.btn{padding:.5rem 1rem;border-radius:8px;cursor:pointer}
-.btn-teal{background:#0ea5a4;color:white}
-.btn-outline{border:1px solid #0ea5a4;color:#0ea5a4}
-input,textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:10px}
-.hidden-by-default{display:none}
+/* Basic Reset & Fonts */
+body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f4f4f4;color:#333;}
+a{color:#007bff;text-decoration:none;}
+a:hover{color:#0056b3;}
+.container{width:90%;max-width:1200px;margin:auto;padding:20px;}
+header{background:#007bff;color:white;padding:20px 0;text-align:center;}
+header h1{margin:0;font-size:2em;}
+nav{margin-top:10px;text-align:center;}
+nav a{margin:0 15px;font-weight:bold;}
+section{margin:40px 0;background:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
+h2{color:#007bff;margin-bottom:20px;}
+input,textarea,select{width:100%;padding:10px;margin:5px 0 15px 0;border-radius:5px;border:1px solid #ccc;}
+button{padding:10px 20px;background:#007bff;color:white;border:none;border-radius:5px;cursor:pointer;}
+button:hover{background:#0056b3;}
+/* Resume Styles */
+.resume-preview{border:1px solid #333;padding:20px;margin-top:20px;background:#fff;}
+.resume-preview h3{margin-top:0;text-align:center;text-decoration:underline;}
+.resume-section{margin-bottom:15px;}
+.resume-section h4{margin-bottom:5px;color:#007bff;text-decoration:underline;}
+.admin-panel{display:none;}
+label{font-weight:bold;}
 </style>
 </head>
 <body>
-<header class="bg-white shadow sticky top-0 z-40">
-<div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-<div class="font-bold text-xl text-teal-600">MK Consultancy</div>
-<nav class="flex gap-4">
-<a href="#services">Services</a>
+<header>
+<h1>MK Consultancy</h1>
+<nav>
 <a href="#jobs">Jobs</a>
 <a href="#resume">Resume Builder</a>
 <a href="#testimonials">Testimonials</a>
 <a href="#contact">Contact</a>
-<button id="openAdminBtn" class="btn btn-outline">Admin</button>
+<a href="#admin" id="adminLink">Admin Login</a>
 </nav>
-</div>
 </header>
-<main class="max-w-6xl mx-auto p-6">
-<section class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-<div>
-<h1 class="text-4xl font-bold">Build Your Resume & Get Hired</h1>
-<p class="mt-4 text-gray-700">Professional resumes, placement support, and career guidance for job seekers.</p>
-<div class="mt-6 flex gap-4">
-<a href="#resume" class="btn btn-teal">Create Resume</a>
-<a href="#contact" class="btn btn-outline">Contact</a>
-</div>
-</div>
-<div class="card">
-<h3 class="font-semibold">Why Choose MK Consultancy?</h3>
-<ul class="mt-3 list-disc list-inside text-gray-600">
-<li>Resume optimized for recruiters & ATS</li>
-<li>Interview coaching and feedback</li>
-<li>Placement assistance with multiple companies</li>
-</ul>
-</div>
+<div class="container">
+
+<!-- Jobs Section -->
+<section id="jobs">
+<h2>Available Jobs</h2>
+<div id="jobsList"></div>
 </section>
-<section id="services" class="mt-12">
-<h2 class="text-2xl font-semibold">Services</h2>
-<div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="card"><h4 class="font-semibold">Resume Writing</h4><p>Professional resume creation to get interview calls.</p></div>
-<div class="card"><h4 class="font-semibold">Interview Coaching</h4><p>Mock interviews and personalized feedback.</p></div>
-<div class="card"><h4 class="font-semibold">Placement Assistance</h4><p>Job opportunities and employer outreach support.</p></div>
-</div>
-</section>
-<section id="jobs" class="mt-12">
-<h2 class="text-2xl font-semibold">Open Job Positions</h2>
-<div id="jobsList" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">Loading jobs...</div>
-</section>
-<section id="resume" class="mt-12 card">
-<h2 class="text-xl font-semibold">Resume Builder</h2>
-<form id="resumeForm" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-<input name="name" placeholder="Full Name" required />
-<input name="title" placeholder="Current Title" />
-<input name="email" placeholder="Email" />
-<input name="phone" placeholder="Phone" />
-<textarea name="summary" placeholder="Short Summary" class="md:col-span-2"></textarea>
-<input name="education" placeholder="Education (comma separated)" class="md:col-span-2" />
-<input name="skills" placeholder="Skills (comma separated)" class="md:col-span-2" />
-<button type="submit" class="md:col-span-2 btn btn-teal">Generate Resume Preview</button>
+
+<!-- Resume Builder Section -->
+<section id="resume">
+<h2>Candidate Resume Builder</h2>
+<form id="resumeForm">
+<label>Full Name</label><input type="text" id="resName" placeholder="John Doe" required>
+<label>Father's Name</label><input type="text" id="resFather" placeholder="Father Name" required>
+<label>Mobile</label><input type="text" id="resMobile" placeholder="+91-XXXXXXXXXX" required>
+<label>Email</label><input type="email" id="resEmail" placeholder="email@example.com" required>
+<label>Address</label><textarea id="resAddress" placeholder="Permanent Address"></textarea>
+<label>Date of Birth</label><input type="date" id="resDOB">
+<label>Languages Known</label><input type="text" id="resLang" placeholder="English, Hindi">
+<label>Marital Status</label><select id="resStatus"><option value="Single">Single</option><option value="Married">Married</option></select>
+<label>Educational Qualification</label><textarea id="resEdu" placeholder="E.g. Graduated from XYZ University"></textarea>
+<label>Technical Qualification</label><textarea id="resTech" placeholder="E.g. Computer Diploma in ABC"></textarea>
+<label>Experience</label><textarea id="resExp" placeholder="E.g. 1.5 years in XYZ"></textarea>
+<label>Competencies</label><textarea id="resComp" placeholder="E.g. Fast learner, Team Player"></textarea>
+<label>Interests</label><textarea id="resInter" placeholder="E.g. Reading, Net Surfing"></textarea>
+<button type="submit">Generate Resume</button>
 </form>
-<div id="resumePreview" class="mt-4 hidden-by-default card"></div>
+<div class="resume-preview" id="resumePreview" style="display:none;"></div>
 </section>
-<section id="testimonials" class="mt-12">
-<h2 class="text-2xl font-semibold">Testimonials</h2>
-<div id="testimonialsList" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">Loading testimonials...</div>
+
+<!-- Testimonials Section -->
+<section id="testimonials">
+<h2>Testimonials</h2>
+<div id="testimonialsList"></div>
 </section>
-<section id="contact" class="mt-12 card">
-<h2 class="text-xl font-semibold">Contact Us</h2>
-<form id="contactForm" class="mt-4 grid grid-cols-1 gap-3">
-<input name="name" placeholder="Your Name" required />
-<input name="email" placeholder="Your Email" />
-<textarea name="message" placeholder="Message"></textarea>
-<button type="submit" class="btn btn-teal">Send Message</button>
+
+<!-- Contact Section -->
+<section id="contact">
+<h2>Contact Us</h2>
+<form id="contactForm">
+<label>Name</label><input type="text" id="contactName" required>
+<label>Email</label><input type="email" id="contactEmail" required>
+<label>Message</label><textarea id="contactMessage" required></textarea>
+<button type="submit">Send Message</button>
 </form>
 </section>
-<div id="adminPanel" class="hidden-by-default mt-12 card">
-<h2 class="text-xl font-semibold">Admin Panel</h2>
-<form id="adminLoginForm" class="mt-4">
-<input type="password" id="adminPass" placeholder="Admin Password" required />
-<button type="submit" class="btn btn-teal mt-2">Login</button>
+
+<!-- Admin Section -->
+<section id="admin" class="admin-panel">
+<h2>Admin Panel</h2>
+<form id="adminLogin">
+<label>Password</label><input type="password" id="adminPass" required>
+<button type="submit">Login</button>
 </form>
-<div id="adminContent" class="hidden-by-default mt-4">
-<h3>Manage Jobs, Testimonials, Messages & Resumes</h3>
-<div id="adminJobs"></div>
-<div id="adminTestimonials"></div>
+<div id="adminPanelContent" style="display:none;">
+<h3>Manage Jobs</h3>
+<form id="addJobForm">
+<label>Title</label><input type="text" id="jobTitle" required>
+<label>Location</label><input type="text" id="jobLoc" required>
+<label>Description</label><textarea id="jobDesc" required></textarea>
+<button type="submit">Add Job</button>
+</form>
+<h3>Contact Messages</h3>
 <div id="adminMessages"></div>
-<div id="adminResumes"></div>
+<h3>Testimonials</h3>
+<form id="addTestimonialForm">
+<label>Name</label><input type="text" id="testName" required>
+<label>Message</label><textarea id="testMsg" required></textarea>
+<button type="submit">Add Testimonial</button>
+</form>
+<div id="adminTestimonials"></div>
 </div>
+</section>
+
 </div>
-<footer class="mt-16 text-sm text-gray-500 text-center">© <span id="year"></span> MK Consultancy. CEO: Manish Kumar • Email: <a href="mailto:mkconsultancysinghana@gmail.com">mkconsultancysinghana@gmail.com</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
-document.getElementById('year').textContent=new Date().getFullYear();
-const API_BASE='http://localhost:4000';
-async function loadPublic(){try{const jobsRes=await fetch(API_BASE+'/api/jobs');const jobs=await jobsRes.json();const jobsList=document.getElementById('jobsList');jobsList.innerHTML='';jobs.forEach(j=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<h4 class="font-semibold">${j.title} (${j.loc||'Remote'})</h4><p>${j.desc}</p>`;jobsList.appendChild(d);});const testRes=await fetch(API_BASE+'/api/testimonials');const tests=await testRes.json();const testList=document.getElementById('testimonialsList');testList.innerHTML='';tests.forEach(t=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<p>"${t.text}"</p><div class="mt-2 text-sm font-semibold">- ${t.name}</div>`;testList.appendChild(d);});}catch(err){console.error(err);}}
-loadPublic();
-// Resume Builder Preview
-const resumeForm=document.getElementById('resumeForm');const resumePreview=document.getElementById('resumePreview');
-resumeForm.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(resumeForm);let html=`<h2 class='text-xl font-bold mb-2'>${data.get('name')}</h2><p><strong>${data.get('title')}</strong></p><p>Email: ${data.get('email')} | Phone: ${data.get('phone')}</p><p>${data.get('summary')}</p><p><strong>Education:</strong> ${data.get('education')}</p><p><strong>Skills:</strong> ${data.get('skills')}</p>`;resumePreview.innerHTML=html;resumePreview.classList.remove('hidden-by-default');});
-// Admin Panel
-const openBtn=document.getElementById('openAdminBtn');const panel=document.getElementById('adminPanel');const loginForm=document.getElementById('adminLoginForm');const adminContent=document.getElementById('adminContent');
-openBtn.addEventListener('click',()=>{panel.classList.toggle('hidden-by-default');});
-loginForm.addEventListener('submit',e=>{e.preventDefault();const pass=document.getElementById('adminPass').value;if(pass==='Mkl@753065'){adminContent.classList.remove('hidden-by-default');loginForm.classList.add('hidden-by-default');alert('Admin logged in');}else{alert('Wrong password');}});
+const API_BASE=''; // LocalStorage based, backend not needed
+
+// ----- Admin Login -----
+const adminPassHash='91f0f2460e59b271b11e1e2376e4e2d3a9e03b7e9632c276a3085b0c6d0c8aa2'; // SHA256 of Mkl@753065
+const adminLink=document.getElementById('adminLink');
+const adminSection=document.getElementById('admin');
+const adminLoginForm=document.getElementById('adminLogin');
+const adminPanelContent=document.getElementById('adminPanelContent');
+adminLink.addEventListener('click',()=>{adminSection.style.display='block';window.scrollTo(0,adminSection.offsetTop);});
+adminLoginForm.addEventListener('submit',e=>{
+e.preventDefault();
+const pass=document.getElementById('adminPass').value;
+const hash=CryptoJS.SHA256(pass).toString();
+if(hash===adminPassHash){
+adminPanelContent.style.display='block';
+adminLoginForm.style.display='none';
+alert('Admin Login Successful');
+}else{alert('Incorrect Password');}
+});
+
+// ----- LocalStorage Jobs -----
+function loadJobs(){const jobs=JSON.parse(localStorage.getItem('jobs')||'[]');const jobsDiv=document.getElementById('jobsList');jobsDiv.innerHTML='';jobs.forEach(j=>{const d=document.createElement('div');d.innerHTML=`<h4>${j.title} (${j.loc})</h4><p>${j.desc}</p>`;jobsDiv.appendChild(d);});}
+loadJobs();
+document.getElementById('addJobForm')?.addEventListener('submit',e=>{e.preventDefault();const jobs=JSON.parse(localStorage.getItem('jobs')||'[]');jobs.push({title:document.getElementById('jobTitle').value,loc:document.getElementById('jobLoc').value,desc:document.getElementById('jobDesc').value});localStorage.setItem('jobs',JSON.stringify(jobs));loadJobs();alert('Job Added');});
+
+// ----- Testimonials -----
+function loadTestimonials(){const tests=JSON.parse(localStorage.getItem('testimonials')||'[]');const testDiv=document.getElementById('testimonialsList');const adminTestDiv=document.getElementById('adminTestimonials');
+testDiv.innerHTML='';adminTestDiv.innerHTML='';
+tests.forEach(t=>{const d=document.createElement('div');d.innerHTML=`<strong>${t.name}:</strong> ${t.msg}`;testDiv.appendChild(d);adminTestDiv.appendChild(d.cloneNode(true));});}
+loadTestimonials();
+document.getElementById('addTestimonialForm')?.addEventListener('submit',e=>{e.preventDefault();const tests=JSON.parse(localStorage.getItem('testimonials')||'[]');tests.push({name:document.getElementById('testName').value,msg:document.getElementById('testMsg').value});localStorage.setItem('testimonials',JSON.stringify(tests));loadTestimonials();alert('Testimonial Added');});
+
+// ----- Contact Messages -----
+document.getElementById('contactForm')?.addEventListener('submit',e=>{e.preventDefault();const msgs=JSON.parse(localStorage.getItem('messages')||'[]');msgs.push({name:document.getElementById('contactName').value,email:document.getElementById('contactEmail').value,msg:document.getElementById('contactMessage').value});localStorage.setItem('messages',JSON.stringify(msgs));document.getElementById('adminMessages').innerHTML=msgs.map(m=>`<p><strong>${m.name}</strong> (${m.email}): ${m.msg}</p>`).join('');alert('Message Sent');document.getElementById('contactForm').reset();});
+
+// Load existing messages in admin panel
+const adminMsgs=JSON.parse(localStorage.getItem('messages')||'[]');
+document.getElementById('adminMessages').innerHTML=adminMsgs.map(m=>`<p><strong>${m.name}</strong> (${m.email}): ${m.msg}</p>`).join('');
+
+// ----- Resume Builder -----
+document.getElementById('resumeForm').addEventListener('submit',e=>{
+e.preventDefault();
+const resume=document.getElementById('resumePreview');
+resume.style.display='block';
+resume.innerHTML=`<h3>RESUME</h3>
+<div class='resume-section'><h4>Personal Details</h4>
+<p>NAME: ${document.getElementById('resName').value}</p>
+<p>Father's Name: ${document.getElementById('resFather').value}</p>
+<p>MOB: ${document.getElementById('resMobile').value}</p>
+<p>Email: ${document.getElementById('resEmail').value}</p>
+<p>Address: ${document.getElementById('resAddress').value}</p>
+<p>Date of Birth: ${document.getElementById('resDOB').value}</p>
+<p>Languages Known: ${document.getElementById('resLang').value}</p>
+<p>Marital Status: ${document.getElementById('resStatus').value}</p>
+</div>
+<div class='resume-section'><h4>Educational Qualification</h4><p>${document.getElementById('resEdu').value}</p></div>
+<div class='resume-section'><h4>Technical Qualification</h4><p>${document.getElementById('resTech').value}</p></div>
+<div class='resume-section'><h4>Experience</h4><p>${document.getElementById('resExp').value}</p></div>
+<div class='resume-section'><h4>Competencies</h4><p>${document.getElementById('resComp').value}</p></div>
+<div class='resume-section'><h4>Interests</h4><p>${document.getElementById('resInter').value}</p></div>
+<div class='resume-section'><h4>Declaration</h4><p>I hereby declare that the information furnished above is true to the best of my knowledge.</p></div>`;
+});
 </script>
 </body>
 </html>
