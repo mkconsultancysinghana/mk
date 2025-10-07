@@ -1,174 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MK Consultancy — Job Placement & Resume Services</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-body{font-family:'Inter',sans-serif;margin:0;padding:0;color:#333;background:#f5f5f5}
-header{background:white;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,0.1);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center}
-header h1{font-size:1.8rem;font-weight:800;color:#6b21a8}
-nav a{margin-left:1rem;font-weight:600;color:#6b21a8;transition:0.3s}nav a:hover{color:#4c1d95}
-section{padding:4rem 1rem}
-.card{background:white;padding:2rem;border-radius:1rem;box-shadow:0 4px 15px rgba(0,0,0,0.08);transition:0.3s}
-.card:hover{transform:translateY(-5px);box-shadow:0 8px 25px rgba(0,0,0,0.15)}
-.btn-primary{@apply bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-purple-800 transition}
-.btn-secondary{@apply bg-white border border-purple-700 text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-100 transition}
-.admin-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:50}
-.admin-panel .content{background:white;padding:2rem;border-radius:1rem;width:90%;max-width:500px;position:relative;box-shadow:0 10px 25px rgba(0,0,0,0.2)}
-.close-popup{position:absolute;top:1rem;right:1rem;font-size:1.25rem;font-weight:700;color:#6b21a8;cursor:pointer}
-@media(max-width:768px){.flex,.grid{flex-direction:column;gap:1.5rem}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MK Consultancy — Placement & Resume Services</title>
+  <meta name="description" content="MK Consultancy — Professional job placement, resume building, and interview preparation services in Singhana, Rajasthan.">
+  <meta name="keywords" content="MK Consultancy, Job Placement, Resume Service, Career Guidance, Singhana, Rajasthan">
+  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --primary-600: #0f4c81; /* deep blue */
+      --primary-500: #146fb3;
+      --muted: #6b7280;
+    }
+    body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    .btn-primary { background: linear-gradient(90deg,var(--primary-600),var(--primary-500)); color: white; }
+    .btn-outline { border: 1px solid rgba(15,76,129,0.12); color: var(--primary-600); background: white; }
+    /* subtle focus outline */
+    :focus { outline: 3px solid rgba(20,111,179,0.12); outline-offset: 2px; }
+  </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-900 antialiased">
 
-<!-- Header -->
-<header>
-<h1>MK Consultancy</h1>
-<nav>
-<a href="#hero">Home</a>
-<a href="#about">About</a>
-<a href="#services">Services</a>
-<a href="#jobs">Job Placements</a>
-<a href="#testimonials">Testimonials</a>
-<a href="#contact">Contact</a>
-<a href="#" onclick="openAdmin()">Admin Login</a>
-</nav>
-</header>
+  <!-- Header -->
+  <header class="bg-white shadow sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <div class="flex items-center gap-4">
+          <!-- Logo (text) -->
+          <a href="#" class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-md bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold">MK</div>
+            <div class="hidden sm:block">
+              <h1 class="text-lg font-extrabold text-[var(--primary-600)] leading-none">MK Consultancy</h1>
+              <p class="text-xs text-gray-500 -mt-0.5">Placement & Resume Services — Singhana</p>
+            </div>
+          </a>
+        </div>
 
-<!-- Hero -->
-<section id="hero" class="text-center bg-gradient-to-r from-purple-200 via-white to-purple-100 rounded-xl m-4 p-8">
-<h2 class="text-4xl font-bold text-purple-800 mb-4">Empowering Careers with MK Consultancy</h2>
-<p class="max-w-3xl mx-auto text-gray-700 mb-6">Providing professional guidance, top job placements, and resume services to help candidates achieve their career dreams.</p>
-</section>
+        <nav class="hidden md:flex items-center space-x-6 text-sm">
+          <a href="#about" class="hover:text-[var(--primary-600)] transition">About</a>
+          <a href="#services" class="hover:text-[var(--primary-600)] transition">Services</a>
+          <a href="#whyus" class="hover:text-[var(--primary-600)] transition">Why Us</a>
+          <a href="#testimonials" class="hover:text-[var(--primary-600)] transition">Testimonials</a>
+          <a href="#contact" class="hover:text-[var(--primary-600)] transition">Contact</a>
+        </nav>
 
-<!-- About -->
-<section id="about" class="text-center bg-purple-50 rounded-xl m-4 p-8">
-<h2 class="text-3xl font-bold text-purple-700 mb-4">About Us</h2>
-<p class="text-gray-700 max-w-3xl mx-auto">MK Consultancy specializes in resume building, interview coaching, and job placement services. Our mission is to bridge the gap between talent and opportunity.</p>
-</section>
+        <div class="flex items-center gap-3">
+          <a href="mailto:mkconsultancysinghana@gmail.com" class="hidden md:inline-block text-sm text-gray-600">mkconsultancysinghana@gmail.com</a>
+          <a href="tel:+919664225417" class="btn-outline px-4 py-2 rounded-md text-sm hover:bg-gray-50">+91 9664225417</a>
 
-<!-- Services -->
-<section id="services" class="text-center m-4">
-<h2 class="text-3xl font-bold text-purple-700 mb-6">Our Services</h2>
-<div class="flex flex-wrap gap-6 justify-center">
-<div class="card"><h3 class="font-bold text-purple-700 mb-2">Job Placement</h3><p>Connecting candidates to reputed companies across Rajasthan and India with personalized guidance.</p></div>
-<div class="card"><h3 class="font-bold text-purple-700 mb-2">Interview Preparation</h3><p>Mock interviews, guidance sessions, and strategies to build confidence and skills.</p></div>
-<div class="card"><h3 class="font-bold text-purple-700 mb-2">Resume Services</h3><p>Professional resumes crafted quickly for freshers and experienced candidates, ready to impress recruiters.</p></div>
-</div>
-</section>
+          <!-- Mobile menu button -->
+          <button id="mobileBtn" class="md:hidden p-2 rounded-md hover:bg-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
 
-<!-- Job Placements Section -->
-<section id="jobs" class="text-center bg-purple-50 rounded-xl m-4 p-8">
-<h2 class="text-3xl font-bold text-purple-700 mb-6">Recent Job Placements</h2>
-<div class="flex flex-wrap gap-6 justify-center">
-<div class="card"><h4 class="font-semibold text-purple-700">Software Developer - XYZ Tech</h4><p>Location: Jaipur, Rajasthan</p><p>We successfully placed a fresher in a top IT firm with guidance and training.</p></div>
-<div class="card"><h4 class="font-semibold text-purple-700">Customer Support - ABC Solutions</h4><p>Location: Delhi, India</p><p>Candidate trained and placed in client handling role with top-level support.</p></div>
-<div class="card"><h4 class="font-semibold text-purple-700">Sales Executive - LMN Corp</h4><p>Location: Jaipur, Rajasthan</p><p>Successfully guided candidate for sales and marketing position in reputed firm.</p></div>
-</div>
-</section>
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden border-t">
+      <div class="px-6 py-4 space-y-3">
+        <a href="#about" class="block">About</a>
+        <a href="#services" class="block">Services</a>
+        <a href="#whyus" class="block">Why Us</a>
+        <a href="#testimonials" class="block">Testimonials</a>
+        <a href="#contact" class="block">Contact</a>
+      </div>
+    </div>
+  </header>
 
-<!-- Testimonials -->
-<section id="testimonials" class="text-center m-4">
-<h2 class="text-3xl font-bold text-purple-700 mb-6">Testimonials</h2>
-<div class="flex flex-wrap gap-6 justify-center">
-<div class="card"><p class="italic mb-2">“MK Consultancy helped me land my dream job with excellent guidance and support.”</p><p class="font-semibold text-purple-700">— Virendra Singh</p></div>
-<div class="card"><p class="italic mb-2">“Their resume and interview coaching made all the difference!”</p><p class="font-semibold text-purple-700">— Anil Kumar</p></div>
-</div>
-</section>
+  <!-- Hero -->
+  <main>
+    <section class="bg-white">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-16 lg:py-20 grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <h2 class="text-4xl sm:text-5xl font-extrabold leading-tight text-[var(--primary-600)]">Build Your Career With MK Consultancy</h2>
+          <p class="mt-4 text-lg text-gray-600 max-w-xl">
+            We empower job seekers with professional guidance, recruiter-ready resumes, interview coaching and trusted placement support across Singhana and nearby regions.
+            If you're looking to start or accelerate your career — you're at the right place.
+          </p>
 
-<!-- Contact -->
-<section id="contact" class="text-center bg-white rounded-xl m-4 p-8">
-<h2 class="text-3xl font-bold text-purple-700 mb-4">Contact Us</h2>
-<p>📍 Singhana, Rajasthan | 📞 +91 9664225417 | ✉️ <a href="mailto:mkconsultancysinghana@gmail.com">mkconsultancysinghana@gmail.com</a></p>
-</section>
+          <div class="mt-8 space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-4">
+            <a href="#services" class="inline-flex items-center justify-center btn-primary px-5 py-3 rounded-md text-sm font-semibold shadow">Explore Services</a>
+            <a href="#contact" class="inline-flex items-center justify-center btn-outline px-5 py-3 rounded-md text-sm font-semibold">Contact Us</a>
+          </div>
 
-<!-- Footer -->
-<footer class="bg-purple-100 py-6 text-center text-gray-700">© 2025 MK Consultancy — All rights reserved.</footer>
+          <div class="mt-8">
+            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-4">
+              <p class="text-sm text-gray-700">Trusted partners: <span class="font-medium text-[var(--primary-600)]">Lakshyaraj Skill Edutech Foundation</span>, <span class="font-medium text-[var(--primary-600)]">IT Excellent Computer Center</span></p>
+            </div>
+          </div>
+        </div>
 
-<!-- WhatsApp Button -->
-<a href="https://wa.me/919664225417" target="_blank" class="fixed bottom-5 right-5 bg-green-500 p-4 rounded-full shadow-lg hover:bg-green-600">💬</a>
+        <!-- Job Search Card (no job listings) -->
+        <div>
+          <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow p-6">
+            <h3 class="text-xl font-semibold text-gray-800">Find Your Dream Job</h3>
+            <p class="text-sm text-gray-600 mt-1">Search jobs by role, location or keyword. (Currently there are no vacancies.)</p>
 
-<!-- Admin Panel Popup -->
-<div id="adminPanel" class="admin-panel flex">
-<div class="content">
-<span class="close-popup" onclick="closeAdmin()">✕</span>
-<h2 class="text-2xl font-bold text-purple-700 mb-4 text-center">Admin Login</h2>
-<form id="adminForm">
-<input type="password" name="adminPass" placeholder="Enter Admin Password" required />
-<button type="submit" class="btn-primary w-full mt-2">Login</button>
-</form>
-<div id="adminContent" style="display:none;margin-top:1rem;">
-<h3 class="font-bold text-purple-700 mb-2">Add Job Posting</h3>
-<input type="text" id="jobTitle" placeholder="Job Title" class="mb-2" />
-<input type="text" id="jobLocation" placeholder="Location" class="mb-2" />
-<textarea id="jobDesc" placeholder="Job Description" class="mb-2"></textarea>
-<button onclick="addJob()" class="btn-secondary w-full mb-2">Add Job</button>
-<div id="jobsList"></div>
-</div>
-</div>
-</div>
+            <form id="jobSearchForm" class="mt-4 grid grid-cols-1 gap-3">
+              <input type="text" id="q" name="q" placeholder="Job title, skill or keyword" class="w-full border p-3 rounded-md" />
+              <input type="text" id="loc" name="loc" placeholder="City or location (e.g. Singhana)" class="w-full border p-3 rounded-md" />
+              <div class="flex gap-3">
+                <button type="submit" class="flex-1 btn-primary px-4 py-3 rounded-md font-semibold">Search</button>
+                <button type="button" id="clearBtn" class="flex-1 btn-outline px-4 py-3 rounded-md">Clear</button>
+              </div>
+            </form>
 
-<script>
-const ADMIN_PASS='Mkl@753065';
-function openAdmin(){document.getElementById('adminPanel').style.display='flex';}
-function closeAdmin(){document.getElementById('adminPanel').style.display='none';}
+            <!-- Result placeholder -->
+            <div id="searchResult" class="mt-4 rounded-md p-4 bg-white border border-dashed border-gray-200 text-gray-600 hidden">
+              <!-- Filled by JS -->
+            </div>
 
-// Admin login
-document.getElementById('adminForm').addEventListener('submit',function(e){
- e.preventDefault();
- const pass=this.adminPass.value;
- if(pass===ADMIN_PASS){
-  alert('Admin Access Granted');
-  this.style.display='none';
-  document.getElementById('adminContent').style.display='block';
-  loadJobs();
- }else{alert('Wrong Password');}
-});
+            <p class="mt-4 text-xs text-gray-500">Tip: You can call or WhatsApp us at <a href="tel:+919664225417" class="text-[var(--primary-600)] font-medium">+91 9664225417</a> for immediate enquiries.</p>
+          </div>
 
-// Job handling
-function addJob(){
- const title=document.getElementById('jobTitle').value;
- const loc=document.getElementById('jobLocation').value;
- const desc=document.getElementById('jobDesc').value;
- if(!title||!loc||!desc){alert('Fill all fields');return;}
- let jobs=JSON.parse(localStorage.getItem('jobs')||'[]');
- jobs.push({title,loc,desc});
- localStorage.setItem('jobs',JSON.stringify(jobs));
- loadJobs();
- document.getElementById('jobTitle').value='';
- document.getElementById('jobLocation').value='';
- document.getElementById('jobDesc').value='';
-}
-function loadJobs(){
- const jobs=JSON.parse(localStorage.getItem('jobs')||'[]');
- const list=document.getElementById('jobsList');
- list.innerHTML='';
- jobs.forEach((j,i)=>{
-  const div=document.createElement('div');
-  div.className='card mb-2';
-  div.innerHTML=`<h4 class='font-semibold text-purple-700'>${j.title}</h4><p>Location: ${j.loc}</p><p>${j.desc}</p>`;
-  list.appendChild(div);
- });
-}
+          <!-- Small info panel -->
+          <div class="mt-4">
+            <div class="bg-white p-4 rounded-lg shadow-sm border">
+              <h4 class="text-sm font-semibold text-gray-800">Why register with us?</h4>
+              <p class="text-sm text-gray-600 mt-1">We maintain relationships with local employers and training centers — register your details and we'll reach out as vacancies open up.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-// Display jobs in Jobs section
-function displayJobsSection(){
- const jobs=JSON.parse(localStorage.getItem('jobs')||'[]');
- const container=document.querySelector('#jobs .flex');
- if(!container) return;
- container.innerHTML='';
- jobs.forEach(j=>{
-  const div=document.createElement('div');
-  div.className='card';
-  div.innerHTML=`<h4 class='font-semibold text-purple-700'>${j.title}</h4><p>Location: ${j.loc}</p><p>${j.desc}</p>`;
-  container.appendChild(div);
- });
-}
-displayJobsSection();
-</script>
+    <!-- Services -->
+    <section id="services" class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <h3 class="text-3xl font-bold text-[var(--primary-600)]">Our Professional Services</h3>
+        <p class="mt-2 text-gray-600 max-w-2xl">We offer a range of services tailored to students, freshers and working professionals.</p>
 
+        <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border">
+            <h4 class="font-semibold text-lg text-[var(--primary-600)]">Job Placement</h4>
+            <p class="text-sm text-gray-600 mt-2">Connecting skilled candidates with companies for suitable positions across Rajasthan and beyond.</p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 shadow-sm border">
+            <h4 class="font-semibold text-lg text-[var(--primary-600)]">Interview Preparation</h4>
+            <p class="text-sm text-gray-600 mt-2">Mock sessions and personalized coaching to help you perform confidently in interviews.</p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-6 shadow-sm border">
+            <h4 class="font-semibold text-lg text-[var(--primary-600)]">Resume Building</h4>
+            <p class="text-sm text-gray-600 mt-2">Professional, recruiter-friendly resumes tailored to your target role.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Us -->
+    <section id="whyus" class="py-16 bg-white">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+        <h3 class="text-3xl font-bold text-[var(--primary-600)]">Why Choose MK Consultancy?</h3>
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+          <div class="p-6 bg-gray-50 rounded-xl border">
+            <h4 class="font-semibold text-[var(--primary-600)]">Trusted Network</h4>
+            <p class="text-sm text-gray-600 mt-2">Strong tie-ups with reputed educational institutions and companies in Singhana and nearby cities.</p>
+          </div>
+          <div class="p-6 bg-gray-50 rounded-xl border">
+            <h4 class="font-semibold text-[var(--primary-600)]">Personalized Support</h4>
+            <p class="text-sm text-gray-600 mt-2">Individual attention and tailored guidance for each candidate.</p>
+          </div>
+          <div class="p-6 bg-gray-50 rounded-xl border">
+            <h4 class="font-semibold text-[var(--primary-600)]">Affordable & Fast</h4>
+            <p class="text-sm text-gray-600 mt-2">Quick services at minimal charges — ideal for students and freshers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <h3 class="text-3xl font-bold text-[var(--primary-600)] text-center">What Our Clients Say</h3>
+        <div class="mt-8 grid md:grid-cols-2 gap-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border">
+            <p class="italic text-gray-700">“MK Consultancy has been a great support in helping our students get placed in reputed companies. With their guidance and recruitment assistance, more than <strong>200+ candidates</strong> have successfully started their careers. Their commitment to youth employment is truly commendable.”</p>
+            <p class="mt-4 font-semibold text-[var(--primary-600)]">— Virendra Singh Shekhawat</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl shadow-sm border">
+            <p class="italic text-gray-700">“Professional guidance and interview practice gave me the confidence to crack my interviews easily.”</p>
+            <p class="mt-4 font-semibold text-[var(--primary-600)]">— Anil Kumar</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CEO / About -->
+    <section id="about" class="py-16 bg-white">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h3 class="text-2xl font-bold text-[var(--primary-600)]">Manish Kumar</h3>
+        <p class="text-sm text-gray-600 font-medium">CEO / Manager</p>
+        <p class="mt-4 text-gray-700">
+          Welcome to MK Consultancy! Our mission is to empower professionals with the tools, guidance, and opportunities to succeed in their careers.
+          With personalized resume building, interview coaching, and job placement services, we ensure every client is prepared to shine.
+        </p>
+
+        <div class="mt-6 grid sm:grid-cols-2 gap-4">
+          <div class="bg-gray-50 p-4 rounded-lg border">
+            <h4 class="text-sm font-semibold text-[var(--primary-600)]">Trusted Partners</h4>
+            <p class="text-sm text-gray-600 mt-1">Lakshyaraj Skill Edutech Foundation — Jhunjhunu (Raj.)</p>
+            <p class="text-sm text-gray-600">IT Excellent Computer Center — Singhana(Raj.)</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-lg border">
+            <h4 class="text-sm font-semibold text-[var(--primary-600)]">Contact Info</h4>
+            <p class="text-sm text-gray-600 mt-1">📍 Singhana, Rajasthan</p>
+            <p class="text-sm text-gray-600">📞 <a href="tel:+919664225417" class="text-[var(--primary-600)] font-medium">+91 9664225417</a></p>
+            <p class="text-sm text-gray-600">✉️ <a href="mailto:mkconsultancysinghana@gmail.com" class="text-[var(--primary-600)] font-medium">mkconsultancysinghana@gmail.com</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-16 bg-gray-100">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="bg-white rounded-2xl p-8 shadow-sm border">
+          <h3 class="text-2xl font-bold text-[var(--primary-600)]">Get in Touch</h3>
+          <p class="text-gray-600 mt-2">Have questions or need career advice? Send us a message or call/WhatsApp for quick support.</p>
+
+          <form id="contactForm" class="mt-6 grid grid-cols-1 gap-4">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <input type="text" name="name" placeholder="Your name" required class="w-full p-3 border rounded-md" />
+              <input type="email" name="email" placeholder="Email address" required class="w-full p-3 border rounded-md" />
+            </div>
+            <input type="tel" name="phone" placeholder="Phone number" class="w-full p-3 border rounded-md" />
+            <textarea name="message" rows="5" placeholder="How can we help?" class="w-full p-3 border rounded-md"></textarea>
+
+            <div class="flex items-center gap-3">
+              <button type="submit" class="btn-primary px-5 py-3 rounded-md font-semibold">Send Message</button>
+              <button type="reset" class="btn-outline px-4 py-3 rounded-md">Reset</button>
+            </div>
+
+            <p id="contactNotice" class="text-sm text-green-600 hidden">Message sent — we'll contact you soon.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t">
+    <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div>
+        <h4 class="font-bold text-[var(--primary-600)]">MK Consultancy</h4>
+        <p class="text-sm text-gray-600 mt-1">Placement & Resume Services — Singhana, Rajasthan</p>
+        <p class="text-xs text-gray-400 mt-2">© 2025 MK Consultancy — All rights reserved.</p>
+      </div>
+
+      <div class="flex gap-6">
+        <div>
+          <p class="text-sm font-semibold text-gray-700">Quick Links</p>
+          <ul class="text-sm text-gray-600 mt-2 space-y-1">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#whyus">Why Us</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="text-sm font-semibold text-gray-700">Contact</p>
+          <p class="text-sm text-gray-600 mt-2"><a href="tel:+919664225417" class="text-[var(--primary-600)] font-medium">+91 9664225417</a></p>
+          <p class="text-sm text-gray-600"><a href="mailto:mkconsultancysinghana@gmail.com" class="text-[var(--primary-600)]">mkconsultancysinghana@gmail.com</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/919664225417" target="_blank" aria-label="Chat on WhatsApp"
+     class="fixed right-5 bottom-5 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg z-50">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15a4 4 0 01-3 3.87A19 19 0 015 5.1 4 4 0 018 3h.5a4 4 0 013 1.2L12 6l1 1 .8.8A4 4 0 0121 15z"/>
+    </svg>
+  </a>
+
+  <!-- Scripts -->
+  <script>
+    // Mobile menu toggle
+    const mobileBtn = document.getElementById('mobileBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileBtn?.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Job search handling: No vacancies shown — friendly notice
+    const jobForm = document.getElementById('jobSearchForm');
+    const resultBox = document.getElementById('searchResult');
+    const clearBtn = document.getElementById('clearBtn');
+
+    jobForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      resultBox.classList.remove('hidden');
+      resultBox.innerHTML = `
+        <div class="text-sm text-gray-700">
+          <p class="font-semibold text-gray-800">No current vacancies</p>
+          <p class="mt-2">Currently there are no job openings listed. Please share your resume or contact us at <a href="tel:+919664225417" class="text-[var(--primary-600)] font-medium">+91 9664225417</a> or email <a href="mailto:mkconsultancysinghana@gmail.com" class="text-[var(--primary-600)]">mkconsultancysinghana@gmail.com</a>. We'll notify you when suitable roles are available.</p>
+        </div>
+      `;
+      // Optional: scroll to result
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    clearBtn?.addEventListener('click', () => {
+      (document.getElementById('q') || {}).value = '';
+      (document.getElementById('loc') || {}).value = '';
+      resultBox.classList.add('hidden');
+      resultBox.innerHTML = '';
+    });
+
+    // Contact form (local demo only) — do basic validation and show notice (no backend)
+    const contactForm = document.getElementById('contactForm');
+    const contactNotice = document.getElementById('contactNotice');
+    contactForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Here you'd normally send to backend — for now we show a success message
+      contactNotice.classList.remove('hidden');
+      setTimeout(() => {
+        contactNotice.classList.add('hidden');
+        contactForm.reset();
+      }, 2500);
+    });
+  </script>
 </body>
 </html>
