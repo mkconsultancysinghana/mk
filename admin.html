@@ -7,16 +7,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
-    :root {
-      --primary: #0f4c81;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-    }
+    :root { --primary: #0f4c81; }
+    body { font-family: 'Inter', sans-serif; }
+    .hidden { display: none; }
   </style>
 </head>
 <body class="bg-gray-100">
 
+  <!-- 🔐 Login Section -->
   <div id="login-section" class="flex items-center justify-center h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm text-center">
       <h2 class="text-2xl font-bold text-[var(--primary)] mb-4">Admin Login</h2>
@@ -27,21 +25,68 @@
     </div>
   </div>
 
+  <!-- 🧭 Admin Dashboard -->
   <div id="admin-section" class="hidden p-6">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
       <h1 class="text-2xl font-bold text-[var(--primary)]">Admin Dashboard</h1>
       <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">Logout</button>
     </div>
 
-    <h2 class="text-xl font-semibold mb-2">📩 Contact Form Submissions</h2>
+    <!-- 📩 Contact Submissions -->
+    <h2 class="text-xl font-semibold mb-2">📩 Contact Submissions</h2>
     <div id="contacts" class="bg-white rounded-lg shadow p-4 overflow-x-auto"></div>
 
-    <h2 class="text-xl font-semibold mt-8 mb-2">💼 Job Listings</h2>
-    <div id="jobs" class="bg-white rounded-lg shadow p-4 overflow-x-auto"></div>
+    <!-- 💼 Job Listings -->
+    <div class="mt-10">
+      <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
+        <h2 class="text-xl font-semibold">💼 Job Listings</h2>
+        <button id="addJobBtn" class="bg-[var(--primary)] text-white px-4 py-2 rounded-md">+ Add New Job</button>
+      </div>
+      <div id="jobs" class="bg-white rounded-lg shadow p-4 overflow-x-auto"></div>
+    </div>
+
+    <!-- 🧾 Resume Templates -->
+    <div class="mt-10">
+      <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
+        <h2 class="text-xl font-semibold">🧾 Resume Templates</h2>
+        <button id="addResumeBtn" class="bg-[var(--primary)] text-white px-4 py-2 rounded-md">+ Add New Template</button>
+      </div>
+      <div id="resumes" class="bg-white rounded-lg shadow p-4 overflow-x-auto"></div>
+    </div>
+  </div>
+
+  <!-- 🪄 Add Job Modal -->
+  <div id="addJobModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <h3 class="text-xl font-bold text-[var(--primary)] mb-4">Add New Job</h3>
+      <input id="jobTitle" placeholder="Job Title" class="w-full mb-3 p-3 border rounded-md" />
+      <input id="jobCompany" placeholder="Company" class="w-full mb-3 p-3 border rounded-md" />
+      <input id="jobLocation" placeholder="Location" class="w-full mb-3 p-3 border rounded-md" />
+      <textarea id="jobDescription" placeholder="Description" class="w-full mb-3 p-3 border rounded-md"></textarea>
+      <div class="flex justify-end gap-2">
+        <button id="cancelJobBtn" class="px-4 py-2 bg-gray-300 rounded-md">Cancel</button>
+        <button id="saveJobBtn" class="px-4 py-2 bg-[var(--primary)] text-white rounded-md">Save</button>
+      </div>
+      <p id="jobStatus" class="hidden text-green-600 mt-3 text-sm"></p>
+    </div>
+  </div>
+
+  <!-- 🧾 Add Resume Modal -->
+  <div id="addResumeModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <h3 class="text-xl font-bold text-[var(--primary)] mb-4">Add New Resume Template</h3>
+      <input id="resumeTitle" placeholder="Template Title" class="w-full mb-3 p-3 border rounded-md" />
+      <input id="resumeDesc" placeholder="Description" class="w-full mb-3 p-3 border rounded-md" />
+      <input id="resumeURL" placeholder="Download URL (PDF link)" class="w-full mb-3 p-3 border rounded-md" />
+      <div class="flex justify-end gap-2">
+        <button id="cancelResumeBtn" class="px-4 py-2 bg-gray-300 rounded-md">Cancel</button>
+        <button id="saveResumeBtn" class="px-4 py-2 bg-[var(--primary)] text-white rounded-md">Save</button>
+      </div>
+      <p id="resumeStatus" class="hidden text-green-600 mt-3 text-sm"></p>
+    </div>
   </div>
 
   <script>
-    // 🧠 Step 1: Supabase Config
     const SUPABASE_URL = "https://gpjvqkzvutnhecijzxns.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwanZxa3p2dXRuaGVjaWp6eG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDU1MjYsImV4cCI6MjA3NTUyMTUyNn0.3uL_GlV3eJIYq7gODmlVFhVp2HzKmFIAxTSf82hK9eg";
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -52,120 +97,97 @@
     const logoutBtn = document.getElementById("logoutBtn");
     const loginError = document.getElementById("loginError");
 
-    // 🧾 Step 2: Login function
+    async function loadContacts() {
+      const { data } = await supabase.from("contacts").select("*").order("created_at", { ascending: false });
+      document.getElementById("contacts").innerHTML =
+        data.length ? `
+        <table class='min-w-full text-sm text-left'>
+          <thead><tr class='bg-gray-200'>
+            <th class='p-2'>Name</th><th class='p-2'>Email</th><th class='p-2'>Message</th><th class='p-2'>Created</th>
+          </tr></thead>
+          <tbody>
+            ${data.map(d => `<tr><td class='p-2'>${d.name}</td><td class='p-2'>${d.email}</td><td class='p-2'>${d.message}</td><td class='p-2'>${new Date(d.created_at).toLocaleString()}</td></tr>`).join("")}
+          </tbody>
+        </table>` : "<p>No contacts found.</p>";
+    }
+
+    async function loadJobs() {
+      const { data } = await supabase.from("jobs").select("*").order("posted_at", { ascending: false });
+      document.getElementById("jobs").innerHTML =
+        data.length ? data.map(d => `
+          <div class='border-b py-2'>
+            <p><b>${d.title}</b> — ${d.company} (${d.location})</p>
+            <p class='text-sm text-gray-600'>${d.description || ""}</p>
+            <button class='text-red-600 text-sm mt-1' onclick="deleteJob(${d.id})">Delete</button>
+          </div>`).join("") : "<p>No jobs available.</p>";
+    }
+
+    async function loadResumes() {
+      const { data } = await supabase.from("resume_templates").select("*").order("created_at", { ascending: false });
+      document.getElementById("resumes").innerHTML =
+        data.length ? data.map(d => `
+          <div class='border-b py-2'>
+            <p><b>${d.title}</b></p>
+            <p class='text-sm text-gray-600 mb-1'>${d.description || ""}</p>
+            <a href='${d.download_url}' target='_blank' class='text-blue-600 text-sm underline'>Download</a> |
+            <button class='text-red-600 text-sm' onclick="deleteResume(${d.id})">Delete</button>
+          </div>`).join("") : "<p>No resume templates added yet.</p>";
+    }
+
+    // 🔐 Login / Logout
     loginBtn.addEventListener("click", async () => {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) {
-        loginError.classList.remove("hidden");
-      } else {
-        loginError.classList.add("hidden");
-        loginSection.classList.add("hidden");
-        adminSection.classList.remove("hidden");
-        loadContacts();
-        loadJobs();
-      }
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) loginError.classList.remove("hidden");
+      else { loginSection.classList.add("hidden"); adminSection.classList.remove("hidden"); loadContacts(); loadJobs(); loadResumes(); }
     });
 
-    // 🚪 Logout
     logoutBtn.addEventListener("click", async () => {
       await supabase.auth.signOut();
       adminSection.classList.add("hidden");
       loginSection.classList.remove("hidden");
     });
 
-    // 📥 Fetch Contacts
-    async function loadContacts() {
-      const { data, error } = await supabase.from("contacts").select("*").order("created_at", { ascending: false });
-      const container = document.getElementById("contacts");
-      if (error) {
-        container.innerHTML = `<p class="text-red-500">Error loading contacts.</p>`;
-        return;
+    // 💼 Add / Delete Jobs
+    const jobModal = document.getElementById("addJobModal");
+    document.getElementById("addJobBtn").onclick = () => jobModal.classList.remove("hidden");
+    document.getElementById("cancelJobBtn").onclick = () => jobModal.classList.add("hidden");
+    document.getElementById("saveJobBtn").onclick = async () => {
+      const title = document.getElementById("jobTitle").value;
+      const company = document.getElementById("jobCompany").value;
+      const location = document.getElementById("jobLocation").value;
+      const description = document.getElementById("jobDescription").value;
+      await supabase.from("jobs").insert({ title, company, location, description });
+      jobModal.classList.add("hidden");
+      loadJobs();
+    };
+
+    async function deleteJob(id) {
+      if (confirm("Delete this job?")) {
+        await supabase.from("jobs").delete().eq("id", id);
+        loadJobs();
       }
-
-      if (data.length === 0) {
-        container.innerHTML = `<p class="text-gray-500">No contacts yet.</p>`;
-        return;
-      }
-
-      let html = `
-        <table class="min-w-full text-sm border">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="border p-2">Name</th>
-              <th class="border p-2">Email</th>
-              <th class="border p-2">Phone</th>
-              <th class="border p-2">Message</th>
-              <th class="border p-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      data.forEach(c => {
-        html += `
-          <tr>
-            <td class="border p-2">${c.name}</td>
-            <td class="border p-2">${c.email}</td>
-            <td class="border p-2">${c.phone || '-'}</td>
-            <td class="border p-2">${c.message}</td>
-            <td class="border p-2">${new Date(c.created_at).toLocaleString()}</td>
-          </tr>
-        `;
-      });
-      html += `</tbody></table>`;
-      container.innerHTML = html;
     }
 
-    // 💼 Fetch Jobs
-    async function loadJobs() {
-      const { data, error } = await supabase.from("jobs").select("*").order("posted_at", { ascending: false });
-      const container = document.getElementById("jobs");
+    // 🧾 Add / Delete Resume Templates
+    const resumeModal = document.getElementById("addResumeModal");
+    document.getElementById("addResumeBtn").onclick = () => resumeModal.classList.remove("hidden");
+    document.getElementById("cancelResumeBtn").onclick = () => resumeModal.classList.add("hidden");
+    document.getElementById("saveResumeBtn").onclick = async () => {
+      const title = document.getElementById("resumeTitle").value;
+      const description = document.getElementById("resumeDesc").value;
+      const download_url = document.getElementById("resumeURL").value;
+      await supabase.from("resume_templates").insert({ title, description, download_url });
+      resumeModal.classList.add("hidden");
+      loadResumes();
+    };
 
-      if (error) {
-        container.innerHTML = `<p class="text-red-500">Error loading jobs.</p>`;
-        return;
+    async function deleteResume(id) {
+      if (confirm("Delete this resume template?")) {
+        await supabase.from("resume_templates").delete().eq("id", id);
+        loadResumes();
       }
-
-      if (data.length === 0) {
-        container.innerHTML = `<p class="text-gray-500">No jobs added yet.</p>`;
-        return;
-      }
-
-      let html = `
-        <table class="min-w-full text-sm border">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="border p-2">Title</th>
-              <th class="border p-2">Company</th>
-              <th class="border p-2">Location</th>
-              <th class="border p-2">Description</th>
-              <th class="border p-2">Posted</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      data.forEach(j => {
-        html += `
-          <tr>
-            <td class="border p-2">${j.title}</td>
-            <td class="border p-2">${j.company || '-'}</td>
-            <td class="border p-2">${j.location || '-'}</td>
-            <td class="border p-2">${j.description || '-'}</td>
-            <td class="border p-2">${new Date(j.posted_at).toLocaleString()}</td>
-          </tr>
-        `;
-      });
-
-      html += `</tbody></table>`;
-      container.innerHTML = html;
     }
   </script>
 </body>
