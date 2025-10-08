@@ -1,141 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MK Consultancy Admin Panel</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Panel — MK Consultancy</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --primary: #0f4c81;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100">
 
-  <!-- LOGIN SCREEN -->
-  <div id="loginSection" class="min-h-screen flex items-center justify-center">
-    <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
-      <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">Admin Login</h2>
-      <input id="email" type="email" placeholder="Email" class="w-full border p-3 mb-3 rounded-md" />
-      <input id="password" type="password" placeholder="Password" class="w-full border p-3 mb-3 rounded-md" />
-      <button id="loginBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-md font-semibold">Login</button>
-      <p id="loginError" class="text-red-600 mt-3 text-sm hidden"></p>
+  <div id="login-section" class="flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm text-center">
+      <h2 class="text-2xl font-bold text-[var(--primary)] mb-4">Admin Login</h2>
+      <input type="email" id="email" placeholder="Email" class="w-full mb-3 p-3 border rounded-md" />
+      <input type="password" id="password" placeholder="Password" class="w-full mb-4 p-3 border rounded-md" />
+      <button id="loginBtn" class="w-full bg-[var(--primary)] text-white py-2 rounded-md">Login</button>
+      <p id="loginError" class="text-red-500 text-sm mt-3 hidden">Invalid credentials. Please try again.</p>
     </div>
   </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="hidden min-h-screen">
-    <header class="bg-blue-700 text-white p-4 flex justify-between items-center">
-      <h1 class="text-lg font-bold">MK Consultancy Admin Dashboard</h1>
-      <button id="logoutBtn" class="bg-white text-blue-700 px-4 py-2 rounded-md font-semibold">Logout</button>
-    </header>
+  <div id="admin-section" class="hidden p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-[var(--primary)]">Admin Dashboard</h1>
+      <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">Logout</button>
+    </div>
 
-    <main class="p-6 space-y-10">
+    <h2 class="text-xl font-semibold mb-2">📩 Contact Form Submissions</h2>
+    <div id="contacts" class="bg-white rounded-lg shadow p-4 overflow-x-auto"></div>
 
-      <!-- CONTACTS SECTION -->
-      <section>
-        <h2 class="text-xl font-bold text-blue-700 mb-3">Contact Form Submissions</h2>
-        <div id="contactsList" class="bg-white rounded-lg shadow p-4 overflow-x-auto text-sm">Loading contacts...</div>
-      </section>
-
-      <!-- JOBS SECTION -->
-      <section>
-        <h2 class="text-xl font-bold text-blue-700 mb-3">Manage Jobs</h2>
-        <form id="jobForm" class="grid sm:grid-cols-2 gap-3 bg-white shadow p-4 rounded-lg mb-4">
-          <input type="text" id="jobTitle" placeholder="Job Title" class="border p-2 rounded-md" required />
-          <input type="text" id="jobCompany" placeholder="Company Name" class="border p-2 rounded-md" required />
-          <input type="text" id="jobLocation" placeholder="Location" class="border p-2 rounded-md" required />
-          <textarea id="jobDescription" placeholder="Job Description" class="border p-2 rounded-md sm:col-span-2" required></textarea>
-          <button class="bg-blue-600 text-white py-2 rounded-md font-semibold sm:col-span-2 hover:bg-blue-700" type="submit">Add Job</button>
-        </form>
-        <div id="jobsList" class="bg-white rounded-lg shadow p-4 overflow-x-auto text-sm">Loading jobs...</div>
-      </section>
-
-    </main>
+    <h2 class="text-xl font-semibold mt-8 mb-2">💼 Job Listings</h2>
+    <div id="jobs" class="bg-white rounded-lg shadow p-4 overflow-x-auto"></div>
   </div>
 
   <script>
+    // 🧠 Step 1: Supabase Config
     const SUPABASE_URL = "https://gpjvqkzvutnhecijzxns.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwanZxa3p2dXRuaGVjaWp6eG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDU1MjYsImV4cCI6MjA3NTUyMTUyNn0.3uL_GlV3eJIYq7gODmlVFhVp2HzKmFIAxTSf82hK9eg";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwanZxa3p2dXRuaGVjaWp6eG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDU1MjYsImV4cCI6MjA3NTUyMTUyNn0.3uL_GlV3eJIYq7gODmlVFhVp2HzKmFIAxTSf82hK9eg";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const loginSection = document.getElementById("loginSection");
-    const dashboard = document.getElementById("dashboard");
+    const loginSection = document.getElementById("login-section");
+    const adminSection = document.getElementById("admin-section");
     const loginBtn = document.getElementById("loginBtn");
     const logoutBtn = document.getElementById("logoutBtn");
     const loginError = document.getElementById("loginError");
 
-    // LOGIN FUNCTION
+    // 🧾 Step 2: Login function
     loginBtn.addEventListener("click", async () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
       if (error) {
-        loginError.textContent = "Invalid credentials or not authorized!";
         loginError.classList.remove("hidden");
       } else {
+        loginError.classList.add("hidden");
         loginSection.classList.add("hidden");
-        dashboard.classList.remove("hidden");
+        adminSection.classList.remove("hidden");
         loadContacts();
         loadJobs();
       }
     });
 
-    // LOGOUT FUNCTION
+    // 🚪 Logout
     logoutBtn.addEventListener("click", async () => {
       await supabase.auth.signOut();
-      dashboard.classList.add("hidden");
+      adminSection.classList.add("hidden");
       loginSection.classList.remove("hidden");
     });
 
-    // LOAD CONTACTS
+    // 📥 Fetch Contacts
     async function loadContacts() {
       const { data, error } = await supabase.from("contacts").select("*").order("created_at", { ascending: false });
-      const container = document.getElementById("contactsList");
-      if (error) return (container.innerHTML = `<p class='text-red-500'>Error loading contacts</p>`);
-      if (!data.length) return (container.innerHTML = "<p>No contacts yet.</p>");
-      container.innerHTML = data.map(
-        (c) => `
-        <div class="border-b py-2">
-          <p><strong>${c.name}</strong> (${c.email}, ${c.phone || "-"})</p>
-          <p class="text-gray-600">${c.message || ""}</p>
-          <p class="text-xs text-gray-400">${new Date(c.created_at).toLocaleString()}</p>
-        </div>`
-      ).join("");
+      const container = document.getElementById("contacts");
+      if (error) {
+        container.innerHTML = `<p class="text-red-500">Error loading contacts.</p>`;
+        return;
+      }
+
+      if (data.length === 0) {
+        container.innerHTML = `<p class="text-gray-500">No contacts yet.</p>`;
+        return;
+      }
+
+      let html = `
+        <table class="min-w-full text-sm border">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border p-2">Name</th>
+              <th class="border p-2">Email</th>
+              <th class="border p-2">Phone</th>
+              <th class="border p-2">Message</th>
+              <th class="border p-2">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      data.forEach(c => {
+        html += `
+          <tr>
+            <td class="border p-2">${c.name}</td>
+            <td class="border p-2">${c.email}</td>
+            <td class="border p-2">${c.phone || '-'}</td>
+            <td class="border p-2">${c.message}</td>
+            <td class="border p-2">${new Date(c.created_at).toLocaleString()}</td>
+          </tr>
+        `;
+      });
+      html += `</tbody></table>`;
+      container.innerHTML = html;
     }
 
-    // ADD JOB
-    const jobForm = document.getElementById("jobForm");
-    jobForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const title = jobForm.jobTitle.value;
-      const company = jobForm.jobCompany.value;
-      const location = jobForm.jobLocation.value;
-      const description = jobForm.jobDescription.value;
-
-      const { error } = await supabase.from("jobs").insert([{ title, company, location, description }]);
-      if (error) alert("Error adding job");
-      else {
-        alert("Job added successfully");
-        jobForm.reset();
-        loadJobs();
-      }
-    });
-
-    // LOAD JOBS
+    // 💼 Fetch Jobs
     async function loadJobs() {
       const { data, error } = await supabase.from("jobs").select("*").order("posted_at", { ascending: false });
-      const container = document.getElementById("jobsList");
-      if (error) return (container.innerHTML = `<p class='text-red-500'>Error loading jobs</p>`);
-      if (!data.length) return (container.innerHTML = "<p>No jobs available.</p>");
-      container.innerHTML = data.map(
-        (j) => `
-        <div class="border-b py-2">
-          <p><strong>${j.title}</strong> — ${j.company}</p>
-          <p class="text-gray-600">${j.description}</p>
-          <p class="text-xs text-gray-400">${j.location} | ${new Date(j.posted_at).toLocaleString()}</p>
-        </div>`
-      ).join("");
+      const container = document.getElementById("jobs");
+
+      if (error) {
+        container.innerHTML = `<p class="text-red-500">Error loading jobs.</p>`;
+        return;
+      }
+
+      if (data.length === 0) {
+        container.innerHTML = `<p class="text-gray-500">No jobs added yet.</p>`;
+        return;
+      }
+
+      let html = `
+        <table class="min-w-full text-sm border">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border p-2">Title</th>
+              <th class="border p-2">Company</th>
+              <th class="border p-2">Location</th>
+              <th class="border p-2">Description</th>
+              <th class="border p-2">Posted</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      data.forEach(j => {
+        html += `
+          <tr>
+            <td class="border p-2">${j.title}</td>
+            <td class="border p-2">${j.company || '-'}</td>
+            <td class="border p-2">${j.location || '-'}</td>
+            <td class="border p-2">${j.description || '-'}</td>
+            <td class="border p-2">${new Date(j.posted_at).toLocaleString()}</td>
+          </tr>
+        `;
+      });
+
+      html += `</tbody></table>`;
+      container.innerHTML = html;
     }
   </script>
-
 </body>
 </html>
